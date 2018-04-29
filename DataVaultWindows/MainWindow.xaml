@@ -7,7 +7,15 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="141,115,0,0" VerticalAlignment="Top" Width="75"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260*"/>
+            <ColumnDefinition Width="137*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="490,255,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2"/>
+        <ComboBox HorizontalAlignment="Left" Margin="86,104,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged"/>
+        <Menu HorizontalAlignment="Left" Height="25" Margin="175,242,0,0" VerticalAlignment="Top" Width="60">
+            <ListBox Height="100" Width="100" SelectionChanged="ListBox_SelectionChanged"/>
+        </Menu>
 
     </Grid>
 </Window>
