@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddressInfo.cs" />
+    <Compile Include="AttachmentInfo.cs" />
     <Compile Include="NameInfo.cs" />
     <Compile Include="PersonalInfo.cs" />
     <Compile Include="PhoneNumberInfo.cs" />

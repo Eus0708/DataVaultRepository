@@ -26,6 +26,8 @@ namespace DataVaultTest
             DateTime dob = DateTime.Now;
 
             PersonalInfo personalInfo = new PersonalInfo(name, addr, phone, ssn, dob);
+            personalInfo.AddAttachment(new AttachmentInfo(AttachmentTypes.Image, @"CurrentPath\", "Image.jpg"));
+
             Console.WriteLine(personalInfo);
             
             Console.WriteLine(personalInfo.Name.FirstName);
@@ -40,6 +42,7 @@ namespace DataVaultTest
             Console.WriteLine(personalInfo.PhoneNumber.PhoneNumber);
             Console.WriteLine(personalInfo.SSN);
             Console.WriteLine(personalInfo.DateOfBirth);
+            Console.WriteLine(personalInfo.Attachments);
         }
     }
 }
