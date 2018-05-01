@@ -20,10 +20,13 @@ namespace DataVaultWindows
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+    
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -48,6 +51,37 @@ namespace DataVaultWindows
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_DragLeave(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.All;
+            
         }
     }
 }

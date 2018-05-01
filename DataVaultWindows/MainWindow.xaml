@@ -6,22 +6,28 @@
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260*"/>
-            <ColumnDefinition Width="137*"/>
-        </Grid.ColumnDefinitions>
-        <ComboBox HorizontalAlignment="Left" Margin="58,67,0,0" VerticalAlignment="Top" Width="240" SelectionChanged="ComboBox_SelectionChanged" SelectedIndex="0">
-            <ListBoxItem Content="Please Select"/>
-            <ListBoxItem Content="1"/>
-            <ListBoxItem Content="2"/>
-            <ListBoxItem Content="3"/>
-        </ComboBox>
-        <ListBox HorizontalAlignment="Left" Height="100" Margin="292,123,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ListBox_SelectionChanged_1">
-            <ListBoxItem Content="Data"/>
-            <ListBoxItem Content="abc"/>
-        </ListBox>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="147,223,0,0" VerticalAlignment="Top" Width="75"/>
-
+    <Grid HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="800" Margin="0,0,-6.4,-30">
+        <Menu HorizontalAlignment="Left" Height="19" Margin="39,21,0,0" VerticalAlignment="Top" Width="49">
+            <Button Content="Home"/>
+        </Menu>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="489,387,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+        <Button Content="Exit" HorizontalAlignment="Left" Margin="593,387,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.737,-2.651" Click="Button_Click_4"/>
+        <TextBox HorizontalAlignment="Left" Height="14" Margin="39,53,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="130" TextChanged="TextBox_TextChanged" SpellCheck.IsEnabled="True" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="14" Margin="188,53,0,0" TextWrapping="Wrap" Text="Middle" VerticalAlignment="Top" Width="58" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="14" Margin="266,53,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top" Width="130" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="39,77,0,0" TextWrapping="Wrap" Text="Area" VerticalAlignment="Top" Width="35" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="93,77,0,0" TextWrapping="Wrap" Text="Phone Number" VerticalAlignment="Top" Width="110" FontSize="9"/>
+        <Label Content="-" HorizontalAlignment="Left" Margin="77,76,0,0" VerticalAlignment="Top" Height="16" Width="15" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="219,77,0,0" TextWrapping="Wrap" Text="DOB" VerticalAlignment="Top" Width="113" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="14" Margin="39,102,0,0" TextWrapping="Wrap" Text="Street Address" VerticalAlignment="Top" Width="357" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="39,126,0,0" TextWrapping="Wrap" Text="Street Address2" VerticalAlignment="Top" Width="357" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="39,151,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="142" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="200,151,0,0" TextWrapping="Wrap" Text="State" VerticalAlignment="Top" Width="63" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="280,151,0,0" TextWrapping="Wrap" Text="Zipcode" VerticalAlignment="Top" Width="116" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="39,175,0,0" TextWrapping="Wrap" Text="Country" VerticalAlignment="Top" Width="278" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="15" Margin="39,199,0,0" TextWrapping="Wrap" Text="SSN" VerticalAlignment="Top" Width="142" FontSize="9"/>
+        <TextBox HorizontalAlignment="Left" Height="115" Margin="39,245,0,0" TextWrapping="Wrap" Text="Des" VerticalAlignment="Top" Width="357" FontSize="9"/>
+        <Label Content="Description" HorizontalAlignment="Left" Margin="34,218,0,0" VerticalAlignment="Top" Height="49" Width="94" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="307" Margin="452,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="313" DragEnter="TextBox_DragLeave"/>
     </Grid>
 </Window>
