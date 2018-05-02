@@ -11,8 +11,12 @@
             <Button Content="Home"/>
         </Menu>
         <Button Content="Save" HorizontalAlignment="Left" Margin="489,387,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
-        <Button Content="Exit" HorizontalAlignment="Left" Margin="593,387,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.737,-2.651" Click="Button_Click_4"/>
-        <TextBox HorizontalAlignment="Left" Height="14" Margin="39,53,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="130" TextChanged="TextBox_TextChanged" SpellCheck.IsEnabled="True" FontSize="9"/>
+        <Button Content="Exit" HorizontalAlignment="Left" Margin="593,387,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.737,-2.651" Click="Button_Click"/>
+        <TextBox x:Name="FirstNameText" HorizontalAlignment="Left" Height="14" Margin="39,53,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="130" SpellCheck.IsEnabled="True" FontSize="9" Background="White">
+            <TextBox.Foreground>
+                <ImageBrush/>
+            </TextBox.Foreground>
+        </TextBox>
         <TextBox HorizontalAlignment="Left" Height="14" Margin="188,53,0,0" TextWrapping="Wrap" Text="Middle" VerticalAlignment="Top" Width="58" FontSize="9"/>
         <TextBox HorizontalAlignment="Left" Height="14" Margin="266,53,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top" Width="130" FontSize="9"/>
         <TextBox HorizontalAlignment="Left" Height="15" Margin="39,77,0,0" TextWrapping="Wrap" Text="Area" VerticalAlignment="Top" Width="35" FontSize="9"/>
@@ -28,6 +32,6 @@
         <TextBox HorizontalAlignment="Left" Height="15" Margin="39,199,0,0" TextWrapping="Wrap" Text="SSN" VerticalAlignment="Top" Width="142" FontSize="9"/>
         <TextBox HorizontalAlignment="Left" Height="115" Margin="39,245,0,0" TextWrapping="Wrap" Text="Des" VerticalAlignment="Top" Width="357" FontSize="9"/>
         <Label Content="Description" HorizontalAlignment="Left" Margin="34,218,0,0" VerticalAlignment="Top" Height="49" Width="94" FontWeight="Bold"/>
-        <TextBox HorizontalAlignment="Left" Height="307" Margin="452,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="313" DragEnter="TextBox_DragLeave"/>
+        <TextBox x:Name="FirstNameText1" HorizontalAlignment="Left" Height="307" Margin="452,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="313" DragEnter="TextBox_DragLeave"/>
     </Grid>
 </Window>

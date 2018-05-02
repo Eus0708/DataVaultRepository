@@ -50,7 +50,7 @@ namespace DataVaultWindows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -75,12 +75,15 @@ namespace DataVaultWindows
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (FirstNameText.Text == "First Name")
+                FirstNameText.Text = "";
 
+            FirstNameText.Foreground = Brushes.Black;
         }
 
         private void TextBox_DragLeave(object sender, DragEventArgs e)
         {
-            e.Effects = DragDropEffects.All;
+            //e.Effects = DragDropEffects.All;
             
         }
     }
