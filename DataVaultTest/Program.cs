@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using SystemCommon;
+using DataVaultCommon;
 
 namespace DataVaultTest
 {
@@ -12,9 +13,17 @@ namespace DataVaultTest
     {
         static void Main(string[] args)
         {
-            Test1();
+            Test2();
 
             Console.WriteLine("Done DataVault Test");
+        }
+
+        static void Test2()
+        {
+            DataVaultDatabaseManager db = new DataVaultDatabaseManager();
+            List<string> states = new List<string>();
+            db.LoadStates(states);
+            PrintList(states);
         }
 
         static void Test1()
@@ -43,6 +52,15 @@ namespace DataVaultTest
             Console.WriteLine(personalInfo.SSN);
             Console.WriteLine(personalInfo.DateOfBirth);
             Console.WriteLine(personalInfo.Attachments);
+        }
+
+        static void PrintList<T>(List<T> list)
+        {
+            int i = 0;
+            foreach(object obj in list)
+            {
+                Console.WriteLine("[" + (i++) + "] " + obj.ToString());
+            }
         }
     }
 }
