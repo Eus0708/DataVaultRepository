@@ -75,16 +75,43 @@ namespace DataVaultWindows
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (FirstNameText.Text == "First Name")
-                FirstNameText.Text = "";
-
-            FirstNameText.Foreground = Brushes.Black;
+           
         }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "First Name")
+                tb.Text = "";
+
+            tb.Foreground = Brushes.Black;
+
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "")
+            {
+                tb.Text = "First Name";
+                tb.Foreground = Brushes.LightGray;
+            }
+            else
+            {
+                tb.Foreground = Brushes.Black;
+            }
+
+        }
+
+      
+
 
         private void TextBox_DragLeave(object sender, DragEventArgs e)
         {
             //e.Effects = DragDropEffects.All;
             
         }
+
+       
     }
 }
