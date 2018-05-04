@@ -10,80 +10,119 @@ namespace SystemCommon
     [Serializable]
     public class PersonalInfo : ISerializable
     {
-        int _id = 0;
+        int _id = -1;
         NameInfo _name = null;
         PhoneNumberInfo _phoneNumber = null;
         AddressInfo _address = null;
         SSNNumberInfo _ssn = null;
         DateTime _dateOfBirth = new DateTime();
+        DateTime _dateCreated = new DateTime();
+        DateTime _dateModified = new DateTime();
         List<AttachmentInfo> _attachments = null;
 
         public int Id
         {
             get { return _id; }
+            set { _id = value; }
         }
 
         public NameInfo Name
         {
             get { return _name; }
+            set { _name = value; }
         }
 
         public PhoneNumberInfo PhoneNumber
         {
             get { return _phoneNumber; }
+            set { _phoneNumber = value; }
         }
 
         public AddressInfo Address
         {
             get { return _address; }
+            set { _address = value; }
         }
 
         public SSNNumberInfo SSN
         {
             get { return _ssn; }
+            set { _ssn = value; }
         }
 
         public DateTime DateOfBirth
         {
             get { return _dateOfBirth; }
+            set { _dateOfBirth = value; }
+        }
+
+        public DateTime DateCreated
+        {
+            get { return _dateCreated; }
+            set { _dateCreated = value; }
+        }
+
+        public DateTime DateModified
+        {
+            get { return _dateModified; }
+            set { _dateModified = value; }
         }
 
         public List<AttachmentInfo> Attachments
         {
             get { return _attachments; }
+            set { _attachments = value; }
         }
 
         public PersonalInfo()
         {
+            _name = new NameInfo();
+            _address = new AddressInfo();
+            _phoneNumber = new PhoneNumberInfo();
+            _ssn = new SSNNumberInfo();
+            _attachments = new List<AttachmentInfo>();
         }
 
         public PersonalInfo(
-            NameInfo name,
-            AddressInfo address,
-            PhoneNumberInfo phone,
-            SSNNumberInfo ssn,
-            DateTime dob)
-        {
-            _name = name;
-            _address = address;
-            _phoneNumber = phone;
-            _ssn = ssn;
-            _dateOfBirth = dob;
-        }
-
-        public PersonalInfo(
+            int id,
             NameInfo name,
             AddressInfo address,
             PhoneNumberInfo phone,
             SSNNumberInfo ssn,
             DateTime dob,
-            List<AttachmentInfo> attachments)
+            DateTime created,
+            DateTime modified)
         {
+            _id = id;
             _name = name;
             _address = address;
             _phoneNumber = phone;
             _ssn = ssn;
             _dateOfBirth = dob;
+            _dateCreated = created;
+            _dateModified = modified;
+            _attachments = new List<AttachmentInfo>();
+        }
+
+        public PersonalInfo(
+            int id,
+            NameInfo name,
+            AddressInfo address,
+            PhoneNumberInfo phone,
+            SSNNumberInfo ssn,
+            DateTime dob,
+            DateTime created,
+            DateTime modified,
+            List<AttachmentInfo> attachments)
+        {
+            _id = id;
+            _name = name;
+            _address = address;
+            _phoneNumber = phone;
+            _ssn = ssn;
+            _dateOfBirth = dob;
+            _dateCreated = created;
+            _dateModified = modified;
             _attachments = attachments;
         }
 
@@ -96,6 +135,8 @@ namespace SystemCommon
             _address = (AddressInfo)info.GetValue("ad", typeof(AddressInfo));
             _ssn = (SSNNumberInfo)info.GetValue("ss", typeof(SSNNumberInfo));
             _dateOfBirth = (DateTime)info.GetValue("da", typeof(DateTime));
+            _dateCreated = (DateTime)info.GetValue("dc", typeof(DateTime));
+            _dateModified = (DateTime)info.GetValue("dm", typeof(DateTime));
             _attachments = TryGetValue<List<AttachmentInfo>>(info, "at");
         }
 
@@ -120,6 +161,8 @@ namespace SystemCommon
             info.AddValue("ad", _address, typeof(AddressInfo));
             info.AddValue("ss", _ssn, typeof(SSNNumberInfo));
             info.AddValue("da", _dateOfBirth, typeof(DateTime));
+            info.AddValue("dc", _dateCreated, typeof(DateTime));
+            info.AddValue("dm", _dateModified, typeof(DateTime));
             if (_attachments != null && _attachments.Count > 0)
             {
                 info.AddValue("at", _attachments, typeof(List<AttachmentInfo>));
@@ -134,9 +177,22 @@ namespace SystemCommon
                  "Address: " + Address + "\n" +
                  "SSN: " + SSN + "\n" +
                  "Date of Birth: " + DateOfBirth + "\n" +
-                 "Attachments: " + Attachments;
+                 "Date Created: " + DateCreated + "\n" +
+                 "Date Modified: " + DateModified + "\n" +
+                 "Attachments: \n" + PrintList(Attachments);
         }
-        
+
+        string PrintList<T>(List<T> list)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            int i = 0;
+            foreach (object obj in list)
+            {
+                strBuilder.AppendLine("\t[" + (i++) + "]: " + obj.ToString());
+            }
+            return strBuilder.ToString();
+        }
+
         public void AddAttachment(AttachmentInfo attachment)
         {
             // If a client does not have any attachments,
@@ -147,6 +203,7 @@ namespace SystemCommon
             }
 
             _attachments.Add(new AttachmentInfo(
+                -1,
                 attachment.Type,
                 attachment.Path,
                 attachment.Filename

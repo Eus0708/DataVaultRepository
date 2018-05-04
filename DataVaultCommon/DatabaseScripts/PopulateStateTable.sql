@@ -1,4 +1,9 @@
-﻿INSERT INTO StateTable (Text) VALUES 
+﻿DELETE FROM StateTable
+WHERE Id < 51;
+
+DBCC CHECKIDENT('dbo.StateTable', RESEED, -1);
+
+INSERT INTO StateTable (Text) VALUES 
 ('Alabama'), 
 ('Alaska'), 
 ('Arizona'), 

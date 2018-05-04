@@ -11,18 +11,66 @@ namespace DataVaultTest
 {
     class Program
     {
+        static DataVaultDatabaseManager db = new DataVaultDatabaseManager();
+
         static void Main(string[] args)
         {
-            Test2();
+            Test7();
 
-            Console.WriteLine("Done DataVault Test");
+            db.CloseConnection();
+            Console.Read();
+            //Console.WriteLine("Done DataVault Test");
         }
 
+        // Save a person
+        static void Test7()
+        {
+            PersonalInfo person = new PersonalInfo();
+            person.Id = 1;
+            person.Name.MiddleName = "Omg";
+            person.DateOfBirth = new DateTime(1995, 4, 6);
+            db.SavePersonalInfo(person);
+
+            Console.WriteLine("Executed");
+        }
+
+        // Partially fill in people info
+        static void Test6()
+        {
+            List<PersonalInfo> people = new List<PersonalInfo>();
+            db.PartiallyReloadPersonalInfos(people);
+            PrintList(people);
+        }
+
+        // Fill in one person
+        static void Test5()
+        {
+            PersonalInfo person = new PersonalInfo();
+            db.ReloadPersonalInfo(person, 0);
+            Console.WriteLine(person);
+        }
+
+        // Fully fill personalInfo list
+        static void Test4()
+        {
+            List<PersonalInfo> people = new List<PersonalInfo>();
+            db.Debug_FullyReloadPersonalInfos(people);
+            PrintList(people);
+        }
+
+        // Attachment table test
+        static void Test3()
+        {
+            List<AttachmentInfo> amts = new List<AttachmentInfo>();
+            db.ReloadAttachments(amts, 1);
+            PrintList(amts);
+        }
+
+        // States table test
         static void Test2()
         {
-            DataVaultDatabaseManager db = new DataVaultDatabaseManager();
-            List<string> states = new List<string>();
-            db.LoadStates(states);
+            List<StateInfo> states = new List<StateInfo>();
+            db.ReloadStates(states);
             PrintList(states);
         }
 
@@ -33,9 +81,11 @@ namespace DataVaultTest
             PhoneNumberInfo phone = new PhoneNumberInfo("123", "7891234");
             SSNNumberInfo ssn = new SSNNumberInfo("0192938475");
             DateTime dob = DateTime.Now;
+            DateTime dateCreated = DateTime.Now;
+            DateTime dateModified = DateTime.Now;
 
-            PersonalInfo personalInfo = new PersonalInfo(name, addr, phone, ssn, dob);
-            personalInfo.AddAttachment(new AttachmentInfo(AttachmentTypes.Image, @"CurrentPath\", "Image.jpg"));
+            PersonalInfo personalInfo = new PersonalInfo(-1, name, addr, phone, ssn, dob, dateCreated, dateModified);
+            personalInfo.AddAttachment(new AttachmentInfo(-1, "Image", @"CurrentPath\", "Image.jpg"));
 
             Console.WriteLine(personalInfo);
             
@@ -59,7 +109,7 @@ namespace DataVaultTest
             int i = 0;
             foreach(object obj in list)
             {
-                Console.WriteLine("[" + (i++) + "] " + obj.ToString());
+                Console.WriteLine("[" + (i++) + "]: " + obj.ToString());
             }
         }
     }

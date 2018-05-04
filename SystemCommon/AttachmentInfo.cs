@@ -7,21 +7,21 @@ using System.Runtime.Serialization;
 
 namespace SystemCommon
 {
-    public enum AttachmentTypes
-    {
-        Unknown,
-        Image,
-        TextFile
-    }
-
     [Serializable]
     public class AttachmentInfo : ISerializable
     {
-        AttachmentTypes _type = AttachmentTypes.Unknown;
+        int _id = -1;
+        string _type = null;
         string _path = null;
         string _filename = null;
 
-        public AttachmentTypes Type
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        public string Type
         {
             get { return _type; }
             set { _type = value; }
@@ -44,10 +44,12 @@ namespace SystemCommon
         }
 
         public AttachmentInfo(
-            AttachmentTypes type,
+            int id,
+            string type,
             string path,
             string filename)
         {
+            _id = id;
             _type = type;
             _path = path;
             _filename = filename;
@@ -56,7 +58,8 @@ namespace SystemCommon
         // Deserialize
         public AttachmentInfo(SerializationInfo info, StreamingContext context)
         {
-            _type = (AttachmentTypes)info.GetValue("ty", typeof(AttachmentTypes));
+            _id = (int)info.GetValue("id", typeof(int));
+            _type = (string)info.GetValue("ty", typeof(string));
             _path = (string)info.GetValue("pa", typeof(string));
             _filename = (string)info.GetValue("fi", typeof(string));
         }
@@ -64,27 +67,18 @@ namespace SystemCommon
         // Serialize
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("ty", _type, typeof(AttachmentTypes));
+            info.AddValue("id", _id, typeof(int));
+            info.AddValue("ty", _type, typeof(string));
             info.AddValue("pa", _path, typeof(string));
             info.AddValue("fi", _filename, typeof(string));
         }
 
         public override string ToString()
         {
-            return AttachmentTypesStr(_type) + ": " + 
+            return "[" + _id +"] " +
+                _type + " " + 
                 _path + " " + 
                 _filename;
-        }
-
-        public static string AttachmentTypesStr(AttachmentTypes type)
-        {
-            switch(type)
-            {
-                case AttachmentTypes.Unknown:  return "Unknown";
-                case AttachmentTypes.TextFile: return "Text file";
-                case AttachmentTypes.Image:    return "Image";
-                default:                       return String.Empty;
-            }
         }
     }
 }
