@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -80,7 +81,7 @@ namespace DataVaultWindows
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = (TextBox)sender;
+            TextBox tb = FirstName_TextBox;
             if (tb.Text == "First Name")
                 tb.Text = "";
 
@@ -112,6 +113,35 @@ namespace DataVaultWindows
             
         }
 
-       
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListBox_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string file in droppedFiles)
+            {
+                string filename = getFilelName(file);
+                MessageBox.Show("You dropped " + filename);
+                DragDrop_ListBox.Items.Add(filename);
+                
+            }
+        }
+
+        private void ListBox_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
+            {
+                e.Effects = DragDropEffects.All;
+            }
+        }
+
+        private string getFilelName(string path)
+        {
+            return System.IO.Path.GetFileNameWithoutExtension(path);
+        }
     }
 }

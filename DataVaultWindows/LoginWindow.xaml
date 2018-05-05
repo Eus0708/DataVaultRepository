@@ -5,18 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="301" Width="500">
+        Title="LoginWindow" Height="325.672" Width="540.984">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox HorizontalAlignment="Left" Height="33" Margin="245,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
-        <TextBox HorizontalAlignment="Left" Height="33" Margin="245,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="274,179,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click"/>
-        <Button Content="Exit" HorizontalAlignment="Left" Margin="118,179,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click_1"/>
-        <Label Content="User Name" HorizontalAlignment="Left" Margin="118,61,0,0" VerticalAlignment="Top" Height="33" Width="102"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="118,124,0,0" VerticalAlignment="Top" Height="33" Width="102"/>
-        <Label Content="Login" HorizontalAlignment="Left" Margin="23,20,0,0" VerticalAlignment="Top" Height="41" Width="86" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
+        <TextBox HorizontalAlignment="Left" Height="33" Margin="372,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
+        <TextBox HorizontalAlignment="Left" Height="33" Margin="372,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
+        <Button Content="Login" HorizontalAlignment="Left" Margin="410,207,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click"/>
+        <Button Content="Exit" HorizontalAlignment="Left" Margin="283,207,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click_1"/>
+        <Label Content="User Name" HorizontalAlignment="Left" Margin="255,99,0,0" VerticalAlignment="Top" Height="33" Width="102"/>
+        <Label Content="Password" HorizontalAlignment="Left" Margin="255,151,0,0" VerticalAlignment="Top" Height="33" Width="102"/>
+        <Label Content="DataVault" HorizontalAlignment="Left" Margin="27,20,0,0" VerticalAlignment="Top" Height="35" Width="104" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
+        <Image Margin="10,87,297,32" Source="1234.png" Stretch="Fill"/>
 
     </Grid>
 </Window>
