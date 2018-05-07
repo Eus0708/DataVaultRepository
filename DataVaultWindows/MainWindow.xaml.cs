@@ -113,9 +113,12 @@ namespace DataVaultWindows
             
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Home_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            
+            HomeWindow ss = new HomeWindow();
+            ss.Show();
+            this.Hide();
         }
 
         private void ListBox_Drop(object sender, DragEventArgs e)

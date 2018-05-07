@@ -5,19 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="325.672" Width="540.984">
+        Title="LoginWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBox HorizontalAlignment="Left" Height="33" Margin="372,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
-        <TextBox HorizontalAlignment="Left" Height="33" Margin="372,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="410,207,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click"/>
-        <Button Content="Exit" HorizontalAlignment="Left" Margin="283,207,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click_1"/>
-        <Label Content="User Name" HorizontalAlignment="Left" Margin="255,99,0,0" VerticalAlignment="Top" Height="33" Width="102"/>
-        <Label Content="Password" HorizontalAlignment="Left" Margin="255,151,0,0" VerticalAlignment="Top" Height="33" Width="102"/>
-        <Label Content="DataVault" HorizontalAlignment="Left" Margin="27,20,0,0" VerticalAlignment="Top" Height="35" Width="104" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
-        <Image Margin="10,87,297,32" Source="1234.png" Stretch="Fill"/>
+        <TextBox x:Name="Password_TextBox" HorizontalAlignment="Left" Height="31" Margin="310,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" GotFocus="Password_TextBox_GotFocus" LostFocus="Password_TextBox_LostFocus" Text="Please Enter Your Password..." Foreground="LightGray"/>
+        <Button Content="Login" HorizontalAlignment="Left" Margin="351,229,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click" FontSize="18" Background="#FFFF9696" BorderBrush="#FFBD3D3D"/>
+        <Label Content="Key" HorizontalAlignment="Left" Margin="375,104,0,0" VerticalAlignment="Top" Height="33" Width="41" FontSize="16"/>
+        <Label Content="DataVault" HorizontalAlignment="Left" Margin="116,36,0,0" VerticalAlignment="Top" Height="41" Width="95" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
+        <Image Margin="10,104,482,59" Source="1234.png" Stretch="Fill"/>
 
     </Grid>
 </Window>

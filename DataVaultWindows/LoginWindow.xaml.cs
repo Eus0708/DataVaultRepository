@@ -26,14 +26,39 @@ namespace DataVaultWindows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
-            MainWindow ss = new MainWindow();
+            
+            HomeWindow ss = new HomeWindow();
             ss.Show();
+            this.Hide();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+        private void Password_TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "Please Enter Your Password...")
+                tb.Text = "";
+
+            tb.Foreground = Brushes.Black;
+
+        }
+
+        private void Password_TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            if (tb.Text == "")
+            {
+                tb.Text = "Please Enter Your Password...";
+                tb.Foreground = Brushes.LightGray;
+            }
+            else
+            {
+                tb.Foreground = Brushes.Black;
+            }
+
         }
     }
 }
