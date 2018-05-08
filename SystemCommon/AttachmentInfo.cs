@@ -11,6 +11,7 @@ namespace SystemCommon
     public class AttachmentInfo : ISerializable
     {
         int _id = -1;
+        bool _toBeDelete = false;
         string _type = null;
         string _path = null;
         string _filename = null;
@@ -19,6 +20,12 @@ namespace SystemCommon
         {
             get { return _id; }
             set { _id = value; }
+        }
+
+        public bool ToBeDelete
+        {
+            get { return _toBeDelete; }
+            set { _toBeDelete = value; }
         }
 
         public string Type

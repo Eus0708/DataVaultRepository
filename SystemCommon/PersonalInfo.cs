@@ -11,6 +11,7 @@ namespace SystemCommon
     public class PersonalInfo : ISerializable
     {
         int _id = -1;
+        bool _toBeDelete = false;
         NameInfo _name = null;
         PhoneNumberInfo _phoneNumber = null;
         AddressInfo _address = null;
@@ -24,6 +25,12 @@ namespace SystemCommon
         {
             get { return _id; }
             set { _id = value; }
+        }
+
+        public bool ToBeDelete
+        {
+            get { return _toBeDelete; }
+            set { _toBeDelete = value; }
         }
 
         public NameInfo Name

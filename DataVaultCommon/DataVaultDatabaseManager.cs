@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 using System.Data.SqlClient;
 
 using SystemCommon;
@@ -45,22 +46,7 @@ namespace DataVaultCommon
         // Debug purpose
         public void Debug_FullyReloadPersonalInfos(List<PersonalInfo> personalInfos)
         {
-            string queryString = "SELECT Person.Id, " +
-                "Name.FirstName, Name.MiddleName, Name.LastName, " +
-                "Person.DateOfBirth, " +
-                "Address.Address1, Address.Address2, Address.City, State.Text, Address.ZipCode, " +
-                "Phone.AreaCode, Phone.PhoneNumber, " +
-                "Person.SSN, " +
-                "Person.DateCreated, Person.DateModified " +
-                "FROM dbo.PersonalInfoTable as Person " +
-                "LEFT JOIN dbo.AddressTable as Address " +
-                "ON Person.AddressId = Address.Id " +
-                "LEFT JOIN dbo.NameTable as Name " +
-                "ON Person.NameId = Name.Id " +
-                "LEFT JOIN dbo.PhoneTable as Phone " +
-                "ON Person.PhoneId = Phone.Id " +
-                "LEFT JOIN dbo.StateTable as State " +
-                "ON Address.StateId = State.Id;";
+            string queryString = "FullyLoadPersonalInfos";
 
             // Already has data clean it up
             if (personalInfos.Count > 0)
@@ -75,6 +61,8 @@ namespace DataVaultCommon
             }
 
             SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
             SqlDataReader reader = command.ExecuteReader();
             try
             {
@@ -117,16 +105,7 @@ namespace DataVaultCommon
 
         public void PartiallyReloadPersonalInfos(List<PersonalInfo> personalInfos)
         {
-            string queryString = "SELECT Person.Id, " +
-                "Name.FirstName, Name.MiddleName, Name.LastName, " +
-                "Person.DateOfBirth, " +
-                "Phone.AreaCode, Phone.PhoneNumber, " +
-                "Person.DateCreated, Person.DateModified " +
-                "FROM dbo.PersonalInfoTable as Person " +
-                "LEFT JOIN dbo.NameTable as Name " +
-                "ON Person.NameId = Name.Id " +
-                "LEFT JOIN dbo.PhoneTable as Phone " +
-                "ON Person.PhoneId = Phone.Id;";
+            string queryString = "PartiallyLoadPersonalInfos";
 
             // Already has data clean it up
             if (personalInfos.Count > 0)
@@ -141,6 +120,8 @@ namespace DataVaultCommon
             }
 
             SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
             SqlDataReader reader = command.ExecuteReader();
             try
             {
@@ -171,23 +152,7 @@ namespace DataVaultCommon
 
         public void ReloadPersonalInfo(PersonalInfo personalInfo, int personalInfoId)
         {
-            string queryString = "SELECT Person.Id, " +
-                "Name.FirstName, Name.MiddleName, Name.LastName, " +
-                "Person.DateOfBirth, " +
-                "Address.Address1, Address.Address2, Address.City, State.Text, Address.ZipCode, " +
-                "Phone.AreaCode, Phone.PhoneNumber, " +
-                "Person.SSN, " +
-                "Person.DateCreated, Person.DateModified " +
-                "FROM dbo.PersonalInfoTable as Person " +
-                "LEFT JOIN dbo.AddressTable as Address " +
-                "ON Person.AddressId = Address.Id " +
-                "LEFT JOIN dbo.NameTable as Name " +
-                "ON Person.NameId = Name.Id " +
-                "LEFT JOIN dbo.PhoneTable as Phone " +
-                "ON Person.PhoneId = Phone.Id " +
-                "LEFT JOIN dbo.StateTable as State " +
-                "ON Address.StateId = State.Id " +
-                "WHERE Person.Id = @Id; ";
+            string queryString = "LoadPersonalInfoByPersonId";
 
             // Check connection
             if (_connection == null)
@@ -196,6 +161,8 @@ namespace DataVaultCommon
             }
 
             SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
             command.Parameters.AddWithValue("@Id", personalInfoId);
 
             SqlDataReader reader = command.ExecuteReader();
@@ -232,11 +199,7 @@ namespace DataVaultCommon
 
         public void ReloadAttachments(List<AttachmentInfo> attachments, int personalInfoId)
         {
-            string queryString = "SELECT Amt.Id, Text, Path, Filename " +
-                "FROM dbo.AttachmentTable as Amt " +
-                "LEFT JOIN dbo.AttachmentTypeTable as AmtType " +
-                "ON Amt.TypeId = AmtType.Id " +
-                "WHERE PersonalInfoId = @Id; ";
+            string queryString = "LoadAttachmentsByPersonId";
 
             // Already has data clean it up
             if (attachments.Count > 0)
@@ -251,6 +214,8 @@ namespace DataVaultCommon
             }
 
             SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
             command.Parameters.AddWithValue("@Id", personalInfoId);
 
             SqlDataReader reader = command.ExecuteReader();
@@ -276,7 +241,7 @@ namespace DataVaultCommon
 
         public void ReloadStates(List<StateInfo> states)
         {
-            string queryString = "SELECT Id, Text FROM dbo.StateTable;";
+            string queryString = "LoadStates";
 
             // Already has data clean it up
             if (states.Count > 0)
@@ -290,6 +255,8 @@ namespace DataVaultCommon
             }
 
             SqlCommand command = new SqlCommand( queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
             SqlDataReader reader = command.ExecuteReader();
             try
             {
@@ -322,29 +289,33 @@ namespace DataVaultCommon
 
         public void SavePersonalInfo(PersonalInfo personalInfo)
         {
-            if (personalInfo.Id == -1)
+            // Update personal info table
+            if (personalInfo.ToBeDelete)
             {
-                AddPersonalInfo(personalInfo);
+                DeletePersonalInfo(personalInfo);
             }
             else
             {
-                ModifyPersonalInfo(personalInfo);
+                if (personalInfo.Id == -1)
+                {
+                    AddPersonalInfo(personalInfo);
+                }
+                else
+                {
+                    UpdatePersonalInfo(personalInfo);
+                }
+            }
+
+            // Update Attachments
+            foreach (AttachmentInfo attachment in personalInfo.Attachments)
+            {
+                SaveAttachmentInfo(personalInfo.Id, attachment);
             }
         }
 
-        void AddPersonalInfo(PersonalInfo personalInfo)
+        public void AddPersonalInfo(PersonalInfo personalInfo)
         {
-
-        }
-
-        void ModifyPersonalInfo(PersonalInfo personalInfo)
-        {
-            //string queryString = "UPDATE dbo.NameTable SET " +
-            //    //"DateOfBirth = @Dob " +
-            //    "MiddleName = @Middle " +
-            //    "WHERE Id = @Id;";
-
-            string queryString = "EXECUTE UpdatePersonalInfo 'Omfg', 0; ";
+            string queryString = "InsertPersonalInfo";
 
             // Check connection and input
             if (_connection == null || personalInfo == null)
@@ -352,15 +323,174 @@ namespace DataVaultCommon
                 return;
             }
 
-            using (SqlCommand command = new SqlCommand(queryString, _connection))
-            {
-                //command.Parameters.AddWithValue("@Id", personalInfo.Id);
-                //command.Parameters.AddWithValue("@Middle", personalInfo.Name.MiddleName);
-                //command.Parameters.AddWithValue("@Dob", personalInfo.DateOfBirth);
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+            
+            command.Parameters.AddWithValue("@FirstName", personalInfo.Name.FirstName);
+            command.Parameters.AddWithValue("@MiddleName", personalInfo.Name.MiddleName);
+            command.Parameters.AddWithValue("@LastName", personalInfo.Name.LastName);
+            command.Parameters.AddWithValue("@Address1", personalInfo.Address.Address1);
+            command.Parameters.AddWithValue("@Address2", personalInfo.Address.Address2);
+            command.Parameters.AddWithValue("@City", personalInfo.Address.City);
+            command.Parameters.AddWithValue("@State", personalInfo.Address.State);
+            command.Parameters.AddWithValue("@ZipCode", personalInfo.Address.ZipCode);
+            command.Parameters.AddWithValue("@AreaCode", personalInfo.PhoneNumber.AreaCode);
+            command.Parameters.AddWithValue("@PhoneNumber", personalInfo.PhoneNumber.PhoneNumber);
+            command.Parameters.AddWithValue("@SSN", personalInfo.SSN.SSNNumber);
+            command.Parameters.AddWithValue("@DateOfBirth", personalInfo.DateOfBirth);
+            command.Parameters.AddWithValue("@DateCreated", DateTime.Now);
+            command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
-                int rows = command.ExecuteNonQuery();
-                Console.WriteLine(rows);
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdatePersonalInfo(PersonalInfo personalInfo)
+        {
+            string queryString = "UpdatePersonalInfo";
+
+            // Check connection and input
+            if (_connection == null || personalInfo == null)
+            {
+                return;
             }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", personalInfo.Id);
+            command.Parameters.AddWithValue("@FirstName", personalInfo.Name.FirstName);
+            command.Parameters.AddWithValue("@MiddleName", personalInfo.Name.MiddleName);
+            command.Parameters.AddWithValue("@LastName", personalInfo.Name.LastName);
+            command.Parameters.AddWithValue("@Address1", personalInfo.Address.Address1);
+            command.Parameters.AddWithValue("@Address2", personalInfo.Address.Address2);
+            command.Parameters.AddWithValue("@City", personalInfo.Address.City);
+            command.Parameters.AddWithValue("@State", personalInfo.Address.State);
+            command.Parameters.AddWithValue("@ZipCode", personalInfo.Address.ZipCode);
+            command.Parameters.AddWithValue("@AreaCode", personalInfo.PhoneNumber.AreaCode);
+            command.Parameters.AddWithValue("@PhoneNumber", personalInfo.PhoneNumber.PhoneNumber);
+            command.Parameters.AddWithValue("@SSN", personalInfo.SSN.SSNNumber);
+            command.Parameters.AddWithValue("@DateOfBirth", personalInfo.DateOfBirth);
+            command.Parameters.AddWithValue("@DateModified", DateTime.Now);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeletePersonalInfo(PersonalInfo personalInfo)
+        {
+            string queryString = "DeletePersonalInfoByPersonId";
+
+            // Check connection and input
+            if (_connection == null || personalInfo == null)
+            {
+                return;
+            }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", personalInfo.Id);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void SaveAttachmentInfo(int personalInfoId, AttachmentInfo attachment)
+        {
+            // Update attachment table
+            if (attachment.ToBeDelete)
+            {
+                DeleteAttachment(personalInfoId, attachment);
+            }
+            else
+            {
+                if (attachment.Id == -1)
+                {
+                    AddAttachment(personalInfoId, attachment);
+                }
+                else
+                {
+                    UpdateAttachment(personalInfoId, attachment);
+                }
+            }
+        }
+
+        public void AddAttachment(int personalInfoId, AttachmentInfo attachment)
+        {
+            string queryString = "InsertAttachment";
+
+            // Check connection and input
+            if (_connection == null || attachment == null)
+            {
+                return;
+            }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
+            command.Parameters.AddWithValue("@Type", attachment.Type);
+            command.Parameters.AddWithValue("@Path", attachment.Path);
+            command.Parameters.AddWithValue("@Filename", attachment.Filename);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateAttachment(int personalInfoId, AttachmentInfo attachment)
+        {
+            string queryString = "UpdateAttachment";
+
+            // Check connection and input
+            if (_connection == null || attachment == null)
+            {
+                return;
+            }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", attachment.Id);
+            command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
+            command.Parameters.AddWithValue("@Type", attachment.Type);
+            command.Parameters.AddWithValue("@Path", attachment.Path);
+            command.Parameters.AddWithValue("@Filename", attachment.Filename);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteAttachment(int personalInfoId, AttachmentInfo attachment)
+        {
+            string queryString = "DeleteAttachmentByAttachmentId";
+
+            // Check connection and input
+            if (_connection == null || attachment == null)
+            {
+                return;
+            }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", attachment.Id);
+            command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
+
+            command.ExecuteNonQuery();
+        }
+
+        public void DeleteAttachments(int personalInfoId)
+        {
+            string queryString = "DeleteAttachmentsByPersonalInfoId";
+
+            // Check connection and input
+            if (_connection == null)
+            {
+                return;
+            }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+            
+            command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
+
+            command.ExecuteNonQuery();
         }
     }
 }
