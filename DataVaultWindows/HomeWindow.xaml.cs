@@ -36,5 +36,12 @@ namespace DataVaultWindows
         {
             this.Close();
         }
+
+        private void Existing_Profile_Click(object sender, RoutedEventArgs e)
+        {
+            ExistingWindow ss = new ExistingWindow();
+            ss.Show();
+            this.Hide(); 
+        }
     }
 }

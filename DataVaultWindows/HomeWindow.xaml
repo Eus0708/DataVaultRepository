@@ -14,8 +14,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="Home_Window" Content="New Profile" HorizontalAlignment="Left" Margin="333,63,0,0" VerticalAlignment="Top" Width="126" Height="55" FontSize="16" Click="Main_Window_Button"/>
-        <Button x:Name="Existing_Profile" Content="Existing Profile" HorizontalAlignment="Left" Margin="333,142,0,0" VerticalAlignment="Top" Width="126" Height="55" FontSize="16"/>
-        <Button x:Name="Options" Content="Options" HorizontalAlignment="Left" Margin="333,222,0,0" VerticalAlignment="Top" Width="126" Height="55" FontSize="16"/>
+        <Button x:Name="Existing_Profile" Content="Existing Profile" HorizontalAlignment="Left" Margin="333,142,0,0" VerticalAlignment="Top" Width="126" Height="55" FontSize="16" Click="Existing_Profile_Click"/>
+        <Button x:Name="Options_Button" Content="Options" HorizontalAlignment="Left" Margin="333,222,0,0" VerticalAlignment="Top" Width="126" Height="55" FontSize="16"/>
         <Button x:Name="Exit" Content="Exit" HorizontalAlignment="Left" Margin="333,301,0,0" VerticalAlignment="Top" Width="126" Height="55" FontSize="16" Click="Exit_Button"/>
         <Image Margin="349,316,417,77" Source="Exit_Icon.png" Stretch="Fill" RenderTransformOrigin="1.385,1.038"/>
 

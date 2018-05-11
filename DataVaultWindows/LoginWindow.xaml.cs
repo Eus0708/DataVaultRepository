@@ -24,7 +24,7 @@ namespace DataVaultWindows
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
             
             HomeWindow ss = new HomeWindow();

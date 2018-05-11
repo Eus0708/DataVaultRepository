@@ -146,5 +146,10 @@ namespace DataVaultWindows
         {
             return System.IO.Path.GetFileNameWithoutExtension(path);
         }
+
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

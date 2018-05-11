@@ -6,14 +6,17 @@
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Background="#FFA4D2DC">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBox x:Name="Password_TextBox" HorizontalAlignment="Left" Height="31" Margin="310,169,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="165" GotFocus="Password_TextBox_GotFocus" LostFocus="Password_TextBox_LostFocus" Text="Please Enter Your Password..." Foreground="LightGray"/>
-        <Button Content="Login" HorizontalAlignment="Left" Margin="351,229,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Button_Click" FontSize="18" Background="#FFFF9696" BorderBrush="#FFBD3D3D"/>
-        <Label Content="Key" HorizontalAlignment="Left" Margin="375,104,0,0" VerticalAlignment="Top" Height="33" Width="41" FontSize="16"/>
-        <Label Content="DataVault" HorizontalAlignment="Left" Margin="116,36,0,0" VerticalAlignment="Top" Height="41" Width="95" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
+        <Button x:Name="Login_Button" Content="Login" HorizontalAlignment="Left" Margin="351,229,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Login_Button_Click" FontSize="18" Background="#FFFF9696" BorderBrush="#FFBD3D3D"/>
+        <Label Content="Key" HorizontalAlignment="Left" Margin="372,104,0,0" VerticalAlignment="Top" Height="44" Width="48" FontSize="20"/>
+        <Label Content="DataVault" HorizontalAlignment="Left" Margin="116,36,0,0" VerticalAlignment="Top" Height="36" Width="92" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
         <Image Margin="10,104,482,59" Source="1234.png" Stretch="Fill"/>
 
     </Grid>
