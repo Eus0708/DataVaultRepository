@@ -9,6 +9,7 @@ using SystemCommon;
 
 namespace DataVaultCommon
 {
+
     [Serializable]
     public class DataVaultEntity : ISerializable
     {

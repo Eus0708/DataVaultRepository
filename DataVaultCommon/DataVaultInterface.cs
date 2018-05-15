@@ -4,19 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using SystemCommon;
+
 namespace DataVaultCommon
 {
     public class DataVaultInterface
     {
-        DataVaultEntity _entity = null;
+        DataVaultDatabaseManager _databaseManager = null;
 
         public DataVaultInterface()
         {
-            _entity = new DataVaultEntity();
+            _databaseManager = new DataVaultDatabaseManager();
         }
 
-        public bool AddPersonalInfo()
+        public List<PersonalInfo> GetBriefPersonalInfoList()
         {
+            List<PersonalInfo> personalInfos = new List<PersonalInfo>();
+
+            _databaseManager.PartiallyReloadPersonalInfos(personalInfos);
+
+            return personalInfos;
+        }
+
+        public bool AddPersonalInfo(PersonalInfo personalInfo)
+        {
+            _databaseManager.SavePersonalInfo(personalInfo);
+
             return true;
         }
 
@@ -31,16 +44,6 @@ namespace DataVaultCommon
         }
 
         public bool VerifyAppPassword()
-        {
-            return true;
-        }
-
-        bool DecryptEntity()
-        {
-            return true;
-        }
-
-        bool EncryptEntity()
         {
             return true;
         }
