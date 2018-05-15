@@ -1,0 +1,16 @@
+﻿<Window x:Class="DataVaultWindows.WarningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataVaultWindows"
+        mc:Ignorable="d"
+        Title="WarningWindow" Height="300" Width="400">
+    <Grid Background="#FFE08888">
+        <Button x:Name="Cancel_Button" Content="Cancel" HorizontalAlignment="Left" Margin="269,170,0,0" VerticalAlignment="Top" Width="87" Height="38" FontSize="14"/>
+        <Button x:Name="Dont_Save_Button" Content="Don't Save" HorizontalAlignment="Left" Margin="147,170,0,0" VerticalAlignment="Top" Width="87" Height="38" FontSize="14"/>
+        <Image Margin="29,71,287,123" Source="Warning.png" Stretch="Fill" RenderTransformOrigin="0.277,0.859"/>
+        <Button x:Name="Save_Button" Content="Save" HorizontalAlignment="Left" Margin="29,170,0,0" VerticalAlignment="Top" Width="87" Height="38" FontSize="14"/>
+        <Label Content="Would you like to save before &#xD;&#xA;Exiting?" HorizontalAlignment="Left" Margin="110,71,0,0" VerticalAlignment="Top" Height="77" Width="228" FontSize="16"/>
+    </Grid>
+</Window>

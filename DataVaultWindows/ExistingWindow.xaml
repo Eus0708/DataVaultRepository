@@ -1,0 +1,24 @@
+﻿<Window x:Class="DataVaultWindows.ExistingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataVaultWindows"
+        mc:Ignorable="d"
+        Title="ExistingWindow" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="Data_Grid" HorizontalAlignment="Left" Height="319" Margin="32,74,0,0" VerticalAlignment="Top" Width="732"/>
+        <Button x:Name="Home_Button" Content="Home" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="Home_Button_Click"/>
+        <Label Content="Search :" HorizontalAlignment="Left" Margin="381,28,0,0" VerticalAlignment="Top" Height="33" Width="60" FontSize="14" RenderTransformOrigin="0.7,0.545"/>
+        <TextBox x:Name="Text_Box_Search" HorizontalAlignment="Left" Height="19" Margin="441,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Text="aaa"/>
+        <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="586,8,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="586,34,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="Date of Birth" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="SSN" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="First Name" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Last Name" HorizontalAlignment="Left" Width="118"/>
+            <ComboBoxItem Content="Phone Number" HorizontalAlignment="Left" Width="118"/>
+        </ComboBox>
+
+    </Grid>
+</Window>
