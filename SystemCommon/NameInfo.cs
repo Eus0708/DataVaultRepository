@@ -32,6 +32,16 @@ namespace SystemCommon
             set { _lastName = value; }
         }
 
+        public string FullName
+        {
+            get { return _firstName + " " + _middleName + " " + _lastName; }
+        }
+
+        public string FullNameWithoutMiddle
+        {
+            get { return _firstName + " " + _lastName; }
+        }
+
         public NameInfo()
         {
         }

@@ -20,7 +20,7 @@ namespace DataVaultTest
         {
             Test4();
             Seperator();
-            Test15();
+            Test16();
 
             db.CloseConnection();
             Console.Read();
@@ -30,6 +30,15 @@ namespace DataVaultTest
         static void Seperator()
         {
             Console.WriteLine("********************* Seperator **********************");
+        }
+
+        static void Test16()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            List<PersonalInfo> infos;
+            i.SearchBriefPersonalInfoListWithName(out infos, "first last");
+            PrintList(infos);
         }
 
         static void Test15()
