@@ -156,5 +156,11 @@
   <ItemGroup>
     <Resource Include="Warning.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataVaultCommon\DataVaultCommon.csproj">
+      <Project>{f05cd74d-c27e-4cd7-8a01-88dbfcb0cafd}</Project>
+      <Name>DataVaultCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
