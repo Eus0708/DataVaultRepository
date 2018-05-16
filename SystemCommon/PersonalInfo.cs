@@ -258,6 +258,11 @@ namespace SystemCommon
         /// <returns></returns>
         string PrintList<T>(List<T> list)
         {
+            if (list == null)
+            {
+                return String.Empty;
+            }
+
             StringBuilder strBuilder = new StringBuilder();
             int i = 0;
             foreach (object obj in list)

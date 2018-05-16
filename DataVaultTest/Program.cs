@@ -13,18 +13,32 @@ namespace DataVaultTest
 {
     class Program
     {
-        static DataVaultDatabaseManager db = new DataVaultDatabaseManager("","");
+        static DataVaultDatabaseManager db = new DataVaultDatabaseManager("", "");
         static string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
 
         static void Main(string[] args)
         {
             Test4();
-            Test14();
-            Test4();
+            Seperator();
+            Test15();
 
             db.CloseConnection();
             Console.Read();
             //Console.WriteLine("Done DataVault Test");
+        }
+
+        static void Seperator()
+        {
+            Console.WriteLine("********************* Seperator **********************");
+        }
+
+        static void Test15()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            List<PersonalInfo> infos;
+            i.GetBriefPersonalInfoList(out infos);
+            PrintList(infos);
         }
 
         // Delete all attachment with same id
@@ -228,6 +242,11 @@ namespace DataVaultTest
 
         static void PrintList<T>(List<T> list)
         {
+            if (list == null)
+            {
+                return;
+            }
+
             int i = 0;
             foreach(object obj in list)
             {

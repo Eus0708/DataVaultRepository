@@ -13,30 +13,50 @@ namespace DataVaultCommon
         DataVaultDatabaseManager _databaseManager = null;
         bool _hasAccess = false;
 
+        public bool HasAccess
+        {
+            get { return _hasAccess; }
+        }
+
         public DataVaultInterface()
         {
         }
 
-        public List<PersonalInfo> GetBriefPersonalInfoList()
+        public StatusCode GetBriefPersonalInfoList(out List<PersonalInfo> personalInfos)
         {
-            List<PersonalInfo> personalInfos = new List<PersonalInfo>();
+            // Set to null first
+            personalInfos = null;
+
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
 
             if (_databaseManager != null)
             {
+                personalInfos = new List<PersonalInfo>();
                 _databaseManager.PartiallyReloadPersonalInfos(personalInfos);
+                return StatusCode.NO_ERROR;
             }
 
-            return personalInfos;
+            return StatusCode.UNKNOWN_ERROR;
         }
 
-        public bool AddPersonalInfo(PersonalInfo personalInfo)
+        public StatusCode AddPersonalInfo(PersonalInfo personalInfo)
         {
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
             if (_databaseManager != null)
             {
                 _databaseManager.SavePersonalInfo(personalInfo);
+                return StatusCode.NO_ERROR;
             }
 
-            return true;
+            return StatusCode.UNKNOWN_ERROR;
         }
 
         public bool RemovePersonalInfo()
