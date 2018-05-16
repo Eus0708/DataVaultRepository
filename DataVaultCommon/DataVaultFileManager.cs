@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataVaultCommon
 {
-    public class DataVaultFileManager
+    internal class DataVaultFileManager
     {
     }
 }

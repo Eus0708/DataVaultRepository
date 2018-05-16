@@ -10,7 +10,7 @@ namespace SystemCommon
     {
         NO_ERROR = -1,
         UNKNOWN_ERROR = 0,
-        
+        INCORRECT_PASSWORD = 1,
     }
 
     public class ErrorHandler
@@ -21,6 +21,7 @@ namespace SystemCommon
             {
                 case StatusCode.NO_ERROR: return "No error";
                 case StatusCode.UNKNOWN_ERROR: return "Unknown error";
+                case StatusCode.INCORRECT_PASSWORD: return "Incorred password";
 
 
                 default: return "Invalid code";

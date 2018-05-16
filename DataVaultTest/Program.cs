@@ -13,7 +13,7 @@ namespace DataVaultTest
 {
     class Program
     {
-        static DataVaultDatabaseManager db = new DataVaultDatabaseManager();
+        static DataVaultDatabaseManager db = new DataVaultDatabaseManager("","");
         static string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
 
         static void Main(string[] args)
@@ -201,11 +201,12 @@ namespace DataVaultTest
             AddressInfo addr = new AddressInfo("747 Sumner Ave", "Apt 1", "Syracuse", "NY", "13210");
             PhoneNumberInfo phone = new PhoneNumberInfo("123", "7891234");
             SSNNumberInfo ssn = new SSNNumberInfo("0192938475");
+            string gender = "Male";
             DateTime dob = DateTime.Now;
             DateTime dateCreated = DateTime.Now;
             DateTime dateModified = DateTime.Now;
 
-            PersonalInfo personalInfo = new PersonalInfo(-1, name, addr, phone, ssn, dob, dateCreated, dateModified);
+            PersonalInfo personalInfo = new PersonalInfo(-1, name, addr, phone, ssn, gender, dob, dateCreated, dateModified);
             personalInfo.AddAttachment(new AttachmentInfo(-1, "Image", @"CurrentPath\", "Image.jpg"));
 
             Console.WriteLine(personalInfo);

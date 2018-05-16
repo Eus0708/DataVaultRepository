@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataVaultDatabaseManager.cs" />
+    <Compile Include="DataVaultDefines.cs" />
     <Compile Include="DataVaultEntity.cs" />
     <Compile Include="DataVaultFileManager.cs" />
     <Compile Include="DataVaultInterface.cs" />

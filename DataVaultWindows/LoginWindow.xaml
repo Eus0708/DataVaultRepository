@@ -17,7 +17,7 @@
         <Button x:Name="Login_Button" Content="Login" HorizontalAlignment="Left" Margin="351,229,0,0" VerticalAlignment="Top" Width="90" Height="43" Click="Login_Button_Click" FontSize="18" Background="#FFFF9696" BorderBrush="#FFBD3D3D"/>
         <Label Content="Key" HorizontalAlignment="Left" Margin="372,104,0,0" VerticalAlignment="Top" Height="44" Width="48" FontSize="20"/>
         <Label Content="DataVault" HorizontalAlignment="Left" Margin="116,36,0,0" VerticalAlignment="Top" Height="36" Width="92" FontFamily="Segoe UI Semilight" FontSize="18" FontWeight="Bold"/>
-        <Image Margin="10,104,482,59" Source="1234.png" Stretch="Fill"/>
+        <Image Margin="10,104,482,59" Source="DataVaultWindows/Resources/1234.png" Stretch="Fill"/>
 
     </Grid>
 </Window>

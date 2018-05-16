@@ -7,32 +7,65 @@ using System.Data;
 using System.Data.SqlClient;
 
 using SystemCommon;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("DataVaultTest")]
 
 namespace DataVaultCommon
 {
-    public class DataVaultDatabaseManager
+    internal class DataVaultDatabaseManager : IDisposable
     {
-        static string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
+        string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
         SqlConnection _connection = null;
+        string _dbUsername = null;
+        string _dbPassword = null;
 
-        public DataVaultDatabaseManager()
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        public DataVaultDatabaseManager(
+            string username,
+            string password)
         {
+            _dbUsername = username;
+            _dbPassword = password;
+
             OpenConnection();
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            // Close db connection
+            CloseConnection();
+        }
+
+        /// <summary>
+        /// Open connection
+        /// </summary>
         public void OpenConnection()
         {
             if (_connection == null)
             {
                 _connection = new SqlConnection();
+
+                //TODO combine connection string with username and password
+
                 _connection.ConnectionString = _connectionStr;
                 _connection.Open();
             }
         }
 
+        /// <summary>
+        /// Close connection
+        /// </summary>
         public void CloseConnection()
         {
-            if (_connection!= null)
+            if (_connection != null)
             {
                 _connection.Close();
                 _connection = null;
@@ -43,7 +76,11 @@ namespace DataVaultCommon
         // Read from database
         ////////////////////////////////////////////////////////////////////
 
-        // Debug purpose
+        /// <summary>
+        /// Get all data from database
+        /// Debug use only
+        /// </summary>
+        /// <param name="personalInfos"></param>
         public void Debug_FullyReloadPersonalInfos(List<PersonalInfo> personalInfos)
         {
             string queryString = "FullyLoadPersonalInfos";
@@ -85,6 +122,7 @@ namespace DataVaultCommon
                     person.SSN.SSNNumber = SafeGetString(reader, 12);
                     person.DateCreated = reader.GetDateTime(13);
                     person.DateModified = reader.GetDateTime(14);
+                    person.Gender = SafeGetString(reader, 15);
 
                     // Add to result list
                     personalInfos.Add(person);
@@ -103,6 +141,10 @@ namespace DataVaultCommon
             }
         }
 
+        /// <summary>
+        /// Load main personal info list
+        /// </summary>
+        /// <param name="personalInfos"></param>
         public void PartiallyReloadPersonalInfos(List<PersonalInfo> personalInfos)
         {
             string queryString = "PartiallyLoadPersonalInfos";
@@ -150,6 +192,11 @@ namespace DataVaultCommon
             }
         }
 
+        /// <summary>
+        /// Get info for a person
+        /// </summary>
+        /// <param name="personalInfo"></param>
+        /// <param name="personalInfoId"></param>
         public void ReloadPersonalInfo(PersonalInfo personalInfo, int personalInfoId)
         {
             string queryString = "LoadPersonalInfoByPersonId";
@@ -185,6 +232,7 @@ namespace DataVaultCommon
                     personalInfo.SSN.SSNNumber = SafeGetString(reader, 12);
                     personalInfo.DateCreated = reader.GetDateTime(13);
                     personalInfo.DateModified = reader.GetDateTime(14);
+                    personalInfo.Gender = SafeGetString(reader, 15);
                 }
             }
             finally
@@ -197,6 +245,11 @@ namespace DataVaultCommon
             ReloadAttachments(personalInfo.Attachments, personalInfoId);
         }
 
+        /// <summary>
+        /// Load all attachment from a person
+        /// </summary>
+        /// <param name="attachments"></param>
+        /// <param name="personalInfoId"></param>
         public void ReloadAttachments(List<AttachmentInfo> attachments, int personalInfoId)
         {
             string queryString = "LoadAttachmentsByPersonId";
@@ -239,6 +292,10 @@ namespace DataVaultCommon
             }
         }
 
+        /// <summary>
+        /// Load all states
+        /// </summary>
+        /// <param name="states"></param>
         public void ReloadStates(List<StateInfo> states)
         {
             string queryString = "LoadStates";
@@ -276,6 +333,12 @@ namespace DataVaultCommon
             }
         }
 
+        /// <summary>
+        /// Get string from db data type safely
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="colIndex"></param>
+        /// <returns></returns>
         public string SafeGetString(SqlDataReader reader, int colIndex)
         {
             if (!reader.IsDBNull(colIndex))
@@ -287,6 +350,10 @@ namespace DataVaultCommon
         // Write to database
         ////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// Save a personal info for a person
+        /// </summary>
+        /// <param name="personalInfo"></param>
         public void SavePersonalInfo(PersonalInfo personalInfo)
         {
             // Update personal info table
@@ -313,6 +380,10 @@ namespace DataVaultCommon
             }
         }
 
+        /// <summary>
+        /// Insert a person
+        /// </summary>
+        /// <param name="personalInfo"></param>
         public void AddPersonalInfo(PersonalInfo personalInfo)
         {
             string queryString = "InsertPersonalInfo";
@@ -337,6 +408,7 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@AreaCode", personalInfo.PhoneNumber.AreaCode);
             command.Parameters.AddWithValue("@PhoneNumber", personalInfo.PhoneNumber.PhoneNumber);
             command.Parameters.AddWithValue("@SSN", personalInfo.SSN.SSNNumber);
+            command.Parameters.AddWithValue("@Gender", personalInfo.Gender);
             command.Parameters.AddWithValue("@DateOfBirth", personalInfo.DateOfBirth);
             command.Parameters.AddWithValue("@DateCreated", DateTime.Now);
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
@@ -344,6 +416,10 @@ namespace DataVaultCommon
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Update a pserson
+        /// </summary>
+        /// <param name="personalInfo"></param>
         public void UpdatePersonalInfo(PersonalInfo personalInfo)
         {
             string queryString = "UpdatePersonalInfo";
@@ -369,12 +445,17 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@AreaCode", personalInfo.PhoneNumber.AreaCode);
             command.Parameters.AddWithValue("@PhoneNumber", personalInfo.PhoneNumber.PhoneNumber);
             command.Parameters.AddWithValue("@SSN", personalInfo.SSN.SSNNumber);
+            command.Parameters.AddWithValue("@Gender", personalInfo.Gender);
             command.Parameters.AddWithValue("@DateOfBirth", personalInfo.DateOfBirth);
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Delete a person
+        /// </summary>
+        /// <param name="personalInfo"></param>
         public void DeletePersonalInfo(PersonalInfo personalInfo)
         {
             string queryString = "DeletePersonalInfoByPersonId";
@@ -393,6 +474,11 @@ namespace DataVaultCommon
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Save an attachment
+        /// </summary>
+        /// <param name="personalInfoId"></param>
+        /// <param name="attachment"></param>
         public void SaveAttachmentInfo(int personalInfoId, AttachmentInfo attachment)
         {
             // Update attachment table
@@ -413,6 +499,11 @@ namespace DataVaultCommon
             }
         }
 
+        /// <summary>
+        /// Add an attachment
+        /// </summary>
+        /// <param name="personalInfoId"></param>
+        /// <param name="attachment"></param>
         public void AddAttachment(int personalInfoId, AttachmentInfo attachment)
         {
             string queryString = "InsertAttachment";
@@ -434,6 +525,11 @@ namespace DataVaultCommon
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Update an attachment
+        /// </summary>
+        /// <param name="personalInfoId"></param>
+        /// <param name="attachment"></param>
         public void UpdateAttachment(int personalInfoId, AttachmentInfo attachment)
         {
             string queryString = "UpdateAttachment";
@@ -456,6 +552,11 @@ namespace DataVaultCommon
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Delete an attachment
+        /// </summary>
+        /// <param name="personalInfoId"></param>
+        /// <param name="attachment"></param>
         public void DeleteAttachment(int personalInfoId, AttachmentInfo attachment)
         {
             string queryString = "DeleteAttachmentByAttachmentId";
@@ -475,6 +576,10 @@ namespace DataVaultCommon
             command.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Delete all attachments
+        /// </summary>
+        /// <param name="personalInfoId"></param>
         public void DeleteAttachments(int personalInfoId)
         {
             string queryString = "DeleteAttachmentsByPersonalInfoId";

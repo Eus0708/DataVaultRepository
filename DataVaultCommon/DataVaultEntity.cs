@@ -11,7 +11,7 @@ namespace DataVaultCommon
 {
 
     [Serializable]
-    public class DataVaultEntity : ISerializable
+    internal class DataVaultEntity : ISerializable
     {
         string _hashedAppPassword = null;
         List<PersonalInfo> _personalInfos = null;

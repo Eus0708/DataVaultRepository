@@ -16,6 +16,7 @@ namespace SystemCommon
         PhoneNumberInfo _phoneNumber = null;
         AddressInfo _address = null;
         SSNNumberInfo _ssn = null;
+        string _gender = null;
         DateTime _dateOfBirth = new DateTime();
         DateTime _dateCreated = new DateTime();
         DateTime _dateModified = new DateTime();
@@ -57,6 +58,12 @@ namespace SystemCommon
             set { _ssn = value; }
         }
 
+        public string Gender
+        {
+            get { return _gender; }
+            set { _gender = value; }
+        }
+
         public DateTime DateOfBirth
         {
             get { return _dateOfBirth; }
@@ -81,6 +88,9 @@ namespace SystemCommon
             set { _attachments = value; }
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public PersonalInfo()
         {
             _name = new NameInfo();
@@ -90,12 +100,25 @@ namespace SystemCommon
             _attachments = new List<AttachmentInfo>();
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="address"></param>
+        /// <param name="phone"></param>
+        /// <param name="ssn"></param>
+        /// <param name="gender"></param>
+        /// <param name="dob"></param>
+        /// <param name="created"></param>
+        /// <param name="modified"></param>
         public PersonalInfo(
             int id,
             NameInfo name,
             AddressInfo address,
             PhoneNumberInfo phone,
             SSNNumberInfo ssn,
+            string gender,
             DateTime dob,
             DateTime created,
             DateTime modified)
@@ -105,18 +128,33 @@ namespace SystemCommon
             _address = address;
             _phoneNumber = phone;
             _ssn = ssn;
+            _gender = gender;
             _dateOfBirth = dob;
             _dateCreated = created;
             _dateModified = modified;
             _attachments = new List<AttachmentInfo>();
         }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="address"></param>
+        /// <param name="phone"></param>
+        /// <param name="ssn"></param>
+        /// <param name="gender"></param>
+        /// <param name="dob"></param>
+        /// <param name="created"></param>
+        /// <param name="modified"></param>
+        /// <param name="attachments"></param>
         public PersonalInfo(
             int id,
             NameInfo name,
             AddressInfo address,
             PhoneNumberInfo phone,
             SSNNumberInfo ssn,
+            string gender,
             DateTime dob,
             DateTime created,
             DateTime modified,
@@ -127,13 +165,18 @@ namespace SystemCommon
             _address = address;
             _phoneNumber = phone;
             _ssn = ssn;
+            _gender = gender;
             _dateOfBirth = dob;
             _dateCreated = created;
             _dateModified = modified;
             _attachments = attachments;
         }
 
-        // Deserialize
+        /// <summary>
+        /// Constructor (Deserialize)
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public PersonalInfo(SerializationInfo info, StreamingContext context)
         {
             _id = (int)info.GetValue("id", typeof(int));
@@ -141,12 +184,20 @@ namespace SystemCommon
             _phoneNumber = (PhoneNumberInfo)info.GetValue("ph", typeof(PhoneNumberInfo));
             _address = (AddressInfo)info.GetValue("ad", typeof(AddressInfo));
             _ssn = (SSNNumberInfo)info.GetValue("ss", typeof(SSNNumberInfo));
+            _gender = (string)info.GetValue("ge", typeof(string));
             _dateOfBirth = (DateTime)info.GetValue("da", typeof(DateTime));
             _dateCreated = (DateTime)info.GetValue("dc", typeof(DateTime));
             _dateModified = (DateTime)info.GetValue("dm", typeof(DateTime));
             _attachments = TryGetValue<List<AttachmentInfo>>(info, "at");
         }
 
+        /// <summary>
+        /// Safely get value from serialization info
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="info"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         T TryGetValue<T>(SerializationInfo info, string name)
         {
             try
@@ -159,7 +210,11 @@ namespace SystemCommon
             }
         }
 
-        // Serialize
+        /// <summary>
+        /// Serialize
+        /// </summary>
+        /// <param name="info"></param>
+        /// <param name="context"></param>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("id", _id, typeof(int));
@@ -167,6 +222,7 @@ namespace SystemCommon
             info.AddValue("ph", _phoneNumber, typeof(PhoneNumberInfo));
             info.AddValue("ad", _address, typeof(AddressInfo));
             info.AddValue("ss", _ssn, typeof(SSNNumberInfo));
+            info.AddValue("ge", _gender, typeof(string));
             info.AddValue("da", _dateOfBirth, typeof(DateTime));
             info.AddValue("dc", _dateCreated, typeof(DateTime));
             info.AddValue("dm", _dateModified, typeof(DateTime));
@@ -176,6 +232,10 @@ namespace SystemCommon
             }
         }
 
+        /// <summary>
+        /// ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return "Id: " + Id + "\n" +
@@ -183,12 +243,19 @@ namespace SystemCommon
                  "Phone: " + PhoneNumber+ "\n" +
                  "Address: " + Address + "\n" +
                  "SSN: " + SSN + "\n" +
+                 "Gender: " + Gender + "\n" +
                  "Date of Birth: " + DateOfBirth + "\n" +
                  "Date Created: " + DateCreated + "\n" +
                  "Date Modified: " + DateModified + "\n" +
                  "Attachments: \n" + PrintList(Attachments);
         }
 
+        /// <summary>
+        /// Print list
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
         string PrintList<T>(List<T> list)
         {
             StringBuilder strBuilder = new StringBuilder();
@@ -199,7 +266,7 @@ namespace SystemCommon
             }
             return strBuilder.ToString();
         }
-
+        
         public void AddAttachment(AttachmentInfo attachment)
         {
             // If a client does not have any attachments,
