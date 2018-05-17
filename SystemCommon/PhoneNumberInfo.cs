@@ -25,6 +25,11 @@ namespace SystemCommon
             set { _phoneNumber = value; }
         }
 
+        public string FullPhoneNumber
+        {
+            get { return _areaCode + _phoneNumber; }
+        }
+
         public PhoneNumberInfo()
         {
         }

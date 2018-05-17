@@ -8,10 +8,11 @@ namespace SystemCommon
 {
     public enum StatusCode
     {
-        NO_ERROR = -1,
-        UNKNOWN_ERROR = 0,
-        INCORRECT_PASSWORD = 1,
-        NOT_ALLOW_TO_ACCESS = 2,
+        NO_ERROR,
+        UNKNOWN_ERROR,
+        INVALID_PASSWORD,
+        NOT_ALLOW_TO_ACCESS,
+        INVALID_SEARCH_OPT,
     }
 
     public class ErrorHandler
@@ -22,11 +23,11 @@ namespace SystemCommon
             {
                 case StatusCode.NO_ERROR: return "No error";
                 case StatusCode.UNKNOWN_ERROR: return "Unknown error";
-                case StatusCode.INCORRECT_PASSWORD: return "Incorred password";
+                case StatusCode.INVALID_PASSWORD: return "Invalid password";
                 case StatusCode.NOT_ALLOW_TO_ACCESS: return "Not allow to access";
+                case StatusCode.INVALID_SEARCH_OPT: return "Invalid search option";
 
-
-                default: return "Invalid code";
+                default: return "Invalid status code";
             }
         }
     }

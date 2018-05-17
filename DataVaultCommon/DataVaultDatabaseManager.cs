@@ -111,7 +111,7 @@ namespace DataVaultCommon
                     person.Name.FirstName = SafeGetString(reader, 1);
                     person.Name.MiddleName = SafeGetString(reader, 2);
                     person.Name.LastName = SafeGetString(reader, 3);
-                    person.DateOfBirth = reader.GetDateTime(4);
+                    person.DateOfBirth = SafeGetDateTime(reader, 4);
                     person.Address.Address1 = SafeGetString(reader, 5);
                     person.Address.Address2 = SafeGetString(reader, 6);
                     person.Address.City = SafeGetString(reader, 7);
@@ -120,8 +120,8 @@ namespace DataVaultCommon
                     person.PhoneNumber.AreaCode = SafeGetString(reader, 10);
                     person.PhoneNumber.PhoneNumber = SafeGetString(reader, 11);
                     person.SSN.SSNNumber = SafeGetString(reader, 12);
-                    person.DateCreated = reader.GetDateTime(13);
-                    person.DateModified = reader.GetDateTime(14);
+                    person.DateCreated = SafeGetDateTime(reader, 13);
+                    person.DateModified = SafeGetDateTime(reader, 14);
                     person.Gender = SafeGetString(reader, 15);
 
                     // Add to result list
@@ -175,11 +175,13 @@ namespace DataVaultCommon
                     person.Name.FirstName = SafeGetString(reader, 1);
                     person.Name.MiddleName = SafeGetString(reader, 2);
                     person.Name.LastName = SafeGetString(reader, 3);
-                    person.DateOfBirth = reader.GetDateTime(4);
+                    person.DateOfBirth = SafeGetDateTime(reader, 4);
                     person.PhoneNumber.AreaCode = SafeGetString(reader, 5);
                     person.PhoneNumber.PhoneNumber = SafeGetString(reader, 6);
-                    person.DateCreated = reader.GetDateTime(7);
-                    person.DateModified = reader.GetDateTime(8);
+                    person.DateCreated = SafeGetDateTime(reader, 7);
+                    person.DateModified = SafeGetDateTime(reader, 8);
+                    person.SSN.SSNNumber = SafeGetString(reader, 9);
+                    person.Gender = SafeGetString(reader, 10);
 
                     // Add to result list
                     personalInfos.Add(person);
@@ -221,7 +223,7 @@ namespace DataVaultCommon
                     personalInfo.Name.FirstName = SafeGetString(reader, 1);
                     personalInfo.Name.MiddleName = SafeGetString(reader, 2);
                     personalInfo.Name.LastName = SafeGetString(reader, 3);
-                    personalInfo.DateOfBirth = reader.GetDateTime(4);
+                    personalInfo.DateOfBirth = SafeGetDateTime(reader, 4);
                     personalInfo.Address.Address1 = SafeGetString(reader, 5);
                     personalInfo.Address.Address2 = SafeGetString(reader, 6);
                     personalInfo.Address.City = SafeGetString(reader, 7);
@@ -230,8 +232,8 @@ namespace DataVaultCommon
                     personalInfo.PhoneNumber.AreaCode = SafeGetString(reader, 10);
                     personalInfo.PhoneNumber.PhoneNumber = SafeGetString(reader, 11);
                     personalInfo.SSN.SSNNumber = SafeGetString(reader, 12);
-                    personalInfo.DateCreated = reader.GetDateTime(13);
-                    personalInfo.DateModified = reader.GetDateTime(14);
+                    personalInfo.DateCreated = SafeGetDateTime(reader, 13);
+                    personalInfo.DateModified = SafeGetDateTime(reader, 14);
                     personalInfo.Gender = SafeGetString(reader, 15);
                 }
             }
@@ -344,6 +346,19 @@ namespace DataVaultCommon
             if (!reader.IsDBNull(colIndex))
                 return reader.GetString(colIndex);
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Get dateTime from db data type safely
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="colIndex"></param>
+        /// <returns></returns>
+        public DateTime? SafeGetDateTime(SqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetDateTime(colIndex);
+            return null;
         }
 
         ////////////////////////////////////////////////////////////////////

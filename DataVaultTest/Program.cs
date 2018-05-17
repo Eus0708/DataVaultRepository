@@ -20,11 +20,102 @@ namespace DataVaultTest
         {
             Test4();
             Seperator();
-            Test16();
+            Test23();
+            Seperator();
+            Test4();
 
             db.CloseConnection();
             Console.Read();
             //Console.WriteLine("Done DataVault Test");
+        }
+
+        // Delete a person
+        static void Test23()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            PersonalInfo p;
+            i.GetPersonalInfo(out p, 0);
+            Console.WriteLine(p);
+            Seperator();
+            p.Name.FirstName = "TestF";
+            p.Name.MiddleName = "TestM";
+            p.Name.LastName = "TestL";
+            p.ToBeDelete = true;
+            Console.WriteLine(p);
+            Seperator();
+            i.ModifyPersonalInfo(p);
+        }
+
+        // Modify a person
+        static void Test22()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            PersonalInfo p;
+            i.GetPersonalInfo(out p, 0);
+            Console.WriteLine(p);
+            Seperator();
+            p.Name.FirstName = "TestF";
+            p.Name.MiddleName = "TestM";
+            p.Name.LastName = "TestL";
+            Console.WriteLine(p);
+            Seperator();
+            i.ModifyPersonalInfo(p);
+        }
+
+        // Add a person
+        static void Test21()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            PersonalInfo p = new PersonalInfo();
+            p.Name.FirstName = "TestF";
+            p.Name.MiddleName = "TestM";
+            p.Name.LastName = "TestL";
+            i.ModifyPersonalInfo(p);
+        }
+
+        // Search for all kind
+        static void Test20()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            List<PersonalInfo> infos;
+            i.SearchBriefPersonalInfoList(out infos, "first la", DataVaultInterface.SearchOptionsEnum.Name);
+            PrintList(infos);
+            Seperator();
+            i.SearchBriefPersonalInfoList(out infos, "23", DataVaultInterface.SearchOptionsEnum.Phone);
+            PrintList(infos);
+            Seperator();
+            i.SearchBriefPersonalInfoList(out infos, "000", DataVaultInterface.SearchOptionsEnum.SSN);
+            PrintList(infos);
+        }
+
+        static void Test19()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            List<PersonalInfo> infos;
+            i.SearchBriefPersonalInfoListWithSSN(out infos, "000");
+            PrintList(infos);
+        }
+
+        static void Test18()
+        {
+            DataVaultInterface i = new DataVaultInterface();
+            i.Login("123");
+            List<PersonalInfo> infos;
+            i.SearchBriefPersonalInfoListWithPhone(out infos, "723");
+            PrintList(infos);
+        }
+
+        static void Test17()
+        {
+            PersonalInfo p = new PersonalInfo();
+            p.PhoneNumber.AreaCode = "123";
+            p.PhoneNumber.PhoneNumber = "4445555";
+            Console.WriteLine(p.PhoneNumber.FullPhoneNumber);
         }
 
         static void Seperator()
@@ -49,6 +140,10 @@ namespace DataVaultTest
             i.GetBriefPersonalInfoList(out infos);
             PrintList(infos);
         }
+
+        // Interface testing begin
+
+        // Database manager testing end
 
         // Delete all attachment with same id
         static void Test14()
@@ -217,6 +312,8 @@ namespace DataVaultTest
             db.ReloadStates(states);
             PrintList(states);
         }
+
+        // Database testing begin
 
         static void Test1()
         {

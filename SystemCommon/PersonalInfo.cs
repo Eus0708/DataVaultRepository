@@ -17,9 +17,9 @@ namespace SystemCommon
         AddressInfo _address = null;
         SSNNumberInfo _ssn = null;
         string _gender = null;
-        DateTime _dateOfBirth = new DateTime();
-        DateTime _dateCreated = new DateTime();
-        DateTime _dateModified = new DateTime();
+        DateTime? _dateOfBirth = null;
+        DateTime? _dateCreated = null;
+        DateTime? _dateModified = null;
         List<AttachmentInfo> _attachments = null;
 
         public int Id
@@ -64,19 +64,19 @@ namespace SystemCommon
             set { _gender = value; }
         }
 
-        public DateTime DateOfBirth
+        public DateTime? DateOfBirth
         {
             get { return _dateOfBirth; }
             set { _dateOfBirth = value; }
         }
 
-        public DateTime DateCreated
+        public DateTime? DateCreated
         {
             get { return _dateCreated; }
             set { _dateCreated = value; }
         }
 
-        public DateTime DateModified
+        public DateTime? DateModified
         {
             get { return _dateModified; }
             set { _dateModified = value; }
@@ -247,7 +247,8 @@ namespace SystemCommon
                  "Date of Birth: " + DateOfBirth + "\n" +
                  "Date Created: " + DateCreated + "\n" +
                  "Date Modified: " + DateModified + "\n" +
-                 "Attachments: \n" + PrintList(Attachments);
+                 "Attachments: \n" + PrintList(Attachments) +
+                 (_toBeDelete ? "\n***ToBeDelete" : "");
         }
 
         /// <summary>

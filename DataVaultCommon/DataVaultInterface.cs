@@ -13,6 +13,19 @@ namespace DataVaultCommon
         DataVaultDatabaseManager _databaseManager = null;
         bool _hasAccess = false;
 
+        // Search options
+        public enum SearchOptionsEnum
+        {
+            Name = 0,
+            Phone = 1,
+            SSN = 2,
+        }
+        public static string[] SearchOptions = {
+            "Name",
+            "Phone",
+            "SSN"
+        };
+
         public bool HasAccess
         {
             get { return _hasAccess; }
@@ -85,24 +98,128 @@ namespace DataVaultCommon
             return StatusCode.NO_ERROR;
         }
 
+        /// <summary>
+        /// Search list with phone
+        /// </summary>
+        /// <param name="personalInfos"></param>
+        /// <param name="phone"></param>
+        /// <returns></returns>
         public StatusCode SearchBriefPersonalInfoListWithPhone(
             out List<PersonalInfo> personalInfos,
             string phone)
         {
-            personalInfos = null;
-            return StatusCode.UNKNOWN_ERROR;
+            StatusCode status = GetBriefPersonalInfoList(out personalInfos);
+
+            if (status != StatusCode.NO_ERROR)
+            {
+                return status;
+            }
+
+            // Find all personal infos that contains the input
+            personalInfos = personalInfos.FindAll(
+                delegate (PersonalInfo p)
+                {
+                    if (Contains(p.PhoneNumber.FullPhoneNumber, phone, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+                );
+
+            return StatusCode.NO_ERROR;
         }
 
+        /// <summary>
+        /// Search list with ssn
+        /// </summary>
+        /// <param name="personalInfos"></param>
+        /// <param name="ssn"></param>
+        /// <returns></returns>
         public StatusCode SearchBriefPersonalInfoListWithSSN(
             out List<PersonalInfo> personalInfos,
             string ssn)
         {
+            StatusCode status = GetBriefPersonalInfoList(out personalInfos);
 
-            personalInfos = null;
+            if (status != StatusCode.NO_ERROR)
+            {
+                return status;
+            }
+
+            // Find all personal infos that contains the input
+            personalInfos = personalInfos.FindAll(
+                delegate (PersonalInfo p)
+                {
+                    if (Contains(p.SSN.SSNNumber, ssn, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return true;
+                    }
+
+                    return false;
+                }
+                );
+
+            return StatusCode.NO_ERROR;
+        }
+
+        /// <summary>
+        /// Search list
+        /// </summary>
+        /// <param name="personalInfos"></param>
+        /// <param name="str"></param>
+        /// <param name="searchOpt"></param>
+        /// <returns></returns>
+        public StatusCode SearchBriefPersonalInfoList(
+            out List<PersonalInfo> personalInfos,
+            string str,
+            SearchOptionsEnum searchOpt)
+        {
+            switch(searchOpt)
+            {
+                case SearchOptionsEnum.Name:
+                    return SearchBriefPersonalInfoListWithName(out personalInfos, str);
+                case SearchOptionsEnum.Phone:
+                    return SearchBriefPersonalInfoListWithPhone(out personalInfos, str);
+                case SearchOptionsEnum.SSN:
+                    return SearchBriefPersonalInfoListWithSSN(out personalInfos, str);
+                default:
+                    personalInfos = null;
+                    return StatusCode.INVALID_SEARCH_OPT;
+            }
+        }
+
+        /// <summary>
+        /// Get personal info
+        /// </summary>
+        /// <param name="personalInfo"></param>
+        /// <param name="personalInfoId"></param>
+        /// <returns></returns>
+        public StatusCode GetPersonalInfo(out PersonalInfo personalInfo, int personalInfoId)
+        {
+            personalInfo = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                personalInfo = new PersonalInfo();
+                _databaseManager.ReloadPersonalInfo(personalInfo, personalInfoId);
+                return StatusCode.NO_ERROR;
+            }
+
             return StatusCode.UNKNOWN_ERROR;
         }
 
-        public StatusCode AddPersonalInfo(PersonalInfo personalInfo)
+        /// <summary>
+        /// Add, Update and Delete a personal info
+        /// </summary>
+        /// <param name="personalInfo"></param>
+        /// <returns></returns>
+        public StatusCode ModifyPersonalInfo(PersonalInfo personalInfo)
         {
             if (!HasAccess)
             {
@@ -116,11 +233,6 @@ namespace DataVaultCommon
             }
 
             return StatusCode.UNKNOWN_ERROR;
-        }
-
-        public bool RemovePersonalInfo()
-        {
-            return true;
         }
 
         /// <summary>
@@ -160,7 +272,7 @@ namespace DataVaultCommon
                 return StatusCode.NO_ERROR;
             }
 
-            return StatusCode.INCORRECT_PASSWORD;
+            return StatusCode.INVALID_PASSWORD;
         }
 
         /// <summary>

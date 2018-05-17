@@ -85,7 +85,7 @@ namespace SystemCommon
             return "[" + _id +"] " +
                 _type + " " + 
                 _path + " " + 
-                _filename;
+                _filename + (_toBeDelete? "***ToBeDelete" : "");
         }
     }
 }
