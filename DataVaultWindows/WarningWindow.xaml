@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="WarningWindow" Height="300" Width="400">
+        Title="WarningWindow" Height="300" Width="400" ResizeMode="NoResize" MinWidth="400" MinHeight="300">
     <Grid Background="#FFE08888">
         <Button x:Name="Cancel_Button" Content="Cancel" HorizontalAlignment="Left" Margin="269,170,0,0" VerticalAlignment="Top" Width="87" Height="38" FontSize="14"/>
         <Button x:Name="Dont_Save_Button" Content="Don't Save" HorizontalAlignment="Left" Margin="147,170,0,0" VerticalAlignment="Top" Width="87" Height="38" FontSize="14"/>
-        <Image Margin="29,71,287,123" Source="DataVaultWindows/Resources/Warning.png" Stretch="Fill" RenderTransformOrigin="0.277,0.859"/>
         <Button x:Name="Save_Button" Content="Save" HorizontalAlignment="Left" Margin="29,170,0,0" VerticalAlignment="Top" Width="87" Height="38" FontSize="14"/>
         <Label Content="Would you like to save before &#xD;&#xA;Exiting?" HorizontalAlignment="Left" Margin="110,71,0,0" VerticalAlignment="Top" Height="77" Width="228" FontSize="16"/>
+        <Image HorizontalAlignment="Left" Height="71" Margin="29,71,0,0" VerticalAlignment="Top" Width="71" Source="Resources/Warning.png"/>
     </Grid>
 </Window>
