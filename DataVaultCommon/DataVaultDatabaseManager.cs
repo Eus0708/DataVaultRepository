@@ -15,8 +15,8 @@ namespace DataVaultCommon
 {
     internal class DataVaultDatabaseManager : IDisposable
     {
-        string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
-        SqlConnection _connection = null;
+        static string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
+        SqlConnection _connection = new SqlConnection(_connectionStr);
         string _dbUsername = null;
         string _dbPassword = null;
 
@@ -49,13 +49,8 @@ namespace DataVaultCommon
         /// </summary>
         public void OpenConnection()
         {
-            if (_connection == null)
+            if (_connection != null && _connection.State == ConnectionState.Closed)
             {
-                _connection = new SqlConnection();
-
-                //TODO combine connection string with username and password
-
-                _connection.ConnectionString = _connectionStr;
                 _connection.Open();
             }
         }
@@ -65,10 +60,9 @@ namespace DataVaultCommon
         /// </summary>
         public void CloseConnection()
         {
-            if (_connection != null)
+            if (_connection != null && _connection.State == ConnectionState.Open)
             {
                 _connection.Close();
-                _connection = null;
             }
         }
 
@@ -96,6 +90,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -132,6 +128,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
 
             // Not yet finished, fill in attachments as well
@@ -160,6 +158,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -191,6 +191,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
         }
 
@@ -208,6 +210,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -241,6 +245,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
 
             // Not yet finished, fill in attachments as well
@@ -268,6 +274,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -291,6 +299,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
         }
 
@@ -313,6 +323,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand( queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -332,6 +344,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
         }
 
@@ -354,6 +368,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -373,6 +389,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
         }
 
@@ -450,6 +468,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
             
@@ -470,6 +490,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -485,6 +507,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -506,6 +530,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -522,12 +548,16 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@Id", personalInfo.Id);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -570,6 +600,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -579,6 +611,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@Filename", attachment.Filename);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -596,6 +630,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -606,6 +642,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@Filename", attachment.Filename);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -623,6 +661,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -630,6 +670,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -646,12 +688,16 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
             
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
     }
 }
