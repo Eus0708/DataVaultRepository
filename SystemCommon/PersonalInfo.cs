@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace SystemCommon
 {
@@ -20,7 +21,7 @@ namespace SystemCommon
         DateTime? _dateOfBirth = null;
         DateTime? _dateCreated = null;
         DateTime? _dateModified = null;
-        List<AttachmentInfo> _attachments = null;
+        ObservableCollection<AttachmentInfo> _attachments = null;
 
         public int Id
         {
@@ -92,7 +93,7 @@ namespace SystemCommon
             set { _dateModified = value; }
         }
 
-        public List<AttachmentInfo> Attachments
+        public ObservableCollection<AttachmentInfo> Attachments
         {
             get { return _attachments; }
             set { _attachments = value; }
@@ -107,7 +108,7 @@ namespace SystemCommon
             _address = new AddressInfo();
             _phoneNumber = new PhoneNumberInfo();
             _ssn = new SSNNumberInfo();
-            _attachments = new List<AttachmentInfo>();
+            _attachments = new ObservableCollection<AttachmentInfo>();
         }
 
         /// <summary>
@@ -142,7 +143,7 @@ namespace SystemCommon
             _dateOfBirth = dob;
             _dateCreated = created;
             _dateModified = modified;
-            _attachments = new List<AttachmentInfo>();
+            _attachments = new ObservableCollection<AttachmentInfo>();
         }
 
         /// <summary>
@@ -168,7 +169,7 @@ namespace SystemCommon
             DateTime dob,
             DateTime created,
             DateTime modified,
-            List<AttachmentInfo> attachments)
+            ObservableCollection<AttachmentInfo> attachments)
         {
             _id = id;
             _name = name;
@@ -198,7 +199,7 @@ namespace SystemCommon
             _dateOfBirth = (DateTime)info.GetValue("da", typeof(DateTime));
             _dateCreated = (DateTime)info.GetValue("dc", typeof(DateTime));
             _dateModified = (DateTime)info.GetValue("dm", typeof(DateTime));
-            _attachments = TryGetValue<List<AttachmentInfo>>(info, "at");
+            _attachments = TryGetValue<ObservableCollection<AttachmentInfo>>(info, "at");
         }
 
         /// <summary>
@@ -267,7 +268,7 @@ namespace SystemCommon
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
         /// <returns></returns>
-        string PrintList<T>(List<T> list)
+        string PrintList<T>(ObservableCollection<T> list)
         {
             if (list == null)
             {
@@ -289,7 +290,7 @@ namespace SystemCommon
             // the list is null
             if (_attachments == null)
             {
-                _attachments = new List<AttachmentInfo>();
+                _attachments = new ObservableCollection<AttachmentInfo>();
             }
 
             _attachments.Add(new AttachmentInfo(

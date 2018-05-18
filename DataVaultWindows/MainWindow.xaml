@@ -7,10 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="800" Margin="0,0,-6.4,-30">
+        <Grid Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListView Margin="439,55,65,91" Name="Attachments_ListView" MouseDoubleClick="ItemDoubleClicked" Drop="ListView_Drop" DragEnter="ListView_DragEnter" AllowDrop="True">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Attachment" DisplayMemberBinding="{Binding Filename}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
         <Button x:Name="Save_Button" Content="Save" HorizontalAlignment="Left" Margin="489,387,0,0" VerticalAlignment="Top" Width="75" />
         <Button x:Name="Exit_Button" Content="Exit" HorizontalAlignment="Left" Margin="593,387,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.737,-2.651" Click="Exit_Button_Click"/>
-        <TextBox x:Name="FirstName_TextBox" HorizontalAlignment="Left" Height="17" Margin="39,53,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="130" SpellCheck.IsEnabled="True" FontSize="9" Background="White" AcceptsTab="True" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Foreground="LightGray" TextChanged="TextBox_TextChanged" />
-        <TextBox x:Name="MiddleName_TextBox" HorizontalAlignment="Left" Height="17" Margin="181,53,0,0" TextWrapping="Wrap" Text="Middle Name" VerticalAlignment="Top" Width="73" FontSize="9" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Foreground="LightGray" TextChanged="TextBox_TextChanged"/>
+        <TextBox x:Name="FirstName_TextBox" HorizontalAlignment="Left" Height="17" Margin="39,53,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="130" SpellCheck.IsEnabled="True" FontSize="9" Background="White" AcceptsTab="True" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Foreground="LightGray" />
+        <TextBox x:Name="MiddleName_TextBox" HorizontalAlignment="Left" Height="17" Margin="181,53,0,0" TextWrapping="Wrap" Text="Middle Name" VerticalAlignment="Top" Width="73" FontSize="9" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Foreground="LightGray" />
         <TextBox x:Name="LastName_TextBox" HorizontalAlignment="Left" Height="17" Margin="266,53,0,0" TextWrapping="Wrap" Text="Last Name" VerticalAlignment="Top" Width="130" FontSize="9" Foreground="LightGray"/>
         <TextBox x:Name="AreaCode_TextBox" HorizontalAlignment="Left" Height="18" Margin="39,82,0,0" TextWrapping="Wrap" Text="Area" VerticalAlignment="Top" Width="35" FontSize="9" Foreground="LightGray"/>
         <TextBox x:Name="PhoneNumber_TextBox" HorizontalAlignment="Left" Height="18" Margin="88,82,0,0" TextWrapping="Wrap" Text="Phone Number" VerticalAlignment="Top" Width="110" FontSize="9" Foreground="LightGray"/>
@@ -25,7 +37,6 @@
         <TextBox x:Name="Description_TextBox" HorizontalAlignment="Left" Height="115" Margin="39,276,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="357" FontSize="9" Foreground="LightGray"/>
         <Label Content="Description" HorizontalAlignment="Left" Margin="49,249,0,0" VerticalAlignment="Top" Height="49" Width="90" FontWeight="Bold"/>
         <Button x:Name="Home_Button" Content="Home" HorizontalAlignment="Left" Margin="39,18,0,0" VerticalAlignment="Top" Width="53" Height="22" Click="Home_Button_Click"/>
-        <ListBox x:Name="DragDrop_ListBox" HorizontalAlignment="Left" Height="307" Margin="439,53,0,0" VerticalAlignment="Top" Width="297" DragEnter="ListBox_DragEnter" AllowDrop="True" Drop="ListBox_Drop"/>
         <ComboBox x:Name="Genders_ComboBox" HorizontalAlignment="Left" Margin="319,76,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
         <ComboBox x:Name="States_ComboBox" HorizontalAlignment="Left" Margin="192,169,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
     </Grid>

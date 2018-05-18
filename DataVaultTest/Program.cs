@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.ObjectModel;
 
 using SystemCommon;
 using DataVaultCommon;
@@ -300,7 +301,7 @@ namespace DataVaultTest
         // Attachment table test
         static void Test3()
         {
-            List<AttachmentInfo> amts = new List<AttachmentInfo>();
+            ObservableCollection<AttachmentInfo> amts = new ObservableCollection<AttachmentInfo>();
             db.ReloadAttachments(amts, 0);
             PrintList(amts);
         }
@@ -355,6 +356,20 @@ namespace DataVaultTest
 
             int i = 0;
             foreach(object obj in list)
+            {
+                Console.WriteLine("[" + (i++) + "]: " + obj.ToString());
+            }
+        }
+
+        static void PrintList<T>(ObservableCollection<T> list)
+        {
+            if (list == null)
+            {
+                return;
+            }
+
+            int i = 0;
+            foreach (object obj in list)
             {
                 Console.WriteLine("[" + (i++) + "]: " + obj.ToString());
             }

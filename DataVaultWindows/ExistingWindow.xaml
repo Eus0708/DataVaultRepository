@@ -19,31 +19,25 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListView Margin="10,65,10,10" Name="InfoListView" MouseDoubleClick="ItemDoubleClicked">
+            <ListView Margin="10,65,10,10" Name="PersonalInfos_ListView" MouseDoubleClick="ItemDoubleClicked">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding FullName}" />
-                        <GridViewColumn Header="Gender" Width="60" DisplayMemberBinding="{Binding Gender}" />
-                        <GridViewColumn Header="Date of Birth" Width="100" DisplayMemberBinding="{Binding DateOfBirthWithoutTime}" />
-                        <GridViewColumn Header="Phone Number" Width="100" DisplayMemberBinding="{Binding PhoneNumber}" />
-                        <GridViewColumn Header="SSN" Width="100" DisplayMemberBinding="{Binding SSN}" />
-                        <GridViewColumn Header="Created" Width="150" DisplayMemberBinding="{Binding DateCreated}" />
-                        <GridViewColumn Header="Modified" Width="150" DisplayMemberBinding="{Binding DateModified}" />
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FullName}" />
+                        <GridViewColumn Header="Gender" DisplayMemberBinding="{Binding Gender}" />
+                        <GridViewColumn Header="Date of Birth" DisplayMemberBinding="{Binding DateOfBirthWithoutTime}" />
+                        <GridViewColumn Header="Phone Number" DisplayMemberBinding="{Binding PhoneNumber}" />
+                        <GridViewColumn Header="SSN" DisplayMemberBinding="{Binding SSN}" />
+                        <GridViewColumn Header="Created" DisplayMemberBinding="{Binding DateCreated}" />
+                        <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding DateModified}" />
                     </GridView>
                 </ListView.View>
             </ListView>
         </Grid>
         <Button x:Name="Home_Button" Content="Home" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="Home_Button_Click"/>
         <Label Content="Search :" HorizontalAlignment="Left" Margin="3,28,0,0" VerticalAlignment="Top" Height="33" Width="60" FontSize="14" RenderTransformOrigin="0.7,0.545" Grid.Column="1"/>
-        <TextBox x:Name="Text_Box_Search" HorizontalAlignment="Left" Height="19" Margin="59,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Grid.Column="1"/>
+        <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="19" Margin="59,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Grid.Column="1" KeyUp="SearchTextBox_KeyUp"/>
         <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="193,8,0,0" VerticalAlignment="Top" Height="26" Width="106" Grid.Column="1"/>
-        <ComboBox HorizontalAlignment="Left" Margin="193,34,0,0" VerticalAlignment="Top" Width="120" Height="22" Grid.Column="1">
-            <ComboBoxItem Content="Date of Birth" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="SSN" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="First Name" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Last Name" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Phone Number" HorizontalAlignment="Left" Width="118"/>
-        </ComboBox>
+        <ComboBox x:Name="SearchCat_ComboBox" HorizontalAlignment="Left" Margin="193,34,0,0" VerticalAlignment="Top" Width="120" Height="22" Grid.Column="1"/>
 
     </Grid>
 </Window>

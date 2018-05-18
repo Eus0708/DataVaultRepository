@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.ObjectModel;
 
 using SystemCommon;
 using System.Runtime.CompilerServices;
@@ -258,7 +259,7 @@ namespace DataVaultCommon
         /// </summary>
         /// <param name="attachments"></param>
         /// <param name="personalInfoId"></param>
-        public void ReloadAttachments(List<AttachmentInfo> attachments, int personalInfoId)
+        public void ReloadAttachments(ObservableCollection<AttachmentInfo> attachments, int personalInfoId)
         {
             string queryString = "LoadAttachmentsByPersonId";
 

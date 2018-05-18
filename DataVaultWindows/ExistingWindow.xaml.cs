@@ -33,6 +33,15 @@ namespace DataVaultWindows
 
             // Fill in data grid
             SetupInfoListView();
+
+            // Setup controls
+            SetupControls();
+        }
+
+        private void SetupControls()
+        {
+            // Search category combo box
+            SearchCat_ComboBox.ItemsSource = DataVaultInterface.SearchOptions;
         }
 
         private void SetupInfoListView()
@@ -41,7 +50,7 @@ namespace DataVaultWindows
             _dataVaultInterface.GetBriefPersonalInfoList(out _personalInfos);
 
             // Set list to the control
-            InfoListView.ItemsSource = _personalInfos;
+            PersonalInfos_ListView.ItemsSource = _personalInfos;
         }
 
         private void Home_Button_Click(object sender, RoutedEventArgs e)
@@ -54,12 +63,12 @@ namespace DataVaultWindows
         private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
         {
             // Selected index
-            int index = InfoListView.SelectedIndex;
+            int index = PersonalInfos_ListView.SelectedIndex;
 
             if (index != -1)
             {
                 // Get the corresponding item
-                PersonalInfo personalInfo = InfoListView.Items.GetItemAt(index) as PersonalInfo;
+                PersonalInfo personalInfo = PersonalInfos_ListView.Items.GetItemAt(index) as PersonalInfo;
 
                 // databaseId
                 int databaseId = personalInfo.Id;
@@ -68,6 +77,27 @@ namespace DataVaultWindows
                 MainWindow mainWindow = new MainWindow(_dataVaultInterface, databaseId);
                 mainWindow.Show();
                 this.Close();
+            }
+        }
+
+        // Search Text box enter pressed
+        private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Enter key pressed
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                List<PersonalInfo> searchResult;
+                string input = Search_TextBox.Text;
+                int searchOptIndex = SearchCat_ComboBox.SelectedIndex;
+
+                // Search from database
+                _dataVaultInterface.SearchBriefPersonalInfoList(
+                    out searchResult,
+                    input,
+                    (DataVaultInterface.SearchOptionsEnum) searchOptIndex);
+
+                // Update control
+                PersonalInfos_ListView.ItemsSource = searchResult;
             }
         }
     }

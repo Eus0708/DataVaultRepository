@@ -20,17 +20,20 @@ namespace DataVaultCommon
             Phone = 1,
             SSN = 2,
         }
+
         public static string[] SearchOptions = {
             "Name",
             "Phone",
             "SSN"
         };
 
+        // Properties
         public bool HasAccess
         {
             get { return _hasAccess; }
         }
 
+        // Contructors
         public DataVaultInterface()
         {
         }

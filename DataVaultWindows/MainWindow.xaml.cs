@@ -101,6 +101,9 @@ namespace DataVaultWindows
                 StreetAdd2_TextBox.Text = _personalInfo.Address.Address2;
                 City_TextBox.Text = _personalInfo.Address.City;
                 Zipcode_TextBox.Text = _personalInfo.Address.ZipCode;
+
+                // List box
+                Attachments_ListView.ItemsSource = _personalInfo.Attachments;
             }
         }
 
@@ -151,7 +154,7 @@ namespace DataVaultWindows
             this.Hide();
         }
 
-        private void ListBox_Drop(object sender, DragEventArgs e)
+        private void ListView_Drop(object sender, DragEventArgs e)
         {
             string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
 
@@ -159,12 +162,15 @@ namespace DataVaultWindows
             {
                 string filename = getFilelName(file);
                 MessageBox.Show("You dropped " + filename);
-                DragDrop_ListBox.Items.Add(filename);
-                
+
+                // Create a new object and added to the list
+                AttachmentInfo attachment = new AttachmentInfo();
+                attachment.Filename = filename;
+                _personalInfo.AddAttachment(attachment);
             }
         }
 
-        private void ListBox_DragEnter(object sender, DragEventArgs e)
+        private void ListView_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
             {
@@ -177,13 +183,9 @@ namespace DataVaultWindows
             return System.IO.Path.GetFileNameWithoutExtension(path);
         }
 
-        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
         {
 
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
         }
     }
 }
