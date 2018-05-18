@@ -27,7 +27,7 @@ namespace DataVaultWindows
         private void Main_Window_Button(object sender, RoutedEventArgs e)
         {
             
-            MainWindow ss = new MainWindow();
+            MainWindow ss = new MainWindow(null, -1);
             ss.Show();
             this.Hide();
         }
@@ -39,7 +39,7 @@ namespace DataVaultWindows
 
         private void Existing_Profile_Click(object sender, RoutedEventArgs e)
         {
-            ExistingWindow ss = new ExistingWindow();
+            ExistingWindow ss = new ExistingWindow(null);
             ss.Show();
             this.Hide(); 
         }

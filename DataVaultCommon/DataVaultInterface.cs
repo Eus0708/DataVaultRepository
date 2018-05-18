@@ -236,6 +236,52 @@ namespace DataVaultCommon
         }
 
         /// <summary>
+        /// Get states list from database
+        /// </summary>
+        /// <param name="states"></param>
+        /// <returns></returns>
+        public StatusCode GetStates(out List<StateInfo> states)
+        {
+            states = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                states = new List<StateInfo>();
+                _databaseManager.ReloadStates(states);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
+        /// Get genders list from database
+        /// </summary>
+        /// <param name="genders"></param>
+        /// <returns></returns>
+        public StatusCode GetGenders(out List<GenderInfo> genders)
+        {
+            genders = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                genders = new List<GenderInfo>();
+                _databaseManager.ReloadGenders(genders);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
         /// Login
         /// </summary>
         /// <param name="appPwd"></param>

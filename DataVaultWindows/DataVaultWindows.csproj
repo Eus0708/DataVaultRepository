@@ -152,6 +152,10 @@
       <Project>{f05cd74d-c27e-4cd7-8a01-88dbfcb0cafd}</Project>
       <Name>DataVaultCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SystemCommon\SystemCommon.csproj">
+      <Project>{59f2999c-aa89-4c5c-982c-15265a10bd6b}</Project>
+      <Name>SystemCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\1234.png" />

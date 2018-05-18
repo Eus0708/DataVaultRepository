@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using DataVaultCommon;
+using SystemCommon;
+
 namespace DataVaultWindows
 {
     /// <summary>
@@ -19,31 +22,42 @@ namespace DataVaultWindows
     /// </summary>
     public partial class LoginWindow : Window
     {
+
+        DataVaultInterface _dataVaultInterface;
+    
         public LoginWindow()
         {
             InitializeComponent();
+
+            // Create the new data vault interface
+            _dataVaultInterface = new DataVaultInterface();
         }
 
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-            
-            HomeWindow ss = new HomeWindow();
-            ss.Show();
-            this.Hide();
+            string input = Password_TextBox.Text;
+
+            if (_dataVaultInterface.Login(input) == StatusCode.NO_ERROR)
+            {
+                if (null != _dataVaultInterface && _dataVaultInterface.HasAccess)
+                {
+                    // Pass the interface to next window
+                    ExistingWindow existingWindow = new ExistingWindow(_dataVaultInterface);
+                    existingWindow.Show();
+                    this.Close();
+                }
+            }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
         private void Password_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
             if (tb.Text == "Please Enter Your Password...")
+            {
                 tb.Text = "";
+            }
 
             tb.Foreground = Brushes.Black;
-
         }
 
         private void Password_TextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -58,7 +72,6 @@ namespace DataVaultWindows
             {
                 tb.Foreground = Brushes.Black;
             }
-
         }
     }
 }

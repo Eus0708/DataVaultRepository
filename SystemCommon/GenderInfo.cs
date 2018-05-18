@@ -8,10 +8,10 @@ using System.Runtime.Serialization;
 namespace SystemCommon
 {
     [Serializable]
-    public class StateInfo : ISerializable
+    public class GenderInfo : ISerializable
     {
         int _id = -1;
-        string _state = null;
+        string _gender = null;
 
         public int Id
         {
@@ -19,41 +19,41 @@ namespace SystemCommon
             set { _id = value; }
         }
 
-        public string State
+        public string Gender
         {
-            get { return _state; }
-            set { _state = value; }
+            get { return _gender; }
+            set { _gender = value; }
         }
 
-        public StateInfo()
+        public GenderInfo()
         {
         }
 
-        public StateInfo(
+        public GenderInfo(
             int id,
-            string state)
+            string gender)
         {
             _id = id;
-            _state = state;
+            _gender = gender;
         }
 
         // Deserialize
-        public StateInfo(SerializationInfo info, StreamingContext context)
+        public GenderInfo(SerializationInfo info, StreamingContext context)
         {
             _id = (int)info.GetValue("id", typeof(int));
-            _state = (string)info.GetValue("st", typeof(string));
+            _gender = (string)info.GetValue("ge", typeof(string));
         }
 
         // Serialize
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("id", _id, typeof(int));
-            info.AddValue("st", _state, typeof(string));
+            info.AddValue("ge", _gender, typeof(string));
         }
 
         public override string ToString()
         {
-            return _state;
+            return _gender;
         }
     }
 }

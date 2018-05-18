@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using DataVaultCommon;
+using SystemCommon;
+
 namespace DataVaultWindows
 {
     /// <summary>
@@ -19,16 +22,50 @@ namespace DataVaultWindows
     /// </summary>
     public partial class ExistingWindow : Window
     {
-        public ExistingWindow()
+        List<PersonalInfo> _personalInfos;
+        DataVaultInterface _dataVaultInterface;
+
+        public ExistingWindow(DataVaultInterface dvInterface)
         {
             InitializeComponent();
+
+            _dataVaultInterface = dvInterface;
+
+            // Fill in data grid
+            SetupInfoListView();
+        }
+
+        private void SetupInfoListView()
+        {
+            // Get the list
+            _dataVaultInterface.GetBriefPersonalInfoList(out _personalInfos);
+
+            // Set list to the control
+            InfoListView.ItemsSource = _personalInfos;
         }
 
         private void Home_Button_Click(object sender, RoutedEventArgs e)
         {
-            HomeWindow ss = new HomeWindow();
-            ss.Show();
-            this.Hide();
+            HomeWindow homeWindow = new HomeWindow();
+            homeWindow.Show();
+            this.Close();
+        }
+
+        private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
+        {
+            // Selected index
+            int index = InfoListView.SelectedIndex;
+
+            // Get the corresponding item
+            PersonalInfo personalInfo = InfoListView.Items.GetItemAt(index) as PersonalInfo;
+
+            // databaseId
+            int databaseId = personalInfo.Id;
+
+            // Bring up main window
+            MainWindow mainWindow = new MainWindow(_dataVaultInterface, databaseId);
+            mainWindow.Show();
+            this.Close();
         }
     }
 }

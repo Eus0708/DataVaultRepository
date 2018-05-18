@@ -34,6 +34,11 @@ namespace SystemCommon
             set { _toBeDelete = value; }
         }
 
+        public string FullName
+        {
+            get { return _name.FullName; }
+        }
+
         public NameInfo Name
         {
             get { return _name; }
@@ -62,6 +67,11 @@ namespace SystemCommon
         {
             get { return _gender; }
             set { _gender = value; }
+        }
+
+        public string DateOfBirthWithoutTime
+        {
+            get { return _dateOfBirth.Value.ToString("MM/dd/yyyy"); }
         }
 
         public DateTime? DateOfBirth

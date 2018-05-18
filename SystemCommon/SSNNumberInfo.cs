@@ -41,7 +41,7 @@ namespace SystemCommon
 
         public override string ToString()
         {
-            return _ssnNumber;
+            return _ssnNumber.Insert(5, "-").Insert(3, "-");
         }
     }
 }

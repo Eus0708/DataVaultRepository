@@ -58,7 +58,7 @@ namespace SystemCommon
 
         public override string ToString()
         {
-            return "(" + _areaCode + ")" + _phoneNumber;
+            return "(" + _areaCode + ") " + _phoneNumber.Insert(3, "-");
         }
     }
 }

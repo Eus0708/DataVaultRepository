@@ -336,6 +336,47 @@ namespace DataVaultCommon
         }
 
         /// <summary>
+        /// Load all genders
+        /// </summary>
+        /// <param name="genders"></param>
+        public void ReloadGenders(List<GenderInfo> genders)
+        {
+            string queryString = "LoadGenders";
+
+            // Already has data clean it up
+            if (genders.Count > 0)
+            {
+                genders.Clear();
+            }
+
+            if (_connection == null)
+            {
+                return;
+            }
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    genders.Add(
+                        new GenderInfo(
+                        reader.GetInt32(0),
+                        SafeGetString(reader, 1))
+                        );
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+            }
+        }
+
+        /// <summary>
         /// Get string from db data type safely
         /// </summary>
         /// <param name="reader"></param>
