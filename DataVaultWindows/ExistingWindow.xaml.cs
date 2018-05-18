@@ -56,16 +56,19 @@ namespace DataVaultWindows
             // Selected index
             int index = InfoListView.SelectedIndex;
 
-            // Get the corresponding item
-            PersonalInfo personalInfo = InfoListView.Items.GetItemAt(index) as PersonalInfo;
+            if (index != -1)
+            {
+                // Get the corresponding item
+                PersonalInfo personalInfo = InfoListView.Items.GetItemAt(index) as PersonalInfo;
 
-            // databaseId
-            int databaseId = personalInfo.Id;
+                // databaseId
+                int databaseId = personalInfo.Id;
 
-            // Bring up main window
-            MainWindow mainWindow = new MainWindow(_dataVaultInterface, databaseId);
-            mainWindow.Show();
-            this.Close();
+                // Bring up main window
+                MainWindow mainWindow = new MainWindow(_dataVaultInterface, databaseId);
+                mainWindow.Show();
+                this.Close();
+            }
         }
     }
 }

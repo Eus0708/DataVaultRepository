@@ -20,7 +20,5 @@ namespace DataVaultCommon
         // Database
         public static string DBUsername = "None";
         public static string DBPassword = "None";
-
-        // Interface, 
     }
 }

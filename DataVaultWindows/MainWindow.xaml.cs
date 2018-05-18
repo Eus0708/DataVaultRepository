@@ -111,8 +111,11 @@ namespace DataVaultWindows
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = FirstName_TextBox;
-            if (tb.Text == "First Name")
+            TextBox tb = (TextBox)sender;
+            string controlName = tb.Name;
+            string hint = ControlHints.GetHints(controlName);
+
+            if (tb.Text.Equals(hint))
                 tb.Text = "";
 
             tb.Foreground = Brushes.Black;
@@ -121,9 +124,11 @@ namespace DataVaultWindows
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
+            string controlName = tb.Name;
+
             if (tb.Text == "")
             {
-                tb.Text = "First Name";
+                tb.Text = ControlHints.GetHints(controlName);
                 tb.Foreground = Brushes.LightGray;
             }
             else
@@ -175,6 +180,10 @@ namespace DataVaultWindows
         private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
         }
     }
 }
