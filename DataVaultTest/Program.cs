@@ -30,6 +30,27 @@ namespace DataVaultTest
             //Console.WriteLine("Done DataVault Test");
         }
 
+        static void Test25()
+        {
+            string result = Test24(null);
+            Console.WriteLine(result);
+            result = Test24("12345");
+            Console.WriteLine(result);
+        }
+
+        static string Test24(string str)
+        {
+            if (!string.IsNullOrEmpty(str) && str.Length >= 5)
+            {
+                return str.Insert(5, "-").Insert(3, "-");
+            }
+            else
+            {
+                return str;
+            }
+
+        }
+
         // Delete a person
         static void Test23()
         {

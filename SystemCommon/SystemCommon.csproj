@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AddressInfo.cs" />
     <Compile Include="AttachmentInfo.cs" />
+    <Compile Include="AttachmentTypeInfo.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GenderInfo.cs" />
     <Compile Include="NameInfo.cs" />

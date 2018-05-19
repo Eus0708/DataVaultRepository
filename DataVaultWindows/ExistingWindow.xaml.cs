@@ -22,9 +22,12 @@ namespace DataVaultWindows
     /// </summary>
     public partial class ExistingWindow : Window
     {
-        List<PersonalInfo> _personalInfos;
         DataVaultInterface _dataVaultInterface;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dvInterface"></param>
         public ExistingWindow(DataVaultInterface dvInterface)
         {
             InitializeComponent();
@@ -32,34 +35,33 @@ namespace DataVaultWindows
             _dataVaultInterface = dvInterface;
 
             // Fill in data grid
-            SetupInfoListView();
+            RefreshViewList();
 
             // Setup controls
-            SetupControls();
+            PopulateControls();
         }
 
-        private void SetupControls()
+        /// <summary>
+        /// Populate controls
+        /// </summary>
+        private void PopulateControls()
         {
             // Search category combo box
             SearchCat_ComboBox.ItemsSource = DataVaultInterface.SearchOptions;
         }
 
-        private void SetupInfoListView()
+        private void NewProfile_Button_Click(object sender, RoutedEventArgs e)
         {
-            // Get the list
-            _dataVaultInterface.GetBriefPersonalInfoList(out _personalInfos);
-
-            // Set list to the control
-            PersonalInfos_ListView.ItemsSource = _personalInfos;
-        }
-
-        private void Home_Button_Click(object sender, RoutedEventArgs e)
-        {
-            HomeWindow homeWindow = new HomeWindow();
-            homeWindow.Show();
+            MainWindow mainWindow = new MainWindow(_dataVaultInterface);
+            mainWindow.Show();
             this.Close();
         }
 
+        /// <summary>
+        /// Double clicked a person
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
         {
             // Selected index
@@ -80,25 +82,56 @@ namespace DataVaultWindows
             }
         }
 
-        // Search Text box enter pressed
+        /// <summary>
+        /// Search Text box enter pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SearchTextBox_KeyUp(object sender, KeyEventArgs e)
         {
             // Enter key pressed
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-                List<PersonalInfo> searchResult;
-                string input = Search_TextBox.Text;
+                string input = Search_TextBox.Text.Trim();
                 int searchOptIndex = SearchCat_ComboBox.SelectedIndex;
 
+                RefreshViewList(input, searchOptIndex);
+            }
+        }
+
+        /// <summary>
+        /// Get the list without filter
+        /// </summary>
+        private void RefreshViewList()
+        {
+            // Get the whole list
+            RefreshViewList(null, -1);
+        }
+
+        /// <summary>
+        /// Get list from db
+        /// </summary>
+        /// <param name="searchInput"></param>
+        /// <param name="searchOptIndex"></param>
+        private void RefreshViewList(string searchInput, int searchOptIndex)
+        {
+            List<PersonalInfo> resultList;
+
+            if ( !string.IsNullOrEmpty(searchInput) && searchOptIndex != -1)
+            {
                 // Search from database
                 _dataVaultInterface.SearchBriefPersonalInfoList(
-                    out searchResult,
-                    input,
-                    (DataVaultInterface.SearchOptionsEnum) searchOptIndex);
-
-                // Update control
-                PersonalInfos_ListView.ItemsSource = searchResult;
+                    out resultList,
+                    searchInput,
+                    (DataVaultInterface.SearchOptionsEnum)searchOptIndex);
             }
+            else
+            {
+                _dataVaultInterface.GetBriefPersonalInfoList(out resultList);
+            }
+
+            // Update control
+            PersonalInfos_ListView.ItemsSource = resultList;
         }
     }
 }

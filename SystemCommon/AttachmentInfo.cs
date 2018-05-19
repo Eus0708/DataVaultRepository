@@ -15,6 +15,7 @@ namespace SystemCommon
         string _type = null;
         string _path = null;
         string _filename = null;
+        static List<AttachmentTypeInfo> _attachmentTypes = null;
 
         public int Id
         {
@@ -44,6 +45,11 @@ namespace SystemCommon
         {
             get { return _filename; }
             set { _filename = value; }
+        }
+
+        public List<AttachmentTypeInfo> AttachmentTypes
+        {
+            get { return _attachmentTypes; }
         }
 
         public AttachmentInfo()
@@ -86,6 +92,11 @@ namespace SystemCommon
                 _type + " " + 
                 _path + " " + 
                 _filename + (_toBeDelete? "***ToBeDelete" : "");
+        }
+
+        public static void SetAttachmentTypes(List<AttachmentTypeInfo> types)
+        {
+            _attachmentTypes = types;
         }
     }
 }

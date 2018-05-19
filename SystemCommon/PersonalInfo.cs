@@ -72,7 +72,17 @@ namespace SystemCommon
 
         public string DateOfBirthWithoutTime
         {
-            get { return _dateOfBirth.Value.ToString("MM/dd/yyyy"); }
+            get
+            {
+                if (_dateOfBirth != null)
+                {
+                    return _dateOfBirth.Value.ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
         public DateTime? DateOfBirth

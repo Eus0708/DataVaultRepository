@@ -41,7 +41,14 @@ namespace SystemCommon
 
         public override string ToString()
         {
-            return _ssnNumber.Insert(5, "-").Insert(3, "-");
+            if (!string.IsNullOrEmpty(_ssnNumber) && _ssnNumber.Length >= 5)
+            {
+                return _ssnNumber.Insert(5, "-").Insert(3, "-");
+            }
+            else
+            {
+                return _ssnNumber;
+            }
         }
     }
 }

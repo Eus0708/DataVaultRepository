@@ -33,7 +33,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Button x:Name="Home_Button" Content="Home" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="Home_Button_Click"/>
+        <Button x:Name="NewProfile_Button" Content="New" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="NewProfile_Button_Click"/>
         <Label Content="Search :" HorizontalAlignment="Left" Margin="3,28,0,0" VerticalAlignment="Top" Height="33" Width="60" FontSize="14" RenderTransformOrigin="0.7,0.545" Grid.Column="1"/>
         <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="19" Margin="59,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Grid.Column="1" KeyUp="SearchTextBox_KeyUp"/>
         <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="193,8,0,0" VerticalAlignment="Top" Height="26" Width="106" Grid.Column="1"/>

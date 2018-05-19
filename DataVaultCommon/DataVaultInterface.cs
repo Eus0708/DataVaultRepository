@@ -201,15 +201,19 @@ namespace DataVaultCommon
         /// <returns></returns>
         public StatusCode GetPersonalInfo(out PersonalInfo personalInfo, int personalInfoId)
         {
-            personalInfo = null;
+            personalInfo = new PersonalInfo();
+            if (personalInfoId == -1)
+            {
+                return StatusCode.NO_ERROR;
+            }
+
             if (!HasAccess)
             {
                 return StatusCode.NOT_ALLOW_TO_ACCESS;
             }
-
+            
             if (_databaseManager != null)
             {
-                personalInfo = new PersonalInfo();
                 _databaseManager.ReloadPersonalInfo(personalInfo, personalInfoId);
                 return StatusCode.NO_ERROR;
             }
@@ -278,6 +282,29 @@ namespace DataVaultCommon
             {
                 genders = new List<GenderInfo>();
                 _databaseManager.ReloadGenders(genders);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+        
+        /// <summary>
+        /// Get attachment types
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        public StatusCode GetAttachmentTypes(out List<AttachmentTypeInfo> types)
+        {
+            types = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                types = new List<AttachmentTypeInfo>();
+                _databaseManager.ReloadAttachmentTypes(types);
                 return StatusCode.NO_ERROR;
             }
 

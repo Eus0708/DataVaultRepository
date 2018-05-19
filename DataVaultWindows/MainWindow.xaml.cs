@@ -30,7 +30,12 @@ namespace DataVaultWindows
         List<StateInfo> _states = null;
         List<GenderInfo> _genders = null;
 
-        public MainWindow(DataVaultInterface dvInterface, int personalInfoId)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="dvInterface"></param>
+        /// <param name="personalInfoId"></param>
+        public MainWindow(DataVaultInterface dvInterface, int personalInfoId = -1)
         {
             InitializeComponent();
 
@@ -40,29 +45,51 @@ namespace DataVaultWindows
             // Get peronsal info from database
             RetrieveInfoFromDb();
 
-            // Set up controls
-            SetupControls();
+            // Populate controls
+            PopulateControls();
+
+            // Setup windown events
+            this.Closed += WindowClosed;
         }
 
+        /// <summary>
+        /// Go back to existing window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WindowClosed(object sender, EventArgs e)
+        {
+            ExistingWindow existingWindow = new ExistingWindow(_dataVaultInterface);
+            existingWindow.Show();
+        }
+
+        /// <summary>
+        /// Populate member data with the data from db
+        /// </summary>
         private void RetrieveInfoFromDb()
         {
             if (_dataVaultInterface != null)
             {
-                if (_personalInfoId != -1)
-                {
-                    // Get info from db
-                    _dataVaultInterface.GetPersonalInfo(out _personalInfo, _personalInfoId);
-                }
+                // Get info from db
+                _dataVaultInterface.GetPersonalInfo(out _personalInfo, _personalInfoId);
 
                 // Get states form db
                 _dataVaultInterface.GetStates(out _states);
 
                 // Get genders from db
                 _dataVaultInterface.GetGenders(out _genders);
+
+                // Get attachment types from db
+                List<AttachmentTypeInfo> attachmentTypes;
+                _dataVaultInterface.GetAttachmentTypes(out attachmentTypes);
+                AttachmentInfo.SetAttachmentTypes(attachmentTypes);
             }
         }
 
-        private void SetupControls()
+        /// <summary>
+        /// Populate controls
+        /// </summary>
+        private void PopulateControls()
         {
             if (_personalInfo != null)
             {
@@ -140,28 +167,19 @@ namespace DataVaultWindows
             }
         }
 
-        private void TextBox_DragLeave(object sender, DragEventArgs e)
-        {
-            //e.Effects = DragDropEffects.All;
-            
-        }
-
-        private void Home_Button_Click(object sender, RoutedEventArgs e)
-        {
-            
-            HomeWindow ss = new HomeWindow();
-            ss.Show();
-            this.Hide();
-        }
-
+        /// <summary>
+        /// Attached an item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListView_Drop(object sender, DragEventArgs e)
         {
             string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             foreach (string file in droppedFiles)
             {
-                string filename = getFilelName(file);
-                MessageBox.Show("You dropped " + filename);
+                string filename = GetFileName(file);
+                ShowMessageBox("You dropped " + filename);
 
                 // Create a new object and added to the list
                 AttachmentInfo attachment = new AttachmentInfo();
@@ -170,6 +188,11 @@ namespace DataVaultWindows
             }
         }
 
+        /// <summary>
+        /// Setup effect
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListView_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false) == true)
@@ -178,14 +201,103 @@ namespace DataVaultWindows
             }
         }
 
-        private string getFilelName(string path)
+        /// <summary>
+        /// Get file name
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string GetFileName(string path)
         {
-            return System.IO.Path.GetFileNameWithoutExtension(path);
+            return System.IO.Path.GetFileName(path);
         }
 
         private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Save button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Save_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Fill the personal info object
+            RetrieveDataFromControls();
+
+            // Save to database
+            if (_personalInfo != null && _dataVaultInterface != null)
+            {
+                StatusCode status = _dataVaultInterface.ModifyPersonalInfo(_personalInfo);
+
+                // Show status
+                if (status == StatusCode.NO_ERROR)
+                {
+                    ShowMessageBox("Saved!");
+                }
+                else
+                {
+                    ShowMessageBox(status);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get modified info
+        /// </summary>
+        private void RetrieveDataFromControls()
+        {
+            if (_personalInfo != null)
+            {
+                _personalInfo.Name.FirstName = FirstName_TextBox.Text.Trim();
+                _personalInfo.Name.MiddleName = MiddleName_TextBox.Text.Trim();
+                _personalInfo.Name.LastName = LastName_TextBox.Text.Trim();
+                _personalInfo.PhoneNumber.AreaCode = AreaCode_TextBox.Text.Trim();
+                _personalInfo.PhoneNumber.PhoneNumber = PhoneNumber_TextBox.Text.Trim();
+                _personalInfo.Address.Address1 = StreetAdd1_TextBox.Text.Trim();
+                _personalInfo.Address.Address2 = StreetAdd2_TextBox.Text.Trim();
+                _personalInfo.Address.City = City_TextBox.Text.Trim();
+                _personalInfo.Address.State = GetComboBoxString(States_ComboBox);
+                _personalInfo.Address.ZipCode = Zipcode_TextBox.Text.Trim();
+                _personalInfo.Gender = GetComboBoxString(Genders_ComboBox);
+                _personalInfo.SSN.SSNNumber = SSN_TextBox.Text.Trim();
+            }
+        }
+
+        /// <summary>
+        /// Get string from combo box
+        /// </summary>
+        /// <param name="control"></param>
+        /// <returns></returns>
+        private string GetComboBoxString(ComboBox control)
+        {
+            if (control.SelectedValue != null)
+            {
+                return control.SelectedValue.ToString();
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Show meesage box
+        /// </summary>
+        /// <param name="message"></param>
+        private void ShowMessageBox(StatusCode status)
+        {
+            MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
+        }
+
+        /// <summary>
+        /// Show message box
+        /// </summary>
+        /// <param name="message"></param>
+        private void ShowMessageBox(string message)
+        {
+            MessageBox.Show(this, message, "Data Vault");
         }
     }
 }

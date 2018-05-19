@@ -22,29 +22,47 @@ namespace DataVaultWindows
     /// </summary>
     public partial class LoginWindow : Window
     {
-
         DataVaultInterface _dataVaultInterface;
     
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LoginWindow()
         {
             InitializeComponent();
+
+            // Give textbox focus
+            Password_TextBox.Focus();
 
             // Create the new data vault interface
             _dataVaultInterface = new DataVaultInterface();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
             string input = Password_TextBox.Text;
 
-            if (_dataVaultInterface.Login(input) == StatusCode.NO_ERROR)
+            if (null != _dataVaultInterface)
             {
-                if (null != _dataVaultInterface && _dataVaultInterface.HasAccess)
+                // Verify password
+                StatusCode status = _dataVaultInterface.Login(input);
+
+                // Check return value
+                if (status == StatusCode.NO_ERROR)
                 {
                     // Pass the interface to next window
                     ExistingWindow existingWindow = new ExistingWindow(_dataVaultInterface);
                     existingWindow.Show();
                     this.Close();
+                }
+                else
+                {
+                    ShowMessageBox(status);
                 }
             }
         }
@@ -52,10 +70,11 @@ namespace DataVaultWindows
         private void Password_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
-            if (tb.Text == "Please Enter Your Password...")
-            {
+            string controlName = tb.Name;
+            string hint = ControlHints.GetHints(controlName);
+
+            if (tb.Text.Equals(hint))
                 tb.Text = "";
-            }
 
             tb.Foreground = Brushes.Black;
         }
@@ -63,15 +82,35 @@ namespace DataVaultWindows
         private void Password_TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
+            string controlName = tb.Name;
+
             if (tb.Text == "")
             {
-                tb.Text = "Please Enter Your Password...";
+                tb.Text = ControlHints.GetHints(controlName);
                 tb.Foreground = Brushes.LightGray;
             }
             else
             {
                 tb.Foreground = Brushes.Black;
             }
+        }
+
+        /// <summary>
+        /// Show meesage box
+        /// </summary>
+        /// <param name="message"></param>
+        private void ShowMessageBox(StatusCode status)
+        {
+            MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
+        }
+
+        /// <summary>
+        /// Show message box
+        /// </summary>
+        /// <param name="message"></param>
+        private void ShowMessageBox(string message)
+        {
+            MessageBox.Show(this, message, "Data Vault");
         }
     }
 }

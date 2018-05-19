@@ -396,6 +396,53 @@ namespace DataVaultCommon
         }
 
         /// <summary>
+        /// Reload attachment types
+        /// </summary>
+        /// <param name="genders"></param>
+        public void ReloadAttachmentTypes(List<AttachmentTypeInfo> types)
+        {
+            string queryString = "LoadAttachmentTypes";
+
+            // Already has data clean it up
+            if (types.Count > 0)
+            {
+                types.Clear();
+            }
+
+            if (_connection == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    types.Add(
+                        new AttachmentTypeInfo(
+                        reader.GetInt32(0),
+                        SafeGetString(reader, 1))
+                        );
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+
+
+        /// <summary>
         /// Get string from db data type safely
         /// </summary>
         /// <param name="reader"></param>

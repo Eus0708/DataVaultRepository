@@ -13,6 +13,8 @@ namespace DataVaultWindows
         {
             switch (controlName)
             {
+                case "Password_TextBox":
+                    return "Please Enter Your Password...";
                 case "FirstName_TextBox":
                     return "First Name";
                 case "MiddleName_TextBox":
