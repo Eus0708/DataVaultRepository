@@ -222,6 +222,62 @@ namespace DataVaultCommon
         }
 
         /// <summary>
+        /// Get attachment info
+        /// </summary>
+        /// <param name="attachmentInfo"></param>
+        /// <param name="attachmentId"></param>
+        /// <returns></returns>
+        public StatusCode GetAttachmentInfo(out AttachmentInfo attachmentInfo, int attachmentId)
+        {
+            attachmentInfo = new AttachmentInfo();
+            if (attachmentId == -1)
+            {
+                return StatusCode.NO_ERROR;
+            }
+
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                _databaseManager.ReloadAttachment(attachmentInfo, attachmentId);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
+        /// Get attachment data
+        /// </summary>
+        /// <param name="attachmentData"></param>
+        /// <param name="attachmentId"></param>
+        /// <returns></returns>
+        public StatusCode GetAttachmentData(out byte[] attachmentData, int attachmentId)
+        {
+            attachmentData = null;
+            if (attachmentId == -1)
+            {
+                return StatusCode.NO_ERROR;
+            }
+
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                _databaseManager.LoadAttachmentData(out attachmentData, attachmentId);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
         /// Add, Update and Delete a personal info
         /// </summary>
         /// <param name="personalInfo"></param>

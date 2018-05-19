@@ -14,7 +14,8 @@
             <ListView Margin="439,55,54,69" Name="Attachments_ListView" MouseDoubleClick="ItemDoubleClicked" Drop="ListView_Drop" DragEnter="ListView_DragEnter" AllowDrop="True">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Attachment" Width="200" DisplayMemberBinding="{Binding Filename}" />
+                        <GridViewColumn Header="Filename" Width="150" DisplayMemberBinding="{Binding Filename}" />
+                        <GridViewColumn Header="Ext." Width="50" DisplayMemberBinding="{Binding Extension}" />
                         <GridViewColumn Header="Category" Width="100">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>

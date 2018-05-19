@@ -25,9 +25,21 @@ namespace DataVaultTest
             Seperator();
             Test4();
 
+            Test26();
+
             db.CloseConnection();
             Console.Read();
             //Console.WriteLine("Done DataVault Test");
+        }
+
+        static void Test26()
+        {
+            string filename = "ABC.jpg";
+            string name = System.IO.Path.GetFileNameWithoutExtension(filename);
+            string ext = System.IO.Path.GetExtension(filename);
+            Console.WriteLine(filename);
+            Console.WriteLine(name);
+            Console.WriteLine(ext);
         }
 
         static void Test25()
@@ -188,7 +200,7 @@ namespace DataVaultTest
             AttachmentInfo attach = new AttachmentInfo();
             attach.Id = 0;
             attach.Path = @"\Path\Images";
-            attach.Filename = "attach.jpg";
+            attach.FullFilename = "attach.jpg";
             attach.Type = "Passport";
             db.SaveAttachmentInfo(0, attach);
         }
@@ -198,7 +210,7 @@ namespace DataVaultTest
         {
             AttachmentInfo attach = new AttachmentInfo();
             attach.Path = @"\Path\Images";
-            attach.Filename = "attach.jpg";
+            attach.FullFilename = "attach.jpg";
             attach.Type = "Passport";
             db.SaveAttachmentInfo(1, attach);
         }

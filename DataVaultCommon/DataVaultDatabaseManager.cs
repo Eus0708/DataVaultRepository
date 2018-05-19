@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Collections.ObjectModel;
 
 using SystemCommon;
@@ -222,7 +224,7 @@ namespace DataVaultCommon
             SqlDataReader reader = command.ExecuteReader();
             try
             {
-                while (reader.Read())
+                if (reader.Read())
                 {
                     personalInfo.Id = reader.GetInt32(0);
                     personalInfo.Name.FirstName = SafeGetString(reader, 1);
@@ -291,9 +293,91 @@ namespace DataVaultCommon
                         new AttachmentInfo(
                         reader.GetInt32(0),
                         SafeGetString(reader, 1),
-                        SafeGetString(reader, 2),
-                        SafeGetString(reader, 3))
+                        string.Empty,
+                        SafeGetString(reader, 2))
                         );
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+        /// <summary>
+        /// Load attachment info
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <param name="attachmentId"></param>
+        public void ReloadAttachment(AttachmentInfo attachment, int attachmentId)
+        {
+            string queryString = "LoadAttachmentByAttachmentId";
+
+            // Check connection and input
+            if (_connection == null || attachment == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", attachmentId);
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                if (reader.Read())
+                {
+                    attachment.Id = reader.GetInt32(0);
+                    attachment.Type = SafeGetString(reader, 1);
+                    attachment.FullFilename = SafeGetString(reader, 2);
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+        /// <summary>
+        /// Load attachment data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="attachmentId"></param>
+        public void LoadAttachmentData(out byte[] data, int attachmentId)
+        {
+            string queryString = "LoadAttachmentDataByAttachmentId";
+
+            data = null;
+
+            // Check connection and input
+            if (_connection == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", attachmentId);
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                if (reader.Read())
+                {
+                    data = reader.GetValue(0) as byte[];
                 }
             }
             finally
@@ -655,8 +739,10 @@ namespace DataVaultCommon
 
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
             command.Parameters.AddWithValue("@Type", attachment.Type);
-            command.Parameters.AddWithValue("@Path", attachment.Path);
-            command.Parameters.AddWithValue("@Filename", attachment.Filename);
+            command.Parameters.AddWithValue("@Filename", attachment.FullFilename);
+
+            byte[] data = GetImageData(attachment.Path);
+            command.Parameters.AddWithValue("@Data", data);
 
             command.ExecuteNonQuery();
 
@@ -686,8 +772,7 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@Id", attachment.Id);
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
             command.Parameters.AddWithValue("@Type", attachment.Type);
-            command.Parameters.AddWithValue("@Path", attachment.Path);
-            command.Parameters.AddWithValue("@Filename", attachment.Filename);
+            command.Parameters.AddWithValue("@Filename", attachment.FullFilename);
 
             command.ExecuteNonQuery();
 
@@ -746,6 +831,19 @@ namespace DataVaultCommon
             command.ExecuteNonQuery();
 
             CloseConnection();
+        }
+
+        /// <summary>
+        /// Giving the file path return the byte[]
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private byte[] GetImageData(string path)
+        {
+            Image image = new Bitmap(path);
+            MemoryStream memStream = new MemoryStream();
+            image.Save(memStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            return memStream.ToArray();
         }
     }
 }

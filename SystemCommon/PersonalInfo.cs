@@ -307,7 +307,7 @@ namespace SystemCommon
                 -1,
                 attachment.Type,
                 attachment.Path,
-                attachment.Filename
+                attachment.FullFilename
                 ));
         }
     }

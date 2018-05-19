@@ -176,14 +176,15 @@ namespace DataVaultWindows
         {
             string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-            foreach (string file in droppedFiles)
+            foreach (string path in droppedFiles)
             {
-                string filename = GetFileName(file);
+                string filename = GetFileName(path);
                 ShowMessageBox("You dropped " + filename);
 
                 // Create a new object and added to the list
                 AttachmentInfo attachment = new AttachmentInfo();
-                attachment.Filename = filename;
+                attachment.Path = path;
+                attachment.FullFilename = filename;
                 _personalInfo.AddAttachment(attachment);
             }
         }
@@ -213,7 +214,28 @@ namespace DataVaultWindows
 
         private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
         {
+            // Selected index
+            int index = Attachments_ListView.SelectedIndex;
 
+            if (index != -1)
+            {
+                // Get the corresponding item
+                AttachmentInfo attachmentInfo = Attachments_ListView.Items.GetItemAt(index) as AttachmentInfo;
+
+                // databaseId
+                int databaseId = attachmentInfo.Id;
+
+                if (databaseId != -1)
+                {
+                    // Bring up attachment window
+                    AttachmentWindow attachment = new AttachmentWindow(_dataVaultInterface, databaseId);
+                    attachment.Show();
+                }
+                else
+                {
+                    ShowMessageBox("Please SAVE before accessing the image.");
+                }
+            }
         }
 
         /// <summary>
@@ -234,6 +256,9 @@ namespace DataVaultWindows
                 // Show status
                 if (status == StatusCode.NO_ERROR)
                 {
+                    // Refresh all controls
+                    RefreshAllControls();
+
                     ShowMessageBox("Saved!");
                 }
                 else
@@ -263,6 +288,18 @@ namespace DataVaultWindows
                 _personalInfo.Gender = GetComboBoxString(Genders_ComboBox);
                 _personalInfo.SSN.SSNNumber = SSN_TextBox.Text.Trim();
             }
+        }
+
+        /// <summary>
+        /// Refresh all controls
+        /// </summary>
+        private void RefreshAllControls()
+        {
+            // Get peronsal info from database
+            RetrieveInfoFromDb();
+
+            // Populate controls
+            PopulateControls();
         }
 
         /// <summary>

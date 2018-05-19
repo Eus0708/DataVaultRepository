@@ -41,10 +41,20 @@ namespace SystemCommon
             set { _path = value; }
         }
 
-        public string Filename
+        public string FullFilename
         {
             get { return _filename; }
             set { _filename = value; }
+        }
+
+        public string Filename
+        {
+            get { return System.IO.Path.GetFileNameWithoutExtension(_filename); }
+        }
+
+        public string Extension
+        {
+            get { return System.IO.Path.GetExtension(_filename); }
         }
 
         public List<AttachmentTypeInfo> AttachmentTypes
