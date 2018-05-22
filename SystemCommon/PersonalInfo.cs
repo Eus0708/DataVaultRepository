@@ -52,6 +52,11 @@ namespace SystemCommon
             set { _phoneNumber = value; }
         }
 
+        public string FullPhoneNumber
+        {
+            get { return _phoneNumber.FullPhoneNumber; }
+        }
+
         public AddressInfo Address
         {
             get { return _address; }
@@ -62,6 +67,11 @@ namespace SystemCommon
         {
             get { return _ssn; }
             set { _ssn = value; }
+        }
+
+        public string FullSSN
+        {
+            get { return _ssn.SSNNumber; }
         }
 
         public string Gender

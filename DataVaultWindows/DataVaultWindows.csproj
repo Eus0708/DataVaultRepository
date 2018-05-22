@@ -69,6 +69,7 @@
     <Compile Include="PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SortAdorner.cs" />
     <Compile Include="WarningWindow.xaml.cs">
       <DependentUpon>WarningWindow.xaml</DependentUpon>
     </Compile>

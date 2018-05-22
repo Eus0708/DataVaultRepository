@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,9 @@ namespace DataVaultWindows
     public partial class ExistingWindow : Window
     {
         DataVaultInterface _dataVaultInterface;
+        GridViewColumnHeader _listViewSortCol;
+        SortAdorner _listViewSortAdorner;
+
 
         /// <summary>
         /// Constructor
@@ -48,6 +52,35 @@ namespace DataVaultWindows
         {
             // Search category combo box
             SearchCat_ComboBox.ItemsSource = DataVaultInterface.SearchOptions;
+
+            // Sorting
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(PersonalInfos_ListView.ItemsSource);
+            view.SortDescriptions.Add(new SortDescription("FullName", ListSortDirection.Ascending));
+        }
+
+        /// <summary>
+        /// Column header clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader column = (sender as GridViewColumnHeader);
+            string sortBy = column.Tag.ToString();
+            if (_listViewSortCol != null)
+            {
+                AdornerLayer.GetAdornerLayer(_listViewSortCol).Remove(_listViewSortAdorner);
+                PersonalInfos_ListView.Items.SortDescriptions.Clear();
+            }
+
+            ListSortDirection newDir = ListSortDirection.Ascending;
+            if (_listViewSortCol == column && _listViewSortAdorner.Direction == newDir)
+                newDir = ListSortDirection.Descending;
+
+            _listViewSortCol = column;
+            _listViewSortAdorner = new SortAdorner(_listViewSortCol, newDir);
+            AdornerLayer.GetAdornerLayer(_listViewSortCol).Add(_listViewSortAdorner);
+            PersonalInfos_ListView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
 
         private void NewProfile_Button_Click(object sender, RoutedEventArgs e)

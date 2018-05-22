@@ -99,18 +99,18 @@ namespace DataVaultWindows
         /// Show meesage box
         /// </summary>
         /// <param name="message"></param>
-        private void ShowMessageBox(StatusCode status)
+        private MessageBoxResult ShowMessageBox(StatusCode status)
         {
-            MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
+            return MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
         }
 
         /// <summary>
         /// Show message box
         /// </summary>
         /// <param name="message"></param>
-        private void ShowMessageBox(string message)
+        private MessageBoxResult ShowMessageBox(string message)
         {
-            MessageBox.Show(this, message, "Data Vault");
+            return MessageBox.Show(this, message, "Data Vault");
         }
     }
 }

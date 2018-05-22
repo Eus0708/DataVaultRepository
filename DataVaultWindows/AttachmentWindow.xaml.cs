@@ -73,6 +73,9 @@ namespace DataVaultWindows
         /// </summary>
         private void PopulateControls()
         {
+            // Title
+            this.Title = _attachmentInfo.FullFilename;
+
             // Image
             if (_attachmentData != null && _attachmentData.Length > 0)
             {

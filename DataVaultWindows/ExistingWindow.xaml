@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="ExistingWindow" Height="450" Width="845" ResizeMode="CanResizeWithGrip" MinWidth="845" MinHeight="450">
+        Title="ExistingWindow" Height="450" Width="845" ResizeMode="CanResizeWithGrip" MinWidth="845" MinHeight="450" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="61*"/>
@@ -22,11 +22,31 @@
             <ListView Margin="10,65,10,10" Name="PersonalInfos_ListView" MouseDoubleClick="ItemDoubleClicked">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding FullName}" />
-                        <GridViewColumn Header="Gender" DisplayMemberBinding="{Binding Gender}" />
-                        <GridViewColumn Header="Date of Birth" DisplayMemberBinding="{Binding DateOfBirthWithoutTime}" />
-                        <GridViewColumn Header="Phone Number" DisplayMemberBinding="{Binding PhoneNumber}" />
-                        <GridViewColumn Header="SSN" DisplayMemberBinding="{Binding SSN}" />
+                        <GridViewColumn DisplayMemberBinding="{Binding FullName}" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Name" Tag="FullName" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Gender}" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Gender" Tag="Gender" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding DateOfBirthWithoutTime}" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Date of Birth" Tag="DateOfBirthWithoutTime" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Phone Number" Tag="FullPhoneNumber" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding SSN}" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="SSN" Tag="FullSSN" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
                         <GridViewColumn Header="Created" DisplayMemberBinding="{Binding DateCreated}" />
                         <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding DateModified}" />
                     </GridView>
