@@ -26,18 +26,25 @@ namespace DataVaultWindows
         AttachmentInfo _attachmentInfo = null;
         int _attachmentId = -1;
         byte[] _attachmentData = null;
+        int _childWindowId = -1;
+
+        public int ChildWindowId
+        {
+            get { return _childWindowId; }
+        }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="dvInterface"></param>
         /// <param name="attachmentId"></param>
-        public AttachmentWindow(DataVaultInterface dvInterface, int attachmentId)
+        public AttachmentWindow(DataVaultInterface dvInterface, int attachmentId, int childWindowId)
         {
             InitializeComponent();
 
             _dataVaultInterface = dvInterface;
             _attachmentId = attachmentId;
+            _childWindowId = childWindowId;
 
             // Get peronsal info from database
             RetrieveInfoFromDb();

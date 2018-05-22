@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="AttachmentWindow" Height="803" Width="800">
+        Title="AttachmentWindow" Height="800" Width="800">
     <Grid>
         <Image x:Name="Attachment_Image" Margin="10,70,10,10"/>
+        <Button x:Name="Export_Button" Content="Export" Margin="0,16,22,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75"/>
     </Grid>
 </Window>

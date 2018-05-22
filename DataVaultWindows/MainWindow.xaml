@@ -5,28 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="800" Margin="0,0,-6.4,-30">
-        <Grid Margin="0,0,0,29">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <ListView Margin="439,55,54,69" Name="Attachments_ListView" MouseDoubleClick="ItemDoubleClicked" Drop="ListView_Drop" DragEnter="ListView_DragEnter" AllowDrop="True">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Filename" Width="150" DisplayMemberBinding="{Binding Filename}" />
-                        <GridViewColumn Header="Ext." Width="50" DisplayMemberBinding="{Binding Extension}" />
-                        <GridViewColumn Header="Category" Width="100">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ComboBox Text="{Binding Type}" ItemsSource="{Binding AttachmentTypes}" Width="80" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
+        Title="MainWindow" Height="450" Width="800" MinWidth="800" MinHeight="450">
+    <Grid>
+        <ListView Margin="439,55,54,69" Name="Attachments_ListView" MouseDoubleClick="ItemDoubleClicked" Drop="ListView_Drop" DragEnter="ListView_DragEnter" AllowDrop="True">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Filename" Width="150" DisplayMemberBinding="{Binding Filename}" />
+                    <GridViewColumn Header="Ext." Width="50" DisplayMemberBinding="{Binding Extension}" />
+                    <GridViewColumn Header="Category" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox Text="{Binding Type}" ItemsSource="{Binding AttachmentTypes}" Width="80" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Button x:Name="Save_Button" Content="Save" HorizontalAlignment="Left" Margin="499,376,0,0" VerticalAlignment="Top" Width="75" Click="Save_Button_Clicked" />
         <Button x:Name="Exit_Button" Content="Exit" HorizontalAlignment="Left" Margin="616,376,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.737,-2.651" Click="Exit_Button_Click"/>
         <TextBox x:Name="FirstName_TextBox" HorizontalAlignment="Left" Height="17" Margin="39,53,0,0" TextWrapping="Wrap" Text="First Name" VerticalAlignment="Top" Width="130" SpellCheck.IsEnabled="True" FontSize="9" Background="White" LostFocus="TextBox_LostFocus" GotFocus="TextBox_GotFocus" Foreground="LightGray" />
@@ -40,10 +35,7 @@
         <TextBox x:Name="StreetAdd2_TextBox" HorizontalAlignment="Left" Height="18" Margin="39,140,0,0" TextWrapping="Wrap" Text="Street Address2" VerticalAlignment="Top" Width="357" FontSize="9" Foreground="LightGray"/>
         <TextBox x:Name="City_TextBox" HorizontalAlignment="Left" Height="18" Margin="39,170,0,0" TextWrapping="Wrap" Text="City" VerticalAlignment="Top" Width="142" FontSize="9" Foreground="LightGray"/>
         <TextBox x:Name="Zipcode_TextBox" HorizontalAlignment="Left" Height="18" Margin="280,170,0,0" TextWrapping="Wrap" Text="Zipcode" VerticalAlignment="Top" Width="116" FontSize="9" Foreground="LightGray"/>
-        <TextBox x:Name="Country_TextBox" HorizontalAlignment="Left" Height="18" Margin="39,198,0,0" TextWrapping="Wrap" Text="Country" VerticalAlignment="Top" Width="278" FontSize="9" Foreground="LightGray"/>
         <TextBox x:Name="SSN_TextBox" HorizontalAlignment="Left" Height="18" Margin="39,227,0,0" TextWrapping="Wrap" Text="SSN" VerticalAlignment="Top" Width="142" FontSize="9" Foreground="LightGray"/>
-        <TextBox x:Name="Description_TextBox" HorizontalAlignment="Left" Height="115" Margin="39,276,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="357" FontSize="9" Foreground="LightGray"/>
-        <Label Content="Description" HorizontalAlignment="Left" Margin="49,249,0,0" VerticalAlignment="Top" Height="49" Width="90" FontWeight="Bold"/>
         <ComboBox x:Name="Genders_ComboBox" HorizontalAlignment="Left" Margin="319,76,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
         <ComboBox x:Name="States_ComboBox" HorizontalAlignment="Left" Margin="192,169,0,0" VerticalAlignment="Top" Width="77" Height="24"/>
     </Grid>

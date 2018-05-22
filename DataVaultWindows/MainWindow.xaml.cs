@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 
 using DataVaultCommon;
 using SystemCommon;
+using System.ComponentModel;
 
 namespace DataVaultWindows
 {
@@ -26,6 +27,7 @@ namespace DataVaultWindows
     {
         DataVaultInterface _dataVaultInterface = null;
         PersonalInfo _personalInfo = null;
+        AttachmentWindow[] _childWindows = null;
         int _personalInfoId = -1;
         List<StateInfo> _states = null;
         List<GenderInfo> _genders = null;
@@ -49,7 +51,25 @@ namespace DataVaultWindows
             PopulateControls();
 
             // Setup windown events
+            this.Closing += WindowClosing;
             this.Closed += WindowClosed;
+        }
+
+        /// <summary>
+        /// Close all chile windows
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void WindowClosing(object sender, CancelEventArgs e)
+        {
+            for (int i = 0; i < _childWindows.Length; i++)
+            {
+                if (_childWindows[i] != null)
+                {
+                    _childWindows[i].Close();
+                    _childWindows[i] = null;
+                }
+            }
         }
 
         /// <summary>
@@ -83,6 +103,10 @@ namespace DataVaultWindows
                 List<AttachmentTypeInfo> attachmentTypes;
                 _dataVaultInterface.GetAttachmentTypes(out attachmentTypes);
                 AttachmentInfo.SetAttachmentTypes(attachmentTypes);
+
+                // Create empty child window list. Should be same size as the attachment list
+                int attachmentsCount = _personalInfo.Attachments.Count;
+                _childWindows = new AttachmentWindow[attachmentsCount];
             }
         }
 
@@ -212,6 +236,11 @@ namespace DataVaultWindows
             return System.IO.Path.GetFileName(path);
         }
 
+        /// <summary>
+        /// Attachment clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemDoubleClicked(object sender, MouseButtonEventArgs e)
         {
             // Selected index
@@ -228,13 +257,39 @@ namespace DataVaultWindows
                 if (databaseId != -1)
                 {
                     // Bring up attachment window
-                    AttachmentWindow attachment = new AttachmentWindow(_dataVaultInterface, databaseId);
-                    attachment.Show();
+                    if (_childWindows[index] == null)
+                    {
+                        _childWindows[index] = new AttachmentWindow(_dataVaultInterface, databaseId, index);
+                        _childWindows[index].Closed += OnChildWindowsClosed;
+                        _childWindows[index].Show();
+                    }
+                    else
+                    {
+                        ShowMessageBox("Attachment is already opened.");
+                    }
                 }
                 else
                 {
                     ShowMessageBox("Please SAVE before accessing the image.");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Attachment window closed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnChildWindowsClosed(object sender, EventArgs e)
+        {
+            AttachmentWindow attachmentWindow = sender as AttachmentWindow;
+
+            int index = attachmentWindow.ChildWindowId;
+
+            if ( index >= 0 && index < _childWindows.Length )
+            {
+                // Already closed set it to null
+                _childWindows[index] = null;
             }
         }
 
