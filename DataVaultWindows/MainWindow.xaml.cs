@@ -265,7 +265,8 @@ namespace DataVaultWindows
                     }
                     else
                     {
-                        ShowMessageBox("Attachment is already opened.");
+                        // Bring up the window
+                        _childWindows[index].Focus();
                     }
                 }
                 else

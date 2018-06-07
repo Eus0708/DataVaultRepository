@@ -27,7 +27,6 @@ namespace DataVaultWindows
         GridViewColumnHeader _listViewSortCol;
         SortAdorner _listViewSortAdorner;
 
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -165,6 +164,41 @@ namespace DataVaultWindows
 
             // Update control
             PersonalInfos_ListView.ItemsSource = resultList;
+        }
+
+        /// <summary>
+        /// Remove the selected row
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void RemoveProfile_Button_Click(object sender, RoutedEventArgs e)
+        {
+            PersonalInfo personalInfo = PersonalInfos_ListView.SelectedItem as PersonalInfo;
+
+            if (personalInfo != null)
+            {
+                // Ask the user for confirmation
+                MessageBoxResult result = ShowMessageBox("Delete \"" + personalInfo.FullName + "\" ?", MessageBoxButton.YesNo);
+
+                // Remove personal info from the db
+                if (result == MessageBoxResult.Yes)
+                {
+                    personalInfo.ToBeDelete = true;
+                    _dataVaultInterface.ModifyPersonalInfo(personalInfo);
+
+                    // Refresh the list
+                    RefreshViewList();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Show message box
+        /// </summary>
+        /// <param name="message"></param>
+        private MessageBoxResult ShowMessageBox(string message, MessageBoxButton button)
+        {
+            return System.Windows.MessageBox.Show(message, "Data Vault", button);
         }
     }
 }
