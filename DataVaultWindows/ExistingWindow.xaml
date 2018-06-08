@@ -53,10 +53,11 @@
         </Grid>
         <Button x:Name="NewProfile_Button" Content="New" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Width="98" Height="42" Click="NewProfile_Button_Click" FontSize="14"/>
         <Button x:Name="RemoveProfile_Button" Content="Remove" HorizontalAlignment="Left" Margin="135,26,0,0" VerticalAlignment="Top" Width="98" Height="42" Click="RemoveProfile_Button_Click" FontSize="14" Background="#FFDDDDDD"/>
-        <Label Content="Search :" HorizontalAlignment="Left" Margin="498,35,0,0" VerticalAlignment="Top" Height="33" Width="66" FontSize="16" RenderTransformOrigin="0.7,0.545" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="28" Margin="569,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" KeyUp="SearchTextBox_KeyUp" FontSize="14" VerticalContentAlignment="Center"/>
-        <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="691,10,0,0" VerticalAlignment="Top" Height="34" Width="134" FontSize="14"/>
-        <ComboBox x:Name="SearchCat_ComboBox" HorizontalAlignment="Left" Margin="697,40,0,0" Width="114" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center"/>
+        <Label Content="Search :" HorizontalAlignment="Left" Margin="398,35,0,0" VerticalAlignment="Top" Height="33" Width="66" FontSize="16" RenderTransformOrigin="0.7,0.545" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="28" Margin="469,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" KeyUp="SearchTextBox_KeyUp" FontSize="14" VerticalContentAlignment="Center"/>
+        <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="591,10,0,0" VerticalAlignment="Top" Height="34" Width="134" FontSize="14"/>
+        <ComboBox x:Name="SearchCat_ComboBox" HorizontalAlignment="Left" Margin="597,40,0,0" Width="114" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center"/>
+        <Button x:Name="Search_Button" Content="Search" HorizontalAlignment="Left" Margin="725,26,0,0" VerticalAlignment="Top" Width="98" Height="42" Click="Search_Button_Click" FontSize="14" Background="#FFDDDDDD"/>
 
     </Grid>
 </Window>

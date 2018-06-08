@@ -124,11 +124,31 @@ namespace DataVaultWindows
             // Enter key pressed
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-                string input = Search_TextBox.Text.Trim();
-                int searchOptIndex = SearchCat_ComboBox.SelectedIndex;
-
-                RefreshViewList(input, searchOptIndex);
+                // Refresh list with search
+                RefreshListWithSearch();
             }
+        }
+
+        /// <summary>
+        /// Search button clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Search_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Refresh list with search
+            RefreshListWithSearch();
+        }
+
+        /// <summary>
+        /// Refresh list with search
+        /// </summary>
+        private void RefreshListWithSearch()
+        {
+            string input = Search_TextBox.Text.Trim();
+            int searchOptIndex = SearchCat_ComboBox.SelectedIndex;
+
+            RefreshViewList(input, searchOptIndex);
         }
 
         /// <summary>
@@ -198,7 +218,7 @@ namespace DataVaultWindows
         /// <param name="message"></param>
         private MessageBoxResult ShowMessageBox(string message, MessageBoxButton button)
         {
-            return System.Windows.MessageBox.Show(message, "Data Vault", button);
+            return MessageBox.Show(message, "Data Vault", button);
         }
     }
 }

@@ -31,6 +31,27 @@ namespace DataVaultWindows
         int _personalInfoId = -1;
         List<StateInfo> _states = null;
         List<GenderInfo> _genders = null;
+        bool _isSaved = true;
+
+        public bool IsSaved
+        {
+            get { return _isSaved; }
+            set
+            {
+                if ( value != _isSaved)
+                {
+                    _isSaved = value;
+
+                    // Update save button
+                    Save_Button.IsEnabled = !_isSaved;
+                }
+            }
+        }
+
+        public bool IsNotSaved
+        {
+            get { return !_isSaved; }
+        }
 
         /// <summary>
         /// Constructor
@@ -50,6 +71,9 @@ namespace DataVaultWindows
             // Populate controls
             PopulateControls();
 
+            // Setup controls events
+            SetupControlEvents();
+
             // Setup windown events
             this.Closing += WindowClosing;
             this.Closed += WindowClosed;
@@ -62,14 +86,64 @@ namespace DataVaultWindows
         /// <param name="e"></param>
         private void WindowClosing(object sender, CancelEventArgs e)
         {
-            for (int i = 0; i < _childWindows.Length; i++)
+            if (!IsSaved)
             {
-                if (_childWindows[i] != null)
+                // Ask to save
+                MessageBoxResult result = ShowMessageBox("Do you want to save your changes?", MessageBoxButton.YesNoCancel);
+
+                if (result == MessageBoxResult.Yes)
                 {
-                    _childWindows[i].Close();
-                    _childWindows[i] = null;
+                    // Fill the personal info object
+                    RetrieveDataFromControls();
+
+                    // Save to database
+                    if (_personalInfo != null && _dataVaultInterface != null)
+                    {
+                        StatusCode status = _dataVaultInterface.ModifyPersonalInfo(_personalInfo);
+
+                        // Show status
+                        if (status == StatusCode.NO_ERROR)
+                        {
+                            e.Cancel = false;
+
+                            // Close all child windows
+                            CloseAllChildWindows();
+
+                            return;
+                        }
+                        else
+                        {
+                            e.Cancel = true;
+
+                            ShowMessageBox(status);
+
+                            return;
+                        }
+                    }
+                }
+                else if (result == MessageBoxResult.No)
+                {
+                    e.Cancel = false;
+
+                    // Close all child windows
+                    CloseAllChildWindows();
+
+                    return;
+                }
+                else if (result == MessageBoxResult.Cancel)
+                {
+                    e.Cancel = true;
+
+                    return;
                 }
             }
+
+            e.Cancel = false;
+
+            // Close all child windows
+            CloseAllChildWindows();
+
+            return;
         }
 
         /// <summary>
@@ -158,6 +232,72 @@ namespace DataVaultWindows
             }
         }
 
+        /// <summary>
+        /// Setup events for controls
+        /// </summary>
+        private void SetupControlEvents()
+        {
+            // Text box
+            FirstName_TextBox.TextChanged += Control_ValueChanged;
+            MiddleName_TextBox.TextChanged += Control_ValueChanged;
+            LastName_TextBox.TextChanged += Control_ValueChanged;
+            AreaCode_TextBox.TextChanged += Control_ValueChanged;
+            PhoneNumber_TextBox.TextChanged += Control_ValueChanged;
+            DOB_TextBox.TextChanged += Control_ValueChanged;
+            StreetAdd1_TextBox.TextChanged += Control_ValueChanged;
+            StreetAdd2_TextBox.TextChanged += Control_ValueChanged;
+            City_TextBox.TextChanged += Control_ValueChanged;
+            Zipcode_TextBox.TextChanged += Control_ValueChanged;
+            SSN_TextBox.TextChanged += Control_ValueChanged;
+
+            // Combo box
+            Genders_ComboBox.SelectionChanged += Control_ValueChanged;
+            States_ComboBox.SelectionChanged += Control_ValueChanged;
+        }
+
+        /// <summary>
+        /// Some checkbox in list view is checked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewCheckboxChecked(object sender, RoutedEventArgs e)
+        {
+            // Something is changed
+            IsSaved = false;
+        }
+
+        /// <summary>
+        /// Some checkbox in list view is unchecked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewCheckboxUnChecked(object sender, RoutedEventArgs e)
+        {
+            // Something is changed
+            IsSaved = false;
+        }
+
+        /// <summary>
+        /// Close all child windows
+        /// </summary>
+        private void CloseAllChildWindows()
+        {
+            // Close all child windows
+            for (int i = 0; i < _childWindows.Length; i++)
+            {
+                if (_childWindows[i] != null)
+                {
+                    _childWindows[i].Close();
+                    _childWindows[i] = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Exit button clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -199,6 +339,12 @@ namespace DataVaultWindows
         private void ListView_Drop(object sender, DragEventArgs e)
         {
             string[] droppedFiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (droppedFiles.Length > 0)
+            {
+                // Something is changed
+                IsSaved = false;
+            }
 
             foreach (string path in droppedFiles)
             {
@@ -315,6 +461,9 @@ namespace DataVaultWindows
                     // Refresh all controls
                     RefreshAllControls();
 
+                    // Set the boolean
+                    IsSaved = true;
+
                     ShowMessageBox("Saved!");
                 }
                 else
@@ -376,6 +525,39 @@ namespace DataVaultWindows
         }
 
         /// <summary>
+        /// Text box string changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Control_ValueChanged(object sender, TextChangedEventArgs e)
+        {
+            // Something is changed
+            IsSaved = false;
+        }
+
+        /// <summary>
+        /// Combo box selection changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Control_ValueChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Something is changed
+            IsSaved = false;
+        }
+
+        /// <summary>
+        /// Combo box value changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListViewComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Something is changed
+            IsSaved = false;
+        }
+
+        /// <summary>
         /// Show meesage box
         /// </summary>
         /// <param name="message"></param>
@@ -391,6 +573,15 @@ namespace DataVaultWindows
         private MessageBoxResult ShowMessageBox(string message)
         {
             return MessageBox.Show(this, message, "Data Vault");
+        }
+
+        /// <summary>
+        /// Show message box
+        /// </summary>
+        /// <param name="message"></param>
+        private MessageBoxResult ShowMessageBox(string message, MessageBoxButton button)
+        {
+            return MessageBox.Show(message, "Data Vault", button);
         }
     }
 }
