@@ -8,6 +8,6 @@
         Title="AttachmentWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Height="300" Width="450" MinWidth="450" MinHeight="300">
     <Grid>
         <Image x:Name="Attachment_Image" Margin="10,70,10,10"/>
-        <Button x:Name="Export_Button" Content="Export" Margin="0,16,22,0" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" Click="Export_Button_Clicked"/>
+        <Button x:Name="Export_Button" Content="Export" Margin="0,16,22,0" Height="20" MaxHeight="720" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" MaxWidth="720" Click="Export_Button_Clicked"/>
     </Grid>
 </Window>

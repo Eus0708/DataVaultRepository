@@ -45,7 +45,7 @@ namespace DataVaultWindows
         /// <param name="e"></param>
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-            string input = Password_TextBox.Text;
+            string input = Password_TextBox.Password;
 
             if (null != _dataVaultInterface)
             {
@@ -69,30 +69,30 @@ namespace DataVaultWindows
 
         private void Password_TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = (TextBox)sender;
-            string controlName = tb.Name;
-            string hint = ControlHints.GetHints(controlName);
+            //TextBox tb = (TextBox)sender;
+            //string controlName = tb.Name;
+            //string hint = ControlHints.GetHints(controlName);
 
-            if (tb.Text.Equals(hint))
-                tb.Text = "";
+            //if (tb.Text.Equals(hint))
+            //    tb.Text = "";
 
-            tb.Foreground = Brushes.Black;
+            //tb.Foreground = Brushes.Black;
         }
 
         private void Password_TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = (TextBox)sender;
-            string controlName = tb.Name;
+            //TextBox tb = (TextBox)sender;
+            //string controlName = tb.Name;
 
-            if (tb.Text == "")
-            {
-                tb.Text = ControlHints.GetHints(controlName);
-                tb.Foreground = Brushes.LightGray;
-            }
-            else
-            {
-                tb.Foreground = Brushes.Black;
-            }
+            //if (tb.Text == "")
+            //{
+            //    tb.Text = ControlHints.GetHints(controlName);
+            //    tb.Foreground = Brushes.LightGray;
+            //}
+            //else
+            //{
+            //    tb.Foreground = Brushes.Black;
+            //}
         }
 
         /// <summary>
