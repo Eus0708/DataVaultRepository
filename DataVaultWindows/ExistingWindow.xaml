@@ -5,21 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="ExistingWindow" Height="450" Width="845" ResizeMode="CanResizeWithGrip" MinWidth="845" MinHeight="450" WindowStartupLocation="CenterScreen">
+        Title="ExistingWindow" Height="550" Width="845" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="61*"/>
-            <RowDefinition Height="358*"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="514*"/>
-            <ColumnDefinition Width="323*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListView Margin="10,65,10,10" Name="PersonalInfos_ListView" MouseDoubleClick="ItemDoubleClicked" SelectionMode="Single">
+            <ListView Margin="10,100,10,10" Name="PersonalInfos_ListView" MouseDoubleClick="ItemDoubleClicked" SelectionMode="Single" FontSize="14" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding FullName}" >
@@ -53,12 +51,12 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Button x:Name="NewProfile_Button" Content="New" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="NewProfile_Button_Click"/>
-        <Button x:Name="RemoveProfile_Button" Content="Remove" HorizontalAlignment="Left" Margin="98,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="RemoveProfile_Button_Click"/>
-        <Label Content="Search :" HorizontalAlignment="Left" Margin="3,28,0,0" VerticalAlignment="Top" Height="33" Width="60" FontSize="14" RenderTransformOrigin="0.7,0.545" Grid.Column="1"/>
-        <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="19" Margin="59,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Grid.Column="1" KeyUp="SearchTextBox_KeyUp"/>
-        <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="193,8,0,0" VerticalAlignment="Top" Height="26" Width="106" Grid.Column="1"/>
-        <ComboBox x:Name="SearchCat_ComboBox" HorizontalAlignment="Left" Margin="193,34,0,0" VerticalAlignment="Top" Width="120" Height="22" Grid.Column="1"/>
+        <Button x:Name="NewProfile_Button" Content="New" HorizontalAlignment="Left" Margin="21,26,0,0" VerticalAlignment="Top" Width="98" Height="42" Click="NewProfile_Button_Click" FontSize="14"/>
+        <Button x:Name="RemoveProfile_Button" Content="Remove" HorizontalAlignment="Left" Margin="135,26,0,0" VerticalAlignment="Top" Width="98" Height="42" Click="RemoveProfile_Button_Click" FontSize="14" Background="#FFDDDDDD"/>
+        <Label Content="Search :" HorizontalAlignment="Left" Margin="498,35,0,0" VerticalAlignment="Top" Height="33" Width="66" FontSize="16" RenderTransformOrigin="0.7,0.545" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="28" Margin="569,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" KeyUp="SearchTextBox_KeyUp" FontSize="14" VerticalContentAlignment="Center"/>
+        <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="691,10,0,0" VerticalAlignment="Top" Height="34" Width="134" FontSize="14"/>
+        <ComboBox x:Name="SearchCat_ComboBox" HorizontalAlignment="Left" Margin="697,40,0,0" Width="114" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center"/>
 
     </Grid>
 </Window>
