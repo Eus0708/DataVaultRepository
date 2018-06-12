@@ -733,5 +733,10 @@ namespace DataVaultWindows
         {
             return MessageBox.Show(message, "Data Vault", button);
         }
+
+        private void City_TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
