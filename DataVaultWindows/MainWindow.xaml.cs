@@ -27,11 +27,15 @@ namespace DataVaultWindows
     {
         DataVaultInterface _dataVaultInterface = null;
         PersonalInfo _personalInfo = null;
-        AttachmentWindow[] _childWindows = null;
+        List<AttachmentWindow> _childWindows = null;
         int _personalInfoId = -1;
         List<StateInfo> _states = null;
         List<GenderInfo> _genders = null;
         bool _isSaved = true;
+
+        List<string> _months = null;
+        List<string> _days = null;
+        List<string> _years = null;
 
         public bool IsSaved
         {
@@ -93,32 +97,26 @@ namespace DataVaultWindows
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    // Fill the personal info object
-                    RetrieveDataFromControls();
+                    // Try to save
+                    StatusCode saveResult = SaveData();
 
                     // Save to database
-                    if (_personalInfo != null && _dataVaultInterface != null)
+                    if (saveResult == StatusCode.NO_ERROR)
                     {
-                        StatusCode status = _dataVaultInterface.ModifyPersonalInfo(_personalInfo);
+                        // Successfully saved
+                        // Close all windows
+                        e.Cancel = false;
+                        CloseAllChildWindows();
+                        return;
+                    }
+                    else
+                    {
+                        // Do not close
+                        e.Cancel = true;
 
-                        // Show status
-                        if (status == StatusCode.NO_ERROR)
-                        {
-                            e.Cancel = false;
-
-                            // Close all child windows
-                            CloseAllChildWindows();
-
-                            return;
-                        }
-                        else
-                        {
-                            e.Cancel = true;
-
-                            ShowMessageBox(status);
-
-                            return;
-                        }
+                        // Print status
+                        ShowMessageBox(saveResult);
+                        return;
                     }
                 }
                 else if (result == MessageBoxResult.No)
@@ -142,8 +140,6 @@ namespace DataVaultWindows
 
             // Close all child windows
             CloseAllChildWindows();
-
-            return;
         }
 
         /// <summary>
@@ -180,7 +176,11 @@ namespace DataVaultWindows
 
                 // Create empty child window list. Should be same size as the attachment list
                 int attachmentsCount = _personalInfo.Attachments.Count;
-                _childWindows = new AttachmentWindow[attachmentsCount];
+                _childWindows = new List<AttachmentWindow>();
+                for (int i = 0; i < attachmentsCount; i++)
+                {
+                    _childWindows.Add(null);
+                }
             }
         }
 
@@ -214,6 +214,8 @@ namespace DataVaultWindows
                     });
                 Genders_ComboBox.ItemsSource = _genders;
                 Genders_ComboBox.SelectedIndex = genderIndex;
+                // DOB combo box
+                PopulateDOBComboBox();
 
                 // Text box
                 FirstName_TextBox.Text = _personalInfo.Name.FirstName;
@@ -232,6 +234,75 @@ namespace DataVaultWindows
             }
         }
 
+        private void PopulateDOBComboBox()
+        {
+            // Months
+            _months = new List<string>();
+            _months.Add(" ");
+            for(int i = 1; i < 13; i++)
+            {
+                if (i < 10)
+                {
+                    _months.Add("0" + i);
+                }
+                else
+                {
+                    _months.Add(i.ToString());
+                }
+            }
+
+            // Days
+            _days = new List<string>();
+            _days.Add(" ");
+            for(int i = 1; i < 32; i++)
+            {
+                if (i < 10)
+                {
+                    _days.Add("0" + i);
+                }
+                else
+                {
+                    _days.Add(i.ToString());
+                }
+            }
+
+            // Years
+            int yearIndex = 0;
+            int listIndex = 0;
+            int year = DateTime.Now.Year;
+            _years = new List<string>();
+            _years.Add(" ");
+            while (year > 1899)
+            {
+                listIndex++;
+                if (_personalInfo.DateOfBirth != null && year == _personalInfo.DateOfBirth.Value.Year)
+                {
+                    yearIndex = listIndex;
+                }
+                _years.Add(year.ToString());
+                year--;
+            }
+
+            // Controls
+            Months_ComboBox.ItemsSource = _months;
+            Days_ComboBox.ItemsSource = _days;
+            Years_ComboBox.ItemsSource = _years;
+
+            // Update selected values
+            if (_personalInfo.DateOfBirth == null)
+            {
+                Months_ComboBox.SelectedIndex = 0;
+                Days_ComboBox.SelectedIndex = 0;
+                Years_ComboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                Months_ComboBox.SelectedIndex = _personalInfo.DateOfBirth.Value.Month;
+                Days_ComboBox.SelectedIndex = _personalInfo.DateOfBirth.Value.Day;
+                Years_ComboBox.SelectedIndex = yearIndex;
+            }
+        }
+
         /// <summary>
         /// Setup events for controls
         /// </summary>
@@ -243,7 +314,6 @@ namespace DataVaultWindows
             LastName_TextBox.TextChanged += Control_ValueChanged;
             AreaCode_TextBox.TextChanged += Control_ValueChanged;
             PhoneNumber_TextBox.TextChanged += Control_ValueChanged;
-            DOB_TextBox.TextChanged += Control_ValueChanged;
             StreetAdd1_TextBox.TextChanged += Control_ValueChanged;
             StreetAdd2_TextBox.TextChanged += Control_ValueChanged;
             City_TextBox.TextChanged += Control_ValueChanged;
@@ -253,6 +323,9 @@ namespace DataVaultWindows
             // Combo box
             Genders_ComboBox.SelectionChanged += Control_ValueChanged;
             States_ComboBox.SelectionChanged += Control_ValueChanged;
+            Months_ComboBox.SelectionChanged += Control_ValueChanged;
+            Days_ComboBox.SelectionChanged += Control_ValueChanged;
+            Years_ComboBox.SelectionChanged += Control_ValueChanged;
         }
 
         /// <summary>
@@ -283,7 +356,7 @@ namespace DataVaultWindows
         private void CloseAllChildWindows()
         {
             // Close all child windows
-            for (int i = 0; i < _childWindows.Length; i++)
+            for (int i = 0; i < _childWindows.Count; i++)
             {
                 if (_childWindows[i] != null)
                 {
@@ -348,14 +421,30 @@ namespace DataVaultWindows
 
             foreach (string path in droppedFiles)
             {
-                string filename = GetFileName(path);
-                ShowMessageBox("You dropped " + filename);
+                string fullFilename = GetFileName(path);
+                string filename = GetFileNameWithoutExt(path);
+                string extension = GetExtension(path);
+
+                if (String.Compare(extension, ".jpg", true) != 0)
+                {
+                    ShowMessageBox("Sorry\nYou dropped " + fullFilename + "\nWe only accept \".jpg\" files right now");
+                    continue;
+                }
 
                 // Create a new object and added to the list
                 AttachmentInfo attachment = new AttachmentInfo();
                 attachment.Path = path;
-                attachment.FullFilename = filename;
+                attachment.Filename = filename;
+                attachment.Extension = extension;
+
+                // Preview the image
+                AttachmentWindow attWindow = new AttachmentWindow(attachment);
+                attWindow.ShowDialog();
+
                 _personalInfo.AddAttachment(attachment);
+
+                // Add child window
+                _childWindows.Add(null);
             }
         }
 
@@ -383,6 +472,26 @@ namespace DataVaultWindows
         }
 
         /// <summary>
+        /// Get file name without extension
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string GetFileNameWithoutExt(string path)
+        {
+            return System.IO.Path.GetFileNameWithoutExtension(path);
+        }
+
+        /// <summary>
+        /// Get file extension
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private string GetExtension(string path)
+        {
+            return System.IO.Path.GetExtension(path);
+        }
+
+        /// <summary>
         /// Attachment clicked
         /// </summary>
         /// <param name="sender"></param>
@@ -397,27 +506,17 @@ namespace DataVaultWindows
                 // Get the corresponding item
                 AttachmentInfo attachmentInfo = Attachments_ListView.Items.GetItemAt(index) as AttachmentInfo;
 
-                // databaseId
-                int databaseId = attachmentInfo.Id;
-
-                if (databaseId != -1)
+                // Bring up attachment window
+                if (_childWindows[index] == null)
                 {
-                    // Bring up attachment window
-                    if (_childWindows[index] == null)
-                    {
-                        _childWindows[index] = new AttachmentWindow(_dataVaultInterface, databaseId, index);
-                        _childWindows[index].Closed += OnChildWindowsClosed;
-                        _childWindows[index].Show();
-                    }
-                    else
-                    {
-                        // Bring up the window
-                        _childWindows[index].Focus();
-                    }
+                    _childWindows[index] = new AttachmentWindow(_dataVaultInterface, attachmentInfo, index);
+                    _childWindows[index].Closed += OnChildWindowsClosed;
+                    _childWindows[index].Show();
                 }
                 else
                 {
-                    ShowMessageBox("Please SAVE before opening the image.");
+                    // Bring up the window
+                    _childWindows[index].Focus();
                 }
             }
         }
@@ -433,10 +532,13 @@ namespace DataVaultWindows
 
             int index = attachmentWindow.ChildWindowId;
 
-            if ( index >= 0 && index < _childWindows.Length )
+            if ( index >= 0 && index < _childWindows.Count )
             {
                 // Already closed set it to null
                 _childWindows[index] = null;
+
+                // Enable save button
+                IsSaved = false;
             }
         }
 
@@ -447,15 +549,36 @@ namespace DataVaultWindows
         /// <param name="e"></param>
         private void Save_Button_Clicked(object sender, RoutedEventArgs e)
         {
+            // Save the data
+            StatusCode status = SaveData();
+            if (status != StatusCode.NO_ERROR)
+            {
+                ShowMessageBox(status);
+            }
+        }
+
+        /// <summary>
+        /// Save the data
+        /// </summary>
+        /// <returns></returns>
+        private StatusCode SaveData()
+        {
             // Fill the personal info object
-            RetrieveDataFromControls();
+            StatusCode status = RetrieveDataFromControls();
+
+            if (status != StatusCode.NO_ERROR)
+            {
+                return status;
+            }
 
             // Save to database
             if (_personalInfo != null && _dataVaultInterface != null)
             {
-                StatusCode status = _dataVaultInterface.ModifyPersonalInfo(_personalInfo);
+                // Save to db
+                status = _dataVaultInterface.ModifyPersonalInfo(_personalInfo);
+                _personalInfoId = _personalInfo.Id;
 
-                // Show status
+                // Check result
                 if (status == StatusCode.NO_ERROR)
                 {
                     // Refresh all controls
@@ -465,33 +588,71 @@ namespace DataVaultWindows
                     IsSaved = true;
 
                     ShowMessageBox("Saved!");
+                    return StatusCode.NO_ERROR;
                 }
                 else
                 {
                     ShowMessageBox(status);
                 }
             }
+            return StatusCode.APPLICATION_ERROR;
         }
 
         /// <summary>
         /// Get modified info
         /// </summary>
-        private void RetrieveDataFromControls()
+        private StatusCode RetrieveDataFromControls()
         {
-            if (_personalInfo != null)
+            try
             {
-                _personalInfo.Name.FirstName = FirstName_TextBox.Text.Trim();
-                _personalInfo.Name.MiddleName = MiddleName_TextBox.Text.Trim();
-                _personalInfo.Name.LastName = LastName_TextBox.Text.Trim();
-                _personalInfo.PhoneNumber.AreaCode = AreaCode_TextBox.Text.Trim();
-                _personalInfo.PhoneNumber.PhoneNumber = PhoneNumber_TextBox.Text.Trim();
-                _personalInfo.Address.Address1 = StreetAdd1_TextBox.Text.Trim();
-                _personalInfo.Address.Address2 = StreetAdd2_TextBox.Text.Trim();
-                _personalInfo.Address.City = City_TextBox.Text.Trim();
-                _personalInfo.Address.State = GetComboBoxString(States_ComboBox);
-                _personalInfo.Address.ZipCode = Zipcode_TextBox.Text.Trim();
-                _personalInfo.Gender = GetComboBoxString(Genders_ComboBox);
-                _personalInfo.SSN.SSNNumber = SSN_TextBox.Text.Trim();
+                if (_personalInfo != null)
+                {
+                    _personalInfo.Name.FirstName = FirstName_TextBox.Text.Trim();
+                    _personalInfo.Name.MiddleName = MiddleName_TextBox.Text.Trim();
+                    _personalInfo.Name.LastName = LastName_TextBox.Text.Trim();
+                    _personalInfo.PhoneNumber.AreaCode = AreaCode_TextBox.Text.Trim();
+                    _personalInfo.PhoneNumber.PhoneNumber = PhoneNumber_TextBox.Text.Trim();
+                    _personalInfo.Address.Address1 = StreetAdd1_TextBox.Text.Trim();
+                    _personalInfo.Address.Address2 = StreetAdd2_TextBox.Text.Trim();
+                    _personalInfo.Address.City = City_TextBox.Text.Trim();
+                    _personalInfo.Address.State = GetComboBoxString(States_ComboBox);
+                    _personalInfo.Address.ZipCode = Zipcode_TextBox.Text.Trim();
+                    _personalInfo.Gender = GetComboBoxString(Genders_ComboBox);
+                    _personalInfo.SSN.SSNNumber = SSN_TextBox.Text.Trim();
+
+                    // Date of birth
+                    string mon = (string)Months_ComboBox.SelectedValue;
+                    string day = (string)Days_ComboBox.SelectedValue;
+                    string year = (string)Years_ComboBox.SelectedValue;
+                    if (mon.Equals(" ")
+                        && day.Equals(" ")
+                        && year.Equals(" "))
+                    {
+                        _personalInfo.DateOfBirth = null;
+                    }
+                    else
+                    {
+                        DateTime dateOfBirth;
+                        bool result = DateTime.TryParse(mon + "-" + day + "-" + year, out dateOfBirth);
+                        if (result)
+                        {
+                            _personalInfo.DateOfBirth = dateOfBirth;
+                        }
+                        else
+                        {
+                            return StatusCode.INVALID_DATEOFBIRTH;
+                        }
+                    }
+
+                    return StatusCode.NO_ERROR;
+                }
+
+                return StatusCode.APPLICATION_ERROR;
+            }
+            catch(Exception ex)
+            {
+                ShowMessageBox(ex.Message);
+                return StatusCode.APPLICATION_ERROR;
             }
         }
 
@@ -541,17 +702,6 @@ namespace DataVaultWindows
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Control_ValueChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Something is changed
-            IsSaved = false;
-        }
-
-        /// <summary>
-        /// Combo box value changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ListViewComboboxSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Something is changed
             IsSaved = false;

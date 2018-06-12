@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="AttachmentWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Height="300" Width="450" MinWidth="450" MinHeight="300">
-    <Grid>
-        <Image x:Name="Attachment_Image" Margin="10,70,10,10"/>
-        <Button x:Name="Export_Button" Content="Export" Margin="0,16,22,0" Height="20" MaxHeight="720" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" MaxWidth="720" Click="Export_Button_Clicked"/>
+        Title="AttachmentWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Height="300" Width="450" MinWidth="450" MinHeight="300" MaxHeight="720" MaxWidth="720">
+    <Grid x:Name="MyGrid">
+        <Image x:Name="Attachment_Image" Margin="10,10,140,10"/>
+        <ComboBox x:Name="Category_ComboBox" Text="{Binding AttachmentType}" ItemsSource="{Binding AttachmentTypes}" Margin="0,176,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
+        <TextBox x:Name="Name_TextBox" Text="{Binding Filename}" HorizontalAlignment="Right" Margin="0,56,10,0" Width="120" Height="23" VerticalAlignment="Top"/>
+        <TextBox x:Name="Extension_TextBox" HorizontalAlignment="Right" Margin="0,116,10,0" Width="120" Height="23" VerticalAlignment="Top" IsReadOnly="True"/>
+        <Label Content="Name" HorizontalAlignment="Right" Margin="0,30,88,0" VerticalAlignment="Top"/>
+        <Label Content="Extension" HorizontalAlignment="Right" Margin="0,90,69,0" VerticalAlignment="Top"/>
+        <Label Content="Category" HorizontalAlignment="Right" Margin="0,150,72,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Delete?" IsChecked="{Binding ToBeDelete}" HorizontalAlignment="Right" Margin="0,223,70,31"/>
     </Grid>
 </Window>

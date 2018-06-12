@@ -10,8 +10,8 @@ namespace SystemCommon
     [Serializable]
     public class PhoneNumberInfo : ISerializable
     {
-        string _areaCode = null;
-        string _phoneNumber = null;
+        string _areaCode = String.Empty;
+        string _phoneNumber = String.Empty;
 
         public string AreaCode
         {

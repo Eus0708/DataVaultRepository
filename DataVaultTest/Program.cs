@@ -25,11 +25,19 @@ namespace DataVaultTest
             Seperator();
             Test4();
 
-            Test26();
+            Test27();
 
             db.CloseConnection();
             Console.Read();
             //Console.WriteLine("Done DataVault Test");
+        }
+
+        static void Test27()
+        {
+            string date = "02/03/1992";
+            DateTime result = DateTime.Now;
+            bool boolResult = DateTime.TryParse(date, out result);
+            Console.WriteLine(boolResult + " " + result);
         }
 
         static void Test26()
@@ -200,7 +208,8 @@ namespace DataVaultTest
             AttachmentInfo attach = new AttachmentInfo();
             attach.Id = 0;
             attach.Path = @"\Path\Images";
-            attach.FullFilename = "attach.jpg";
+            attach.Filename = "attach";
+            attach.Extension = ".jpg";
             attach.Type = "Passport";
             db.SaveAttachmentInfo(0, attach);
         }
@@ -210,7 +219,8 @@ namespace DataVaultTest
         {
             AttachmentInfo attach = new AttachmentInfo();
             attach.Path = @"\Path\Images";
-            attach.FullFilename = "attach.jpg";
+            attach.Filename = "attach";
+            attach.Extension = ".jpg";
             attach.Type = "Passport";
             db.SaveAttachmentInfo(1, attach);
         }

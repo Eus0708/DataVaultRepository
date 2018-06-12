@@ -17,7 +17,7 @@ namespace SystemCommon
         PhoneNumberInfo _phoneNumber = null;
         AddressInfo _address = null;
         SSNNumberInfo _ssn = null;
-        string _gender = null;
+        string _gender = String.Empty;
         DateTime? _dateOfBirth = null;
         DateTime? _dateCreated = null;
         DateTime? _dateModified = null;
@@ -317,7 +317,8 @@ namespace SystemCommon
                 -1,
                 attachment.Type,
                 attachment.Path,
-                attachment.FullFilename
+                attachment.Filename,
+                attachment.Extension
                 ));
         }
     }

@@ -17,7 +17,7 @@
         <Label Content="Key" HorizontalAlignment="Left" Margin="431,92,0,0" VerticalAlignment="Top" Height="49" Width="90" FontSize="20" RenderTransformOrigin="0.733,0.386" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Label Content="DataVault" HorizontalAlignment="Left" Margin="124,47,0,0" VerticalAlignment="Top" Height="53" Width="112" FontFamily="Segoe UI Semilight" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Image HorizontalAlignment="Left" Height="264" Margin="49,105,0,0" VerticalAlignment="Top" Width="264" Source="Resources/1234.png"/>
-        <PasswordBox x:Name="Password_TextBox" HorizontalAlignment="Left" Height="32" Margin="376,164,0,0" VerticalAlignment="Top" Width="211" GotFocus="Password_TextBox_GotFocus" LostFocus="Password_TextBox_LostFocus" Foreground="DimGray" TextOptions.TextHintingMode="Fixed" FontSize="14" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <PasswordBox x:Name="Password_TextBox" HorizontalAlignment="Left" Height="32" Margin="376,164,0,0" VerticalAlignment="Top" Width="211" Foreground="DimGray" TextOptions.TextHintingMode="Fixed" FontSize="14" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" KeyUp="PasswordTextBox_KeyUp"/>
 
     </Grid>
 </Window>

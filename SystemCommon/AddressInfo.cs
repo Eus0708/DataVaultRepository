@@ -10,11 +10,11 @@ namespace SystemCommon
     [Serializable]
     public class AddressInfo : ISerializable
     {
-        string _address1 = null;
-        string _address2 = null;
-        string _zipCode = null;
-        string _city = null;
-        string _state = null;
+        string _address1 = String.Empty;
+        string _address2 = String.Empty;
+        string _zipCode = String.Empty;
+        string _city = String.Empty;
+        string _state = String.Empty;
 
         public string Address1
         {

@@ -11,7 +11,7 @@ namespace SystemCommon
     public class GenderInfo : ISerializable
     {
         int _id = -1;
-        string _gender = null;
+        string _gender = String.Empty;
 
         public int Id
         {

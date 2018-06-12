@@ -10,9 +10,9 @@ namespace SystemCommon
     [Serializable]
     public class NameInfo : ISerializable
     {
-        string _firstName = null;
-        string _middleName = null;
-        string _lastName = null;
+        string _firstName = String.Empty;
+        string _middleName = String.Empty;
+        string _lastName = String.Empty;
 
         public string FirstName
         {
@@ -34,7 +34,17 @@ namespace SystemCommon
 
         public string FullName
         {
-            get { return _firstName + " " + _middleName + " " + _lastName; }
+            get
+            {
+                if (_firstName.Equals(String.Empty)
+                    && _middleName.Equals(String.Empty)
+                    && _lastName.Equals(String.Empty))
+                {
+                    return "***Empty Name***";
+                }
+
+                return _firstName + " " + _middleName + " " + _lastName;
+            }
         }
 
         public string FullNameWithoutMiddle

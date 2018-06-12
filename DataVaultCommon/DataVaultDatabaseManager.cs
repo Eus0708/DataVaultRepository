@@ -336,7 +336,10 @@ namespace DataVaultCommon
                 {
                     attachment.Id = reader.GetInt32(0);
                     attachment.Type = SafeGetString(reader, 1);
-                    attachment.FullFilename = SafeGetString(reader, 2);
+                    
+                    string fullFilename = SafeGetString(reader, 2);
+                    attachment.Filename = Path.GetFileNameWithoutExtension(fullFilename);
+                    attachment.Extension = Path.GetExtension(fullFilename);
                 }
             }
             finally
@@ -571,7 +574,10 @@ namespace DataVaultCommon
             {
                 if (personalInfo.Id == -1)
                 {
-                    AddPersonalInfo(personalInfo);
+                    int id = AddPersonalInfo(personalInfo);
+
+                    // Update the id
+                    personalInfo.Id = id;
                 }
                 else
                 {
@@ -580,9 +586,12 @@ namespace DataVaultCommon
             }
 
             // Update Attachments
-            foreach (AttachmentInfo attachment in personalInfo.Attachments)
+            if (personalInfo.Id != -1)
             {
-                SaveAttachmentInfo(personalInfo.Id, attachment);
+                foreach (AttachmentInfo attachment in personalInfo.Attachments)
+                {
+                    SaveAttachmentInfo(personalInfo.Id, attachment);
+                }
             }
         }
 
@@ -590,14 +599,15 @@ namespace DataVaultCommon
         /// Insert a person
         /// </summary>
         /// <param name="personalInfo"></param>
-        public void AddPersonalInfo(PersonalInfo personalInfo)
+        /// <returns></returns>
+        public int AddPersonalInfo(PersonalInfo personalInfo)
         {
             string queryString = "InsertPersonalInfo";
 
             // Check connection and input
             if (_connection == null || personalInfo == null)
             {
-                return;
+                return -1;
             }
 
             OpenConnection();
@@ -605,6 +615,7 @@ namespace DataVaultCommon
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
             
+            // Input vars
             command.Parameters.AddWithValue("@FirstName", personalInfo.Name.FirstName);
             command.Parameters.AddWithValue("@MiddleName", personalInfo.Name.MiddleName);
             command.Parameters.AddWithValue("@LastName", personalInfo.Name.LastName);
@@ -621,9 +632,18 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@DateCreated", DateTime.Now);
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
+            // Output vars
+            command.Parameters.Add("@PersonalId", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+            // Exec
             command.ExecuteNonQuery();
 
+            // Get output
+            int personalId = (int)command.Parameters["@PersonalId"].Value;
+
             CloseConnection();
+
+            return personalId;
         }
 
         /// <summary>

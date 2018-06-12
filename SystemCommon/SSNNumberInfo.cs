@@ -10,7 +10,7 @@ namespace SystemCommon
     [Serializable]
     public class SSNNumberInfo : ISerializable
     {
-        string _ssnNumber = null;
+        string _ssnNumber = String.Empty;
 
         public string SSNNumber
         {

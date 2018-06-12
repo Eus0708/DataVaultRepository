@@ -39,11 +39,51 @@ namespace DataVaultWindows
         }
 
         /// <summary>
-        /// 
+        /// Login button clicked
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Login_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Login();
+        }
+
+        /// <summary>
+        /// Show meesage box
+        /// </summary>
+        /// <param name="message"></param>
+        private MessageBoxResult ShowMessageBox(StatusCode status)
+        {
+            return MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
+        }
+
+        /// <summary>
+        /// Show message box
+        /// </summary>
+        /// <param name="message"></param>
+        private MessageBoxResult ShowMessageBox(string message)
+        {
+            return MessageBox.Show(this, message, "Data Vault");
+        }
+
+        /// <summary>
+        /// Keyboard key up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PasswordTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Enter key pressed
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                Login();
+            }
+        }
+
+        /// <summary>
+        /// Log in
+        /// </summary>
+        private void Login()
         {
             string input = Password_TextBox.Password;
 
@@ -65,52 +105,6 @@ namespace DataVaultWindows
                     ShowMessageBox(status);
                 }
             }
-        }
-
-        private void Password_TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //TextBox tb = (TextBox)sender;
-            //string controlName = tb.Name;
-            //string hint = ControlHints.GetHints(controlName);
-
-            //if (tb.Text.Equals(hint))
-            //    tb.Text = "";
-
-            //tb.Foreground = Brushes.Black;
-        }
-
-        private void Password_TextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //TextBox tb = (TextBox)sender;
-            //string controlName = tb.Name;
-
-            //if (tb.Text == "")
-            //{
-            //    tb.Text = ControlHints.GetHints(controlName);
-            //    tb.Foreground = Brushes.LightGray;
-            //}
-            //else
-            //{
-            //    tb.Foreground = Brushes.Black;
-            //}
-        }
-
-        /// <summary>
-        /// Show meesage box
-        /// </summary>
-        /// <param name="message"></param>
-        private MessageBoxResult ShowMessageBox(StatusCode status)
-        {
-            return MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
-        }
-
-        /// <summary>
-        /// Show message box
-        /// </summary>
-        /// <param name="message"></param>
-        private MessageBoxResult ShowMessageBox(string message)
-        {
-            return MessageBox.Show(this, message, "Data Vault");
         }
     }
 }

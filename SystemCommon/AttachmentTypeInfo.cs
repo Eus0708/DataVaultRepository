@@ -11,7 +11,7 @@ namespace SystemCommon
     public class AttachmentTypeInfo : ISerializable
     {
         int _id = -1;
-        string _attachmentType = null;
+        string _attachmentType = String.Empty;
 
         public int Id
         {
