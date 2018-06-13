@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="Login" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="DataVault" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFA4D2DC">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -13,11 +13,11 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="792"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="Login_Button" Content="Login" HorizontalAlignment="Left" Margin="431,250,0,0" VerticalAlignment="Top" Width="90" Height="42" Click="Login_Button_Click" FontSize="18" Background="#FFFF9696" BorderBrush="#FFBD3D3D"/>
-        <Label Content="Key" HorizontalAlignment="Left" Margin="431,92,0,0" VerticalAlignment="Top" Height="49" Width="90" FontSize="20" RenderTransformOrigin="0.733,0.386" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Label Content="DataVault" HorizontalAlignment="Left" Margin="124,47,0,0" VerticalAlignment="Top" Height="53" Width="112" FontFamily="Segoe UI Semilight" FontSize="24" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <Image HorizontalAlignment="Left" Height="264" Margin="49,105,0,0" VerticalAlignment="Top" Width="264" Source="Resources/1234.png"/>
-        <PasswordBox x:Name="Password_TextBox" HorizontalAlignment="Left" Height="32" Margin="376,164,0,0" VerticalAlignment="Top" Width="211" Foreground="DimGray" TextOptions.TextHintingMode="Fixed" FontSize="14" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" KeyUp="PasswordTextBox_KeyUp"/>
+        <Button x:Name="Login_Button" Content="Login" HorizontalAlignment="Left" Margin="468,280,0,0" VerticalAlignment="Top" Width="102" Height="42" Click="Login_Button_Click" FontSize="18" Background="#FFFF9696" BorderBrush="{x:Null}" FontFamily="Segoe UI Black" Foreground="#FF590101"/>
+        <Label Content="Enter Password" HorizontalAlignment="Left" Margin="443,176,0,0" VerticalAlignment="Top" Height="49" Width="156" FontSize="20" RenderTransformOrigin="1.051,1.265" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label Content="DataVault" HorizontalAlignment="Center" Margin="253,59,254,0" VerticalAlignment="Top" Height="53" Width="286" FontFamily="Segoe UI Black" FontSize="40" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Image HorizontalAlignment="Left" Height="320" Margin="76,117,0,-16" VerticalAlignment="Top" Width="320" Source="Resources/1234.png"/>
+        <PasswordBox x:Name="Password_TextBox" HorizontalAlignment="Left" Height="32" Margin="415,222,0,0" VerticalAlignment="Top" Width="211" Foreground="DimGray" TextOptions.TextHintingMode="Fixed" FontSize="14" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" KeyUp="PasswordTextBox_KeyUp" BorderBrush="{x:Null}"/>
 
     </Grid>
 </Window>

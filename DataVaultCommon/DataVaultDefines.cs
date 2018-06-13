@@ -12,7 +12,7 @@ namespace DataVaultCommon
 #if DEBUG
         public static string AppPassword = "123";
 #else
-        public static string AppPassword = "ddtaVll000";
+        public static string AppPassword = "ddtav666";
 #endif
 
         public static int MaxStringLength = 100;

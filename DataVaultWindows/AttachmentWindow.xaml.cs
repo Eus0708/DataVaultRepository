@@ -202,6 +202,9 @@ namespace DataVaultWindows
 
                 Attachment_Image.Source = bitmapImage;
             }
+
+            // Combo box
+            Category_ComboBox.ItemsSource = AttachmentTypes;
         }
 
         /// <summary>
@@ -245,6 +248,16 @@ namespace DataVaultWindows
         private MessageBoxResult ShowMessageBox(string message)
         {
             return MessageBox.Show(this, message, "Data Vault");
+        }
+
+        /// <summary>
+        /// Close
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Close_Button_Clicked(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

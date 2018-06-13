@@ -5,53 +5,53 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="850" MinWidth="800" MinHeight="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid>
-        <ListView Margin="476,36,18.2,112.8" Name="Attachments_ListView" MouseDoubleClick="ItemDoubleClicked" Drop="ListView_Drop" DragEnter="ListView_DragEnter" AllowDrop="True" SelectionMode="Single" FontSize="14">
+        Title="DataVault" Height="520" Width="850" MinWidth="800" MinHeight="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FFA4D2DC">
+        <ListView Margin="476,36,32,81" Name="Attachments_ListView" MouseDoubleClick="ItemDoubleClicked" Drop="ListView_Drop" DragEnter="ListView_DragEnter" AllowDrop="True" SelectionMode="Single" FontSize="14">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Delete?" Width="50">
+                    <GridViewColumn Header="Delete?" Width="60">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <CheckBox IsChecked="{Binding ToBeDelete}" Checked="ListViewCheckboxChecked" Unchecked="ListViewCheckboxUnChecked" IsEnabled="False" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Filename" Width="100" DisplayMemberBinding="{Binding Filename}" />
+                    <GridViewColumn Header="Filename" Width="120" DisplayMemberBinding="{Binding Filename}" />
                     <GridViewColumn Header="Ext." Width="50" DisplayMemberBinding="{Binding Extension}" />
                     <GridViewColumn Header="Category" Width="100" DisplayMemberBinding="{Binding Type}" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="Save_Button" Content="Save" HorizontalAlignment="Left" Margin="502,460,0,0" VerticalAlignment="Top" Width="105" Click="Save_Button_Clicked" Height="41" FontSize="18" IsEnabled="false" />
-        <Button x:Name="Exit_Button" Content="Exit" HorizontalAlignment="Left" Margin="673,460,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.737,-2.651" Click="Exit_Button_Click" Height="41" FontSize="18"/>
-        <TextBox x:Name="FirstName_TextBox" HorizontalAlignment="Left" Height="29" Margin="113,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" SpellCheck.IsEnabled="True" Background="White" VerticalContentAlignment="Center" MaxLength="100"  />
-        <TextBox x:Name="MiddleName_TextBox" HorizontalAlignment="Left" Height="29" Margin="131,88,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="93" VerticalContentAlignment="Center" MaxLength="100"  />
-        <TextBox x:Name="LastName_TextBox" HorizontalAlignment="Left" Height="29" Margin="325,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="117" VerticalContentAlignment="Center" MaxLength="100" />
-        <TextBox x:Name="AreaCode_TextBox" HorizontalAlignment="Left" Height="30" Margin="87,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" VerticalContentAlignment="Center" MaxLength="3" />
-        <TextBox x:Name="PhoneNumber_TextBox" HorizontalAlignment="Left" Height="30" Margin="165,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="99" VerticalContentAlignment="Center" MaxLength="7" />
-        <Label Content="-" HorizontalAlignment="Left" Margin="143,131,0,0" VerticalAlignment="Top" Height="30" Width="24" Foreground="#FF080101" FontWeight="Bold"/>
-        <TextBox x:Name="StreetAdd1_TextBox" HorizontalAlignment="Left" Height="27" Margin="109,224,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="322" VerticalContentAlignment="Center" MaxLength="100" />
-        <TextBox x:Name="StreetAdd2_TextBox" HorizontalAlignment="Left" Height="29" Margin="109,266,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="322" VerticalContentAlignment="Center" MaxLength="100" />
-        <TextBox x:Name="City_TextBox" HorizontalAlignment="Left" Height="29" Margin="69,314,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" VerticalContentAlignment="Center" MaxLength="100" />
-        <TextBox x:Name="Zipcode_TextBox" HorizontalAlignment="Left" Height="30" Margin="412,313,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="46" VerticalContentAlignment="Center" MaxLength="5" />
-        <TextBox x:Name="SSN_TextBox" HorizontalAlignment="Left" Height="30" Margin="71,367,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" VerticalContentAlignment="Center" MaxLength="9" />
-        <ComboBox x:Name="Genders_ComboBox" HorizontalAlignment="Left" Margin="308,85,0,0" VerticalAlignment="Top" Width="70" Height="30" VerticalContentAlignment="Center" />
-        <ComboBox x:Name="States_ComboBox" HorizontalAlignment="Left" Margin="240,314,0,0" VerticalAlignment="Top" Width="95" Height="31" VerticalContentAlignment="Center" FontSize="14" />
-        <ComboBox x:Name="Months_ComboBox" HorizontalAlignment="Left" Margin="87,175,0,0" VerticalAlignment="Top" Width="69" Height="30" VerticalContentAlignment="Center" />
-        <ComboBox x:Name="Days_ComboBox" HorizontalAlignment="Left" Margin="165,175,0,0" VerticalAlignment="Top" Width="69" Height="30" VerticalContentAlignment="Center" />
-        <ComboBox x:Name="Years_ComboBox" HorizontalAlignment="Left" Margin="241,175,0,0" VerticalAlignment="Top" Width="96" Height="30" VerticalContentAlignment="Center" />
-        <Label x:Name="FirstName_Label" Content="First Name:" HorizontalAlignment="Left" Margin="30,43,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="83"/>
-        <Label x:Name="MiddleName_Label" Content="Middle Name:" HorizontalAlignment="Left" Margin="30,88,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="99"/>
-        <Label x:Name="LastName_Label" Content="Last Name:" HorizontalAlignment="Left" Margin="243,43,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="80"/>
-        <Label x:Name="Phone_Label" Content="Phone:" HorizontalAlignment="Left" Margin="30,131,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="55"/>
-        <Label x:Name="Genders_Label" Content="Gender" HorizontalAlignment="Left" Margin="247,88,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="56"/>
-        <Label x:Name="DOB_Label" Content="DOB" HorizontalAlignment="Left" Margin="30,175,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="39"/>
-        <Label x:Name="Address1_Label" Content="Address 1:" HorizontalAlignment="Left" Margin="30,224,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="76"/>
-        <Label x:Name="Address2_Label" Content="Address 2:" HorizontalAlignment="Left" Margin="30,266,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="27" Width="76"/>
-        <Label x:Name="City_Label" Content="City:" HorizontalAlignment="Left" Margin="28,314,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="39"/>
-        <Label x:Name="States_Label" Content="State" HorizontalAlignment="Left" Margin="195,314,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="42"/>
-        <Label x:Name="Zipcode_Label" Content="Zipcode:" HorizontalAlignment="Left" Margin="347,314,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="65"/>
-        <Label x:Name="SSN_Label" Content="SSN:" HorizontalAlignment="Left" Margin="25,368,0,0" VerticalAlignment="Top" FontWeight="Bold" Height="28" Width="41"/>
+        <Button x:Name="Save_Button" Content="Save" HorizontalAlignment="Left" Margin="521,427,0,0" VerticalAlignment="Top" Width="105" Click="Save_Button_Clicked" Height="41" FontSize="20" IsEnabled="false" Background="#FFD7F8FF" Foreground="#FF003946" BorderBrush="{x:Null}" FontFamily="Segoe UI Black" />
+        <Button x:Name="Exit_Button" Content="Exit" HorizontalAlignment="Left" Margin="660,427,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="0.737,-2.651" Click="Exit_Button_Click" Height="41" FontSize="20" Background="#FFD7F8FF" Foreground="#FF003946" BorderBrush="{x:Null}" FontFamily="Segoe UI Black"/>
+        <TextBox x:Name="FirstName_TextBox" HorizontalAlignment="Left" Height="29" Margin="30,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" SpellCheck.IsEnabled="True" Background="White" VerticalContentAlignment="Center" MaxLength="100" Padding="5" BorderBrush="{x:Null}" />
+        <TextBox x:Name="MiddleName_TextBox" HorizontalAlignment="Left" Height="29" Margin="195,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="93" VerticalContentAlignment="Center" MaxLength="100" Padding="5" BorderBrush="{x:Null}"  />
+        <TextBox x:Name="LastName_TextBox" HorizontalAlignment="Left" Height="29" Margin="293,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="149" VerticalContentAlignment="Center" MaxLength="100" Padding="5" BorderBrush="{x:Null}" />
+        <TextBox x:Name="AreaCode_TextBox" HorizontalAlignment="Left" Height="30" Margin="30,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center" MaxLength="3" BorderBrush="{x:Null}" />
+        <TextBox x:Name="PhoneNumber_TextBox" HorizontalAlignment="Left" Height="30" Margin="96,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="111" VerticalContentAlignment="Center" MaxLength="7" BorderBrush="{x:Null}" />
+        <Label Content="-" HorizontalAlignment="Left" Margin="82,135,0,0" VerticalAlignment="Top" Height="30" Width="14" Foreground="#FF080101" FontWeight="Bold" FontSize="14"/>
+        <TextBox x:Name="StreetAdd1_TextBox" HorizontalAlignment="Left" Height="27" Margin="30,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" VerticalContentAlignment="Center" MaxLength="100" BorderBrush="{x:Null}" />
+        <TextBox x:Name="StreetAdd2_TextBox" HorizontalAlignment="Left" Height="29" Margin="30,343,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="412" VerticalContentAlignment="Center" MaxLength="100" BorderBrush="{x:Null}" />
+        <TextBox x:Name="City_TextBox" HorizontalAlignment="Left" Height="29" Margin="30,405,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="118" VerticalContentAlignment="Center" MaxLength="100" BorderBrush="{x:Null}" />
+        <TextBox x:Name="Zipcode_TextBox" HorizontalAlignment="Left" Height="30" Margin="323,406,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="119" VerticalContentAlignment="Center" MaxLength="5" BorderBrush="{x:Null}" />
+        <TextBox x:Name="SSN_TextBox" HorizontalAlignment="Left" Height="30" Margin="225,135,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="129" VerticalContentAlignment="Center" MaxLength="9" BorderBrush="{x:Null}" />
+        <ComboBox x:Name="Genders_ComboBox" HorizontalAlignment="Left" Margin="372,135,0,0" VerticalAlignment="Top" Width="70" Height="30" VerticalContentAlignment="Center" />
+        <ComboBox x:Name="States_ComboBox" HorizontalAlignment="Left" Margin="187,405,0,0" VerticalAlignment="Top" Width="95" Height="31" VerticalContentAlignment="Center" FontSize="14" />
+        <ComboBox x:Name="Months_ComboBox" HorizontalAlignment="Left" Margin="30,208,0,0" VerticalAlignment="Top" Width="69" Height="30" VerticalContentAlignment="Center" />
+        <ComboBox x:Name="Days_ComboBox" HorizontalAlignment="Left" Margin="104,208,0,0" VerticalAlignment="Top" Width="69" Height="30" VerticalContentAlignment="Center" />
+        <ComboBox x:Name="Years_ComboBox" HorizontalAlignment="Left" Margin="178,208,0,0" VerticalAlignment="Top" Width="96" Height="30" VerticalContentAlignment="Center" />
+        <Label x:Name="FirstName_Label" Content="First Name" HorizontalAlignment="Left" Margin="34,36,0,0" VerticalAlignment="Top" Height="28" Width="83" FontWeight="Bold" Foreground="#FF003946"/>
+        <Label x:Name="MiddleName_Label" Content="Middle Name" HorizontalAlignment="Left" Margin="198,36,0,0" VerticalAlignment="Top" Height="28" Width="99" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="LastName_Label" Content="Last Name" HorizontalAlignment="Left" Margin="294,36,0,0" VerticalAlignment="Top" Height="28" Width="80" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="Phone_Label" Content="Phone Number" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Height="28" Width="103" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="Genders_Label" Content="Gender" HorizontalAlignment="Left" Margin="372,110,0,0" VerticalAlignment="Top" Height="28" Width="56" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="DOB_Label" Content="Date of Birth" HorizontalAlignment="Left" Margin="30,183,0,0" VerticalAlignment="Top" Height="28" Width="79" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="Address1_Label" Content="Address 1" HorizontalAlignment="Left" Margin="30,258,0,0" VerticalAlignment="Top" Height="28" Width="76" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="Address2_Label" Content="Address 2" HorizontalAlignment="Left" Margin="30,319,0,0" VerticalAlignment="Top" Height="27" Width="76" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="City_Label" Content="City" HorizontalAlignment="Left" Margin="30,380,0,0" VerticalAlignment="Top" Height="28" Width="39" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="States_Label" Content="State" HorizontalAlignment="Left" Margin="187,380,0,0" VerticalAlignment="Top" Height="28" Width="42" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="Zipcode_Label" Content="Zipcode" HorizontalAlignment="Left" Margin="323,380,0,0" VerticalAlignment="Top" Height="28" Width="65" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="SSN_Label" Content="SSN&#xD;&#xA;" HorizontalAlignment="Left" Margin="225,110,0,0" VerticalAlignment="Top" Height="28" Width="33" Foreground="#FF003946" FontWeight="Bold"/>
     </Grid>
 </Window>

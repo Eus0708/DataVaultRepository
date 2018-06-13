@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="AttachmentWindow" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Height="300" Width="450" MinWidth="450" MinHeight="300" MaxHeight="720" MaxWidth="720">
-    <Grid x:Name="MyGrid">
+        Title="DataVault" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" Height="300" Width="450" MinWidth="450" MinHeight="350" MaxHeight="720" MaxWidth="720">
+    <Grid x:Name="MyGrid" Background="#FFA4D2DC">
         <Image x:Name="Attachment_Image" Margin="10,10,140,10"/>
-        <ComboBox x:Name="Category_ComboBox" Text="{Binding AttachmentType}" ItemsSource="{Binding AttachmentTypes}" Margin="0,176,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120"/>
-        <TextBox x:Name="Name_TextBox" Text="{Binding Filename}" HorizontalAlignment="Right" Margin="0,56,10,0" Width="120" Height="23" VerticalAlignment="Top"/>
-        <TextBox x:Name="Extension_TextBox" HorizontalAlignment="Right" Margin="0,116,10,0" Width="120" Height="23" VerticalAlignment="Top" IsReadOnly="True"/>
-        <Label Content="Name" HorizontalAlignment="Right" Margin="0,30,88,0" VerticalAlignment="Top"/>
-        <Label Content="Extension" HorizontalAlignment="Right" Margin="0,90,69,0" VerticalAlignment="Top"/>
-        <Label Content="Category" HorizontalAlignment="Right" Margin="0,150,72,0" VerticalAlignment="Top"/>
-        <CheckBox Content="Delete?" IsChecked="{Binding ToBeDelete}" HorizontalAlignment="Right" Margin="0,223,70,31"/>
+        <ComboBox x:Name="Category_ComboBox" SelectedValue="{Binding AttachmentType}" ItemsSource="{Binding AttachmentTypes}" Margin="0,176,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="120" SelectedValuePath="AttachmentType" DisplayMemberPath="AttachmentType" />
+        <TextBox x:Name="Name_TextBox" Text="{Binding Filename}" HorizontalAlignment="Right" Margin="0,56,10,0" Width="120" Height="23" VerticalAlignment="Top" BorderBrush="{x:Null}"/>
+        <TextBox x:Name="Extension_TextBox" HorizontalAlignment="Right" Margin="0,116,10,0" Width="120" Height="23" VerticalAlignment="Top" IsReadOnly="True" BorderBrush="{x:Null}"/>
+        <Label Content="Name" HorizontalAlignment="Right" Margin="0,30,88,0" VerticalAlignment="Top" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label Content="Extension" HorizontalAlignment="Right" Margin="0,90,69,0" VerticalAlignment="Top" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label Content="Category" HorizontalAlignment="Right" Margin="0,150,72,0" VerticalAlignment="Top" Foreground="#FF003946" FontWeight="Bold"/>
+        <CheckBox Content="Delete?" IsChecked="{Binding ToBeDelete}" HorizontalAlignment="Right" Margin="0,223,70,0" Height="16" VerticalAlignment="Top" Foreground="#FF003946" FontWeight="Bold"/>
+        <Button x:Name="Close_Button" Content="Close" HorizontalAlignment="Right" Margin="0,259,20,0" VerticalAlignment="Top" Width="101" Click="Close_Button_Clicked" Height="39" FontSize="20" FontFamily="Segoe UI Black" Foreground="#FF003946" BorderBrush="{x:Null}" Background="#FFD7F8FF"/>
     </Grid>
 </Window>

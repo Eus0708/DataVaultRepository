@@ -80,7 +80,6 @@ namespace DataVaultWindows
 
             // Setup windown events
             this.Closing += WindowClosing;
-            this.Closed += WindowClosed;
         }
 
         /// <summary>
@@ -107,6 +106,9 @@ namespace DataVaultWindows
                         // Close all windows
                         e.Cancel = false;
                         CloseAllChildWindows();
+
+                        // Back to existing window
+                        new ExistingWindow(_dataVaultInterface).Show();
                         return;
                     }
                     else
@@ -126,6 +128,9 @@ namespace DataVaultWindows
                     // Close all child windows
                     CloseAllChildWindows();
 
+                    // Back to existing window
+                    new ExistingWindow(_dataVaultInterface).Show();
+
                     return;
                 }
                 else if (result == MessageBoxResult.Cancel)
@@ -140,17 +145,9 @@ namespace DataVaultWindows
 
             // Close all child windows
             CloseAllChildWindows();
-        }
 
-        /// <summary>
-        /// Go back to existing window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void WindowClosed(object sender, EventArgs e)
-        {
-            ExistingWindow existingWindow = new ExistingWindow(_dataVaultInterface);
-            existingWindow.Show();
+            // Back to existing window
+            new ExistingWindow(_dataVaultInterface).Show();
         }
 
         /// <summary>
@@ -234,6 +231,9 @@ namespace DataVaultWindows
             }
         }
 
+        /// <summary>
+        /// Populate DOB ComboBox
+        /// </summary>
         private void PopulateDOBComboBox()
         {
             // Months
@@ -374,34 +374,6 @@ namespace DataVaultWindows
         private void Exit_Button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            string controlName = tb.Name;
-            string hint = ControlHints.GetHints(controlName);
-
-            if (tb.Text.Equals(hint))
-                tb.Text = "";
-
-            tb.Foreground = Brushes.Black;
-        }
-
-        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            string controlName = tb.Name;
-
-            if (tb.Text == "")
-            {
-                tb.Text = ControlHints.GetHints(controlName);
-                tb.Foreground = Brushes.LightGray;
-            }
-            else
-            {
-                tb.Foreground = Brushes.Black;
-            }
         }
 
         /// <summary>
@@ -732,11 +704,6 @@ namespace DataVaultWindows
         private MessageBoxResult ShowMessageBox(string message, MessageBoxButton button)
         {
             return MessageBox.Show(message, "Data Vault", button);
-        }
-
-        private void City_TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

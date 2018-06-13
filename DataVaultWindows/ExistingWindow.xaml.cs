@@ -82,6 +82,11 @@ namespace DataVaultWindows
             PersonalInfos_ListView.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
         }
 
+        /// <summary>
+        /// NewProfile_Button_Click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NewProfile_Button_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = new MainWindow(_dataVaultInterface);
