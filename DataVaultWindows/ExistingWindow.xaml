@@ -1,24 +1,63 @@
-﻿<Window x:Class="DataVaultWindows.ExistingWindow"
+﻿<Window x:Name="ExistingProfile" x:Class="DataVaultWindows.ExistingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DataVaultWindows"
         mc:Ignorable="d"
-        Title="ExistingWindow" Height="450" Width="800">
+        Title="DataVault" Height="550" Width="845" ResizeMode="NoResize"  WindowStartupLocation="CenterScreen">
     <Grid>
-        <DataGrid x:Name="Data_Grid" HorizontalAlignment="Left" Height="319" Margin="32,74,0,0" VerticalAlignment="Top" Width="732"/>
-        <Button x:Name="Home_Button" Content="Home" HorizontalAlignment="Left" Margin="21,20,0,0" VerticalAlignment="Top" Width="72" Height="33" Click="Home_Button_Click"/>
-        <Label Content="Search :" HorizontalAlignment="Left" Margin="381,28,0,0" VerticalAlignment="Top" Height="33" Width="60" FontSize="14" RenderTransformOrigin="0.7,0.545"/>
-        <TextBox x:Name="Text_Box_Search" HorizontalAlignment="Left" Height="19" Margin="441,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Text="aaa"/>
-        <Label Content="Search Catergoy : " HorizontalAlignment="Left" Margin="586,8,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="586,34,0,0" VerticalAlignment="Top" Width="120">
-            <ComboBoxItem Content="Date of Birth" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="SSN" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="First Name" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Last Name" HorizontalAlignment="Left" Width="118"/>
-            <ComboBoxItem Content="Phone Number" HorizontalAlignment="Left" Width="118"/>
-        </ComboBox>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid Background="#FFA4D2DC">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListView Margin="10,100,10,10" Name="PersonalInfos_ListView" MouseDoubleClick="ItemDoubleClicked" SelectionMode="Single" FontSize="14" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding FullName}" Width="150">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Name" Tag="FullName" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Gender}" Width="60">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Gender" Tag="Gender" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding DateOfBirthWithoutTime}" Width="120" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Date of Birth" Tag="DateOfBirthWithoutTime" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding PhoneNumber}" Width="120">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="Phone Number" Tag="FullPhoneNumber" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding SSN}" Width="120" >
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Content="SSN" Tag="FullSSN" Click="ColumnHeader_Click"/>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Created" DisplayMemberBinding="{Binding DateCreated}" Width="120" />
+                        <GridViewColumn Header="Modified" DisplayMemberBinding="{Binding DateModified}" Width="120"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Button x:Name="NewProfile_Button" Content="New" HorizontalAlignment="Left" Margin="29,31,0,0" VerticalAlignment="Top" Width="117" Height="42" Click="NewProfile_Button_Click" FontSize="20" Background="#FFD7F8FF" BorderBrush="{x:Null}" Foreground="#FF003946" FontFamily="Segoe UI Black"/>
+        <Button x:Name="RemoveProfile_Button" Content="Remove" HorizontalAlignment="Left" Margin="166,31,0,0" VerticalAlignment="Top" Width="117" Height="42" Click="RemoveProfile_Button_Click" FontSize="20" Background="#FFD7F8FF" Foreground="#FF003946" BorderBrush="{x:Null}" FontFamily="Segoe UI Black"/>
+        <Label Content="Search" HorizontalAlignment="Left" Margin="408,11,0,0" VerticalAlignment="Top" Height="33" Width="66" RenderTransformOrigin="0.7,0.545" VerticalContentAlignment="Center" FontSize="14" Foreground="#FF003946" FontWeight="Bold"/>
+        <TextBox x:Name="Search_TextBox" HorizontalAlignment="Left" Height="28" Margin="408,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="143" KeyUp="SearchTextBox_KeyUp" FontSize="14" VerticalContentAlignment="Center" BorderBrush="{x:Null}"/>
+        <Label Content="Search by " HorizontalAlignment="Left" Margin="556,13,0,0" VerticalAlignment="Top" Height="34" Width="134" FontSize="14" Foreground="#FF003946" FontWeight="Bold"/>
+        <ComboBox x:Name="SearchCat_ComboBox" HorizontalAlignment="Left" Margin="556,40,0,0" Width="100" VerticalAlignment="Top" Height="28" VerticalContentAlignment="Center"/>
+        <Button x:Name="Search_Button" Content="Search" HorizontalAlignment="Left" Margin="690,31,0,0" VerticalAlignment="Top" Width="117" Height="42" Click="Search_Button_Click" FontSize="20" Background="#FFD7F8FF" Foreground="#FF003946" BorderBrush="{x:Null}" FontFamily="Segoe UI Black"/>
 
     </Grid>
 </Window>

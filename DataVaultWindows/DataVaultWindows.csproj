@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AttachmentWindow.xaml.cs">
+      <DependentUpon>AttachmentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConfirmationWindow.xaml.cs">
       <DependentUpon>ConfirmationWindow.xaml</DependentUpon>
     </Compile>
@@ -65,9 +68,14 @@
     <Compile Include="PreviewWindow.xaml.cs">
       <DependentUpon>PreviewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SortAdorner.cs" />
     <Compile Include="WarningWindow.xaml.cs">
       <DependentUpon>WarningWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="AttachmentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConfirmationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -151,6 +159,10 @@
     <ProjectReference Include="..\DataVaultCommon\DataVaultCommon.csproj">
       <Project>{f05cd74d-c27e-4cd7-8a01-88dbfcb0cafd}</Project>
       <Name>DataVaultCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SystemCommon\SystemCommon.csproj">
+      <Project>{59f2999c-aa89-4c5c-982c-15265a10bd6b}</Project>
+      <Name>SystemCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

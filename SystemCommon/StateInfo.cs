@@ -11,7 +11,7 @@ namespace SystemCommon
     public class StateInfo : ISerializable
     {
         int _id = -1;
-        string _state = null;
+        string _state = String.Empty;
 
         public int Id
         {
@@ -53,7 +53,7 @@ namespace SystemCommon
 
         public override string ToString()
         {
-            return "[" + _id + "] " + _state;
+            return _state;
         }
     }
 }

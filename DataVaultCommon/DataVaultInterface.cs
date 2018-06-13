@@ -20,17 +20,20 @@ namespace DataVaultCommon
             Phone = 1,
             SSN = 2,
         }
+
         public static string[] SearchOptions = {
             "Name",
             "Phone",
             "SSN"
         };
 
+        // Properties
         public bool HasAccess
         {
             get { return _hasAccess; }
         }
 
+        // Contructors
         public DataVaultInterface()
         {
         }
@@ -198,7 +201,40 @@ namespace DataVaultCommon
         /// <returns></returns>
         public StatusCode GetPersonalInfo(out PersonalInfo personalInfo, int personalInfoId)
         {
-            personalInfo = null;
+            personalInfo = new PersonalInfo();
+            if (personalInfoId == -1)
+            {
+                return StatusCode.NO_ERROR;
+            }
+
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+            
+            if (_databaseManager != null)
+            {
+                _databaseManager.ReloadPersonalInfo(personalInfo, personalInfoId);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
+        /// Get attachment info
+        /// </summary>
+        /// <param name="attachmentInfo"></param>
+        /// <param name="attachmentId"></param>
+        /// <returns></returns>
+        public StatusCode GetAttachmentInfo(out AttachmentInfo attachmentInfo, int attachmentId)
+        {
+            attachmentInfo = new AttachmentInfo();
+            if (attachmentId == -1)
+            {
+                return StatusCode.NO_ERROR;
+            }
+
             if (!HasAccess)
             {
                 return StatusCode.NOT_ALLOW_TO_ACCESS;
@@ -206,8 +242,35 @@ namespace DataVaultCommon
 
             if (_databaseManager != null)
             {
-                personalInfo = new PersonalInfo();
-                _databaseManager.ReloadPersonalInfo(personalInfo, personalInfoId);
+                _databaseManager.ReloadAttachment(attachmentInfo, attachmentId);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
+        /// Get attachment data
+        /// </summary>
+        /// <param name="attachmentData"></param>
+        /// <param name="attachmentId"></param>
+        /// <returns></returns>
+        public StatusCode GetAttachmentData(out byte[] attachmentData, int attachmentId)
+        {
+            attachmentData = null;
+            if (attachmentId == -1)
+            {
+                return StatusCode.NO_ERROR;
+            }
+
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                _databaseManager.LoadAttachmentData(out attachmentData, attachmentId);
                 return StatusCode.NO_ERROR;
             }
 
@@ -229,6 +292,75 @@ namespace DataVaultCommon
             if (_databaseManager != null)
             {
                 _databaseManager.SavePersonalInfo(personalInfo);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
+        /// Get states list from database
+        /// </summary>
+        /// <param name="states"></param>
+        /// <returns></returns>
+        public StatusCode GetStates(out List<StateInfo> states)
+        {
+            states = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                states = new List<StateInfo>();
+                _databaseManager.ReloadStates(states);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+
+        /// <summary>
+        /// Get genders list from database
+        /// </summary>
+        /// <param name="genders"></param>
+        /// <returns></returns>
+        public StatusCode GetGenders(out List<GenderInfo> genders)
+        {
+            genders = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                genders = new List<GenderInfo>();
+                _databaseManager.ReloadGenders(genders);
+                return StatusCode.NO_ERROR;
+            }
+
+            return StatusCode.UNKNOWN_ERROR;
+        }
+        
+        /// <summary>
+        /// Get attachment types
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        public StatusCode GetAttachmentTypes(out List<AttachmentTypeInfo> types)
+        {
+            types = null;
+            if (!HasAccess)
+            {
+                return StatusCode.NOT_ALLOW_TO_ACCESS;
+            }
+
+            if (_databaseManager != null)
+            {
+                types = new List<AttachmentTypeInfo>();
+                _databaseManager.ReloadAttachmentTypes(types);
                 return StatusCode.NO_ERROR;
             }
 

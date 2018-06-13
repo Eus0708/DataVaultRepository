@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace SystemCommon
 {
@@ -16,11 +17,11 @@ namespace SystemCommon
         PhoneNumberInfo _phoneNumber = null;
         AddressInfo _address = null;
         SSNNumberInfo _ssn = null;
-        string _gender = null;
+        string _gender = String.Empty;
         DateTime? _dateOfBirth = null;
         DateTime? _dateCreated = null;
         DateTime? _dateModified = null;
-        List<AttachmentInfo> _attachments = null;
+        ObservableCollection<AttachmentInfo> _attachments = null;
 
         public int Id
         {
@@ -32,6 +33,11 @@ namespace SystemCommon
         {
             get { return _toBeDelete; }
             set { _toBeDelete = value; }
+        }
+
+        public string FullName
+        {
+            get { return _name.FullName; }
         }
 
         public NameInfo Name
@@ -46,6 +52,11 @@ namespace SystemCommon
             set { _phoneNumber = value; }
         }
 
+        public string FullPhoneNumber
+        {
+            get { return _phoneNumber.FullPhoneNumber; }
+        }
+
         public AddressInfo Address
         {
             get { return _address; }
@@ -58,10 +69,30 @@ namespace SystemCommon
             set { _ssn = value; }
         }
 
+        public string FullSSN
+        {
+            get { return _ssn.SSNNumber; }
+        }
+
         public string Gender
         {
             get { return _gender; }
             set { _gender = value; }
+        }
+
+        public string DateOfBirthWithoutTime
+        {
+            get
+            {
+                if (_dateOfBirth != null)
+                {
+                    return _dateOfBirth.Value.ToString("MM/dd/yyyy");
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
         public DateTime? DateOfBirth
@@ -82,7 +113,7 @@ namespace SystemCommon
             set { _dateModified = value; }
         }
 
-        public List<AttachmentInfo> Attachments
+        public ObservableCollection<AttachmentInfo> Attachments
         {
             get { return _attachments; }
             set { _attachments = value; }
@@ -97,7 +128,7 @@ namespace SystemCommon
             _address = new AddressInfo();
             _phoneNumber = new PhoneNumberInfo();
             _ssn = new SSNNumberInfo();
-            _attachments = new List<AttachmentInfo>();
+            _attachments = new ObservableCollection<AttachmentInfo>();
         }
 
         /// <summary>
@@ -132,7 +163,7 @@ namespace SystemCommon
             _dateOfBirth = dob;
             _dateCreated = created;
             _dateModified = modified;
-            _attachments = new List<AttachmentInfo>();
+            _attachments = new ObservableCollection<AttachmentInfo>();
         }
 
         /// <summary>
@@ -158,7 +189,7 @@ namespace SystemCommon
             DateTime dob,
             DateTime created,
             DateTime modified,
-            List<AttachmentInfo> attachments)
+            ObservableCollection<AttachmentInfo> attachments)
         {
             _id = id;
             _name = name;
@@ -188,7 +219,7 @@ namespace SystemCommon
             _dateOfBirth = (DateTime)info.GetValue("da", typeof(DateTime));
             _dateCreated = (DateTime)info.GetValue("dc", typeof(DateTime));
             _dateModified = (DateTime)info.GetValue("dm", typeof(DateTime));
-            _attachments = TryGetValue<List<AttachmentInfo>>(info, "at");
+            _attachments = TryGetValue<ObservableCollection<AttachmentInfo>>(info, "at");
         }
 
         /// <summary>
@@ -257,7 +288,7 @@ namespace SystemCommon
         /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
         /// <returns></returns>
-        string PrintList<T>(List<T> list)
+        string PrintList<T>(ObservableCollection<T> list)
         {
             if (list == null)
             {
@@ -279,14 +310,15 @@ namespace SystemCommon
             // the list is null
             if (_attachments == null)
             {
-                _attachments = new List<AttachmentInfo>();
+                _attachments = new ObservableCollection<AttachmentInfo>();
             }
 
             _attachments.Add(new AttachmentInfo(
                 -1,
                 attachment.Type,
                 attachment.Path,
-                attachment.Filename
+                attachment.Filename,
+                attachment.Extension
                 ));
         }
     }

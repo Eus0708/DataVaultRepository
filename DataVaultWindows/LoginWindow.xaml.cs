@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using DataVaultCommon;
+using SystemCommon;
+
 namespace DataVaultWindows
 {
     /// <summary>
@@ -19,46 +22,89 @@ namespace DataVaultWindows
     /// </summary>
     public partial class LoginWindow : Window
     {
+        DataVaultInterface _dataVaultInterface;
+    
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LoginWindow()
         {
             InitializeComponent();
+
+            // Give textbox focus
+            Password_TextBox.Focus();
+
+            // Create the new data vault interface
+            _dataVaultInterface = new DataVaultInterface();
         }
 
+        /// <summary>
+        /// Login button clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
-            
-            HomeWindow ss = new HomeWindow();
-            ss.Show();
-            this.Hide();
+            Login();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Show meesage box
+        /// </summary>
+        /// <param name="message"></param>
+        private MessageBoxResult ShowMessageBox(StatusCode status)
         {
-            this.Close();
-        }
-        private void Password_TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            if (tb.Text == "Please Enter Your Password...")
-                tb.Text = "";
-
-            tb.Foreground = Brushes.Black;
-
+            return MessageBox.Show(this, ErrorHandler.ErrorMessage(status), "Data Vault");
         }
 
-        private void Password_TextBox_LostFocus(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Show message box
+        /// </summary>
+        /// <param name="message"></param>
+        private MessageBoxResult ShowMessageBox(string message)
         {
-            TextBox tb = (TextBox)sender;
-            if (tb.Text == "")
+            return MessageBox.Show(this, message, "Data Vault");
+        }
+
+        /// <summary>
+        /// Keyboard key up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PasswordTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Enter key pressed
+            if (e.Key == System.Windows.Input.Key.Enter)
             {
-                tb.Text = "Please Enter Your Password...";
-                tb.Foreground = Brushes.LightGray;
+                Login();
             }
-            else
-            {
-                tb.Foreground = Brushes.Black;
-            }
+        }
 
+        /// <summary>
+        /// Log in
+        /// </summary>
+        private void Login()
+        {
+            string input = Password_TextBox.Password;
+
+            if (null != _dataVaultInterface)
+            {
+                // Verify password
+                StatusCode status = _dataVaultInterface.Login(input);
+
+                // Check return value
+                if (status == StatusCode.NO_ERROR)
+                {
+                    // Pass the interface to next window
+                    ExistingWindow existingWindow = new ExistingWindow(_dataVaultInterface);
+                    existingWindow.Show();
+                    this.Close();
+                }
+                else
+                {
+                    ShowMessageBox(status);
+                }
+            }
         }
     }
 }

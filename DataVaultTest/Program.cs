@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Collections.ObjectModel;
 
 using SystemCommon;
 using DataVaultCommon;
@@ -20,13 +21,54 @@ namespace DataVaultTest
         {
             Test4();
             Seperator();
-            Test23();
+            Test9();
             Seperator();
             Test4();
+
+            Test27();
 
             db.CloseConnection();
             Console.Read();
             //Console.WriteLine("Done DataVault Test");
+        }
+
+        static void Test27()
+        {
+            string date = "02/03/1992";
+            DateTime result = DateTime.Now;
+            bool boolResult = DateTime.TryParse(date, out result);
+            Console.WriteLine(boolResult + " " + result);
+        }
+
+        static void Test26()
+        {
+            string filename = "ABC.jpg";
+            string name = System.IO.Path.GetFileNameWithoutExtension(filename);
+            string ext = System.IO.Path.GetExtension(filename);
+            Console.WriteLine(filename);
+            Console.WriteLine(name);
+            Console.WriteLine(ext);
+        }
+
+        static void Test25()
+        {
+            string result = Test24(null);
+            Console.WriteLine(result);
+            result = Test24("12345");
+            Console.WriteLine(result);
+        }
+
+        static string Test24(string str)
+        {
+            if (!string.IsNullOrEmpty(str) && str.Length >= 5)
+            {
+                return str.Insert(5, "-").Insert(3, "-");
+            }
+            else
+            {
+                return str;
+            }
+
         }
 
         // Delete a person
@@ -166,7 +208,8 @@ namespace DataVaultTest
             AttachmentInfo attach = new AttachmentInfo();
             attach.Id = 0;
             attach.Path = @"\Path\Images";
-            attach.Filename = "attach.jpg";
+            attach.Filename = "attach";
+            attach.Extension = ".jpg";
             attach.Type = "Passport";
             db.SaveAttachmentInfo(0, attach);
         }
@@ -176,7 +219,8 @@ namespace DataVaultTest
         {
             AttachmentInfo attach = new AttachmentInfo();
             attach.Path = @"\Path\Images";
-            attach.Filename = "attach.jpg";
+            attach.Filename = "attach";
+            attach.Extension = ".jpg";
             attach.Type = "Passport";
             db.SaveAttachmentInfo(1, attach);
         }
@@ -300,7 +344,7 @@ namespace DataVaultTest
         // Attachment table test
         static void Test3()
         {
-            List<AttachmentInfo> amts = new List<AttachmentInfo>();
+            ObservableCollection<AttachmentInfo> amts = new ObservableCollection<AttachmentInfo>();
             db.ReloadAttachments(amts, 0);
             PrintList(amts);
         }
@@ -355,6 +399,20 @@ namespace DataVaultTest
 
             int i = 0;
             foreach(object obj in list)
+            {
+                Console.WriteLine("[" + (i++) + "]: " + obj.ToString());
+            }
+        }
+
+        static void PrintList<T>(ObservableCollection<T> list)
+        {
+            if (list == null)
+            {
+                return;
+            }
+
+            int i = 0;
+            foreach (object obj in list)
             {
                 Console.WriteLine("[" + (i++) + "]: " + obj.ToString());
             }

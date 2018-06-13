@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ConfirmationWindow" Height="300" Width="400">
     <Grid>
-        <Label Content="Do you want to continue?" HorizontalAlignment="Left" Margin="80,70,0,0" VerticalAlignment="Top" Height="40" Width="224" FontSize="18"/>
+        <Label Content="Do you want to continue?" HorizontalAlignment="Left" Margin="80,82,0,0" VerticalAlignment="Top" Height="40" Width="224" FontSize="18" MinWidth="244" MinHeight="40"/>
         <Button Content="Yes" HorizontalAlignment="Left" Margin="36,163,0,0" VerticalAlignment="Top" Width="83" Height="28"/>
         <Button Content="No" HorizontalAlignment="Left" Margin="145,163,0,0" VerticalAlignment="Top" Width="85" Height="28"/>
         <Button Content="Cancel" HorizontalAlignment="Left" Margin="255,163,0,0" VerticalAlignment="Top" Width="82" Height="28"/>

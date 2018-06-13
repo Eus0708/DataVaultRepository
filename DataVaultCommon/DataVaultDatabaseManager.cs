@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Collections.ObjectModel;
 
 using SystemCommon;
 using System.Runtime.CompilerServices;
@@ -15,8 +18,8 @@ namespace DataVaultCommon
 {
     internal class DataVaultDatabaseManager : IDisposable
     {
-        string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
-        SqlConnection _connection = null;
+        static string _connectionStr = @"Data Source=(localdb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|DataVaultDatabase.mdf;Integrated Security=True";
+        SqlConnection _connection = new SqlConnection(_connectionStr);
         string _dbUsername = null;
         string _dbPassword = null;
 
@@ -49,13 +52,8 @@ namespace DataVaultCommon
         /// </summary>
         public void OpenConnection()
         {
-            if (_connection == null)
+            if (_connection != null && _connection.State == ConnectionState.Closed)
             {
-                _connection = new SqlConnection();
-
-                //TODO combine connection string with username and password
-
-                _connection.ConnectionString = _connectionStr;
                 _connection.Open();
             }
         }
@@ -65,10 +63,9 @@ namespace DataVaultCommon
         /// </summary>
         public void CloseConnection()
         {
-            if (_connection != null)
+            if (_connection != null && _connection.State == ConnectionState.Open)
             {
                 _connection.Close();
-                _connection = null;
             }
         }
 
@@ -96,6 +93,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -132,6 +131,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
 
             // Not yet finished, fill in attachments as well
@@ -160,6 +161,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -191,6 +194,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
         }
 
@@ -209,6 +214,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -217,7 +224,7 @@ namespace DataVaultCommon
             SqlDataReader reader = command.ExecuteReader();
             try
             {
-                while (reader.Read())
+                if (reader.Read())
                 {
                     personalInfo.Id = reader.GetInt32(0);
                     personalInfo.Name.FirstName = SafeGetString(reader, 1);
@@ -241,6 +248,8 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
 
             // Not yet finished, fill in attachments as well
@@ -252,7 +261,7 @@ namespace DataVaultCommon
         /// </summary>
         /// <param name="attachments"></param>
         /// <param name="personalInfoId"></param>
-        public void ReloadAttachments(List<AttachmentInfo> attachments, int personalInfoId)
+        public void ReloadAttachments(ObservableCollection<AttachmentInfo> attachments, int personalInfoId)
         {
             string queryString = "LoadAttachmentsByPersonId";
 
@@ -268,6 +277,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -282,8 +293,8 @@ namespace DataVaultCommon
                         new AttachmentInfo(
                         reader.GetInt32(0),
                         SafeGetString(reader, 1),
-                        SafeGetString(reader, 2),
-                        SafeGetString(reader, 3))
+                        string.Empty,
+                        SafeGetString(reader, 2))
                         );
                 }
             }
@@ -291,6 +302,93 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+        /// <summary>
+        /// Load attachment info
+        /// </summary>
+        /// <param name="attachment"></param>
+        /// <param name="attachmentId"></param>
+        public void ReloadAttachment(AttachmentInfo attachment, int attachmentId)
+        {
+            string queryString = "LoadAttachmentByAttachmentId";
+
+            // Check connection and input
+            if (_connection == null || attachment == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", attachmentId);
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                if (reader.Read())
+                {
+                    attachment.Id = reader.GetInt32(0);
+                    attachment.Type = SafeGetString(reader, 1);
+                    
+                    string fullFilename = SafeGetString(reader, 2);
+                    attachment.Filename = Path.GetFileNameWithoutExtension(fullFilename);
+                    attachment.Extension = Path.GetExtension(fullFilename);
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+        /// <summary>
+        /// Load attachment data
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="attachmentId"></param>
+        public void LoadAttachmentData(out byte[] data, int attachmentId)
+        {
+            string queryString = "LoadAttachmentDataByAttachmentId";
+
+            data = null;
+
+            // Check connection and input
+            if (_connection == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            command.Parameters.AddWithValue("@Id", attachmentId);
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                if (reader.Read())
+                {
+                    data = reader.GetValue(0) as byte[];
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
             }
         }
 
@@ -313,6 +411,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand( queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -332,8 +432,102 @@ namespace DataVaultCommon
             {
                 // Always call Close when done reading.
                 reader.Close();
+
+                CloseConnection();
             }
         }
+
+        /// <summary>
+        /// Load all genders
+        /// </summary>
+        /// <param name="genders"></param>
+        public void ReloadGenders(List<GenderInfo> genders)
+        {
+            string queryString = "LoadGenders";
+
+            // Already has data clean it up
+            if (genders.Count > 0)
+            {
+                genders.Clear();
+            }
+
+            if (_connection == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    genders.Add(
+                        new GenderInfo(
+                        reader.GetInt32(0),
+                        SafeGetString(reader, 1))
+                        );
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+        /// <summary>
+        /// Reload attachment types
+        /// </summary>
+        /// <param name="genders"></param>
+        public void ReloadAttachmentTypes(List<AttachmentTypeInfo> types)
+        {
+            string queryString = "LoadAttachmentTypes";
+
+            // Already has data clean it up
+            if (types.Count > 0)
+            {
+                types.Clear();
+            }
+
+            if (_connection == null)
+            {
+                return;
+            }
+
+            OpenConnection();
+
+            SqlCommand command = new SqlCommand(queryString, _connection);
+            command.CommandType = CommandType.StoredProcedure;
+
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                while (reader.Read())
+                {
+                    types.Add(
+                        new AttachmentTypeInfo(
+                        reader.GetInt32(0),
+                        SafeGetString(reader, 1))
+                        );
+                }
+            }
+            finally
+            {
+                // Always call Close when done reading.
+                reader.Close();
+
+                CloseConnection();
+            }
+        }
+
+
 
         /// <summary>
         /// Get string from db data type safely
@@ -380,7 +574,10 @@ namespace DataVaultCommon
             {
                 if (personalInfo.Id == -1)
                 {
-                    AddPersonalInfo(personalInfo);
+                    int id = AddPersonalInfo(personalInfo);
+
+                    // Update the id
+                    personalInfo.Id = id;
                 }
                 else
                 {
@@ -389,9 +586,12 @@ namespace DataVaultCommon
             }
 
             // Update Attachments
-            foreach (AttachmentInfo attachment in personalInfo.Attachments)
+            if (personalInfo.Id != -1)
             {
-                SaveAttachmentInfo(personalInfo.Id, attachment);
+                foreach (AttachmentInfo attachment in personalInfo.Attachments)
+                {
+                    SaveAttachmentInfo(personalInfo.Id, attachment);
+                }
             }
         }
 
@@ -399,19 +599,23 @@ namespace DataVaultCommon
         /// Insert a person
         /// </summary>
         /// <param name="personalInfo"></param>
-        public void AddPersonalInfo(PersonalInfo personalInfo)
+        /// <returns></returns>
+        public int AddPersonalInfo(PersonalInfo personalInfo)
         {
             string queryString = "InsertPersonalInfo";
 
             // Check connection and input
             if (_connection == null || personalInfo == null)
             {
-                return;
+                return -1;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
             
+            // Input vars
             command.Parameters.AddWithValue("@FirstName", personalInfo.Name.FirstName);
             command.Parameters.AddWithValue("@MiddleName", personalInfo.Name.MiddleName);
             command.Parameters.AddWithValue("@LastName", personalInfo.Name.LastName);
@@ -428,7 +632,18 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@DateCreated", DateTime.Now);
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
+            // Output vars
+            command.Parameters.Add("@PersonalId", SqlDbType.Int).Direction = ParameterDirection.ReturnValue;
+
+            // Exec
             command.ExecuteNonQuery();
+
+            // Get output
+            int personalId = (int)command.Parameters["@PersonalId"].Value;
+
+            CloseConnection();
+
+            return personalId;
         }
 
         /// <summary>
@@ -444,6 +659,8 @@ namespace DataVaultCommon
             {
                 return;
             }
+
+            OpenConnection();
 
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
@@ -465,6 +682,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@DateModified", DateTime.Now);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -481,12 +700,16 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@Id", personalInfo.Id);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -529,15 +752,21 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
             command.Parameters.AddWithValue("@Type", attachment.Type);
-            command.Parameters.AddWithValue("@Path", attachment.Path);
-            command.Parameters.AddWithValue("@Filename", attachment.Filename);
+            command.Parameters.AddWithValue("@Filename", attachment.FullFilename);
+
+            byte[] data = GetImageData(attachment.Path);
+            command.Parameters.AddWithValue("@Data", data);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -555,16 +784,19 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.AddWithValue("@Id", attachment.Id);
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
             command.Parameters.AddWithValue("@Type", attachment.Type);
-            command.Parameters.AddWithValue("@Path", attachment.Path);
-            command.Parameters.AddWithValue("@Filename", attachment.Filename);
+            command.Parameters.AddWithValue("@Filename", attachment.FullFilename);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -582,6 +814,8 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
 
@@ -589,6 +823,8 @@ namespace DataVaultCommon
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
         }
 
         /// <summary>
@@ -605,12 +841,29 @@ namespace DataVaultCommon
                 return;
             }
 
+            OpenConnection();
+
             SqlCommand command = new SqlCommand(queryString, _connection);
             command.CommandType = CommandType.StoredProcedure;
             
             command.Parameters.AddWithValue("@PersonalInfoId", personalInfoId);
 
             command.ExecuteNonQuery();
+
+            CloseConnection();
+        }
+
+        /// <summary>
+        /// Giving the file path return the byte[]
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        private byte[] GetImageData(string path)
+        {
+            Image image = new Bitmap(path);
+            MemoryStream memStream = new MemoryStream();
+            image.Save(memStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            return memStream.ToArray();
         }
     }
 }

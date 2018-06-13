@@ -10,8 +10,8 @@ namespace SystemCommon
     [Serializable]
     public class PhoneNumberInfo : ISerializable
     {
-        string _areaCode = null;
-        string _phoneNumber = null;
+        string _areaCode = String.Empty;
+        string _phoneNumber = String.Empty;
 
         public string AreaCode
         {
@@ -58,7 +58,18 @@ namespace SystemCommon
 
         public override string ToString()
         {
-            return "(" + _areaCode + ")" + _phoneNumber;
+            if (!string.IsNullOrEmpty(_phoneNumber) && _phoneNumber.Length >= 3)
+            {
+                return "(" + _areaCode + ") " + _phoneNumber.Insert(3, "-");
+            }
+            else if (_areaCode.Length > 0)
+            {
+                return "(" + _areaCode + ") " + _phoneNumber;
+            }
+            else
+            {
+                return _areaCode + _phoneNumber;
+            }
         }
     }
 }
