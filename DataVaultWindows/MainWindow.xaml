@@ -46,7 +46,7 @@
         <Label x:Name="LastName_Label" Content="Last Name" HorizontalAlignment="Left" Margin="294,36,0,0" VerticalAlignment="Top" Height="28" Width="80" Foreground="#FF003946" FontWeight="Bold"/>
         <Label x:Name="Phone_Label" Content="Phone Number" HorizontalAlignment="Left" Margin="30,110,0,0" VerticalAlignment="Top" Height="28" Width="103" Foreground="#FF003946" FontWeight="Bold"/>
         <Label x:Name="Genders_Label" Content="Gender" HorizontalAlignment="Left" Margin="372,110,0,0" VerticalAlignment="Top" Height="28" Width="56" Foreground="#FF003946" FontWeight="Bold"/>
-        <Label x:Name="DOB_Label" Content="Date of Birth" HorizontalAlignment="Left" Margin="30,183,0,0" VerticalAlignment="Top" Height="28" Width="79" Foreground="#FF003946" FontWeight="Bold"/>
+        <Label x:Name="DOB_Label" Content="Date of Birth" HorizontalAlignment="Left" Margin="30,183,0,0" VerticalAlignment="Top" Height="28" Width="103" Foreground="#FF003946" FontWeight="Bold"/>
         <Label x:Name="Address1_Label" Content="Address 1" HorizontalAlignment="Left" Margin="30,258,0,0" VerticalAlignment="Top" Height="28" Width="76" Foreground="#FF003946" FontWeight="Bold"/>
         <Label x:Name="Address2_Label" Content="Address 2" HorizontalAlignment="Left" Margin="30,319,0,0" VerticalAlignment="Top" Height="27" Width="76" Foreground="#FF003946" FontWeight="Bold"/>
         <Label x:Name="City_Label" Content="City" HorizontalAlignment="Left" Margin="30,380,0,0" VerticalAlignment="Top" Height="28" Width="39" Foreground="#FF003946" FontWeight="Bold"/>
